@@ -2,8 +2,6 @@
 
 Monorepo for the core `@prompt-template` modules, types, and integrations.
 
-Note: This project is temporarily being developed in the [aaronccasanova/aacc](https://github.com/aaronccasanova/aacc/tree/main/packages/prompt-template-core) repository while similar infrastructure is setup here.
-
 ## Quick start
 
 ```sh
@@ -14,13 +12,16 @@ npm i @prompt-template/core
 import { PromptTemplate } from '@prompt-template/core'
 
 const promptTemplate = PromptTemplate.create`
-  Brainstorm creative uses for ${'topic'}.
-  Think outside the box and propose unconventional or innovative ideas.
+  Summarize the following text in ${'length'}:
+  ${'text'}
 `
 
 const prompt = promptTemplate.format({
-  topic: 'AI',
+  length: 'a few words',
+  text: 'A long time ago in a galaxy far, far away...',
 })
-//=> 'Brainstorm creative uses for AI.
-//    Think outside the box and propose unconventional or innovative ideas.'
+//=> 'Summarize the following text in a few words:
+//    A long time ago in a galaxy far, far away...'
 ```
+
+For detailed usage and API documentation, please refer to the [README in `packages/core`](packages/core/README.md).
