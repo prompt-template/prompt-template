@@ -1,0 +1,24 @@
+{
+  "name": "prompt-template",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "clean": "turbo clean && rm -rf node_modules",
+    "format": "prettier --write '**/*.{ts,tsx,md}'",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "turbo build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "catalog:",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "turbo": "catalog:"
+  },
+  "packageManager": "pnpm@9.5.0",
+  "engines": {
+    "node": ">=18.20.5"
+  }
+}

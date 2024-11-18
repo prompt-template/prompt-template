@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - next
+  pull_request:
+
+jobs:
+  build:
+    name: 'Validate with Node v${{ matrix.node_version }}'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node_version: ['18.20.5', '20.18.0', '22.11.0']
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9.5.0
+
+      - name: Setup Node with v${{ matrix.node_version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node_version }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm i --frozen-lockfile
+
+      # Test hypothesis
+      # https://github.com/vercel/turborepo/issues/451#issuecomment-1190876871
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            .turbo
+            .eslintcache
+          key: ${{ runner.os }}-node${{ matrix.node_version }}-ci-v0-${{
+            github.sha }}
+          restore-keys: ${{ runner.os }}-node${{ matrix.node_version }}-ci-v0-
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Lint
+        run: pnpm run lint
+
+      # - name: Type check
+      #   run: pnpm run type-check
+
+      # - name: Test
+      #   run: pnpm run test
