@@ -1,0 +1,70 @@
+{
+  "name": "@prompt-template/core",
+  "version": "0.0.2",
+  "description": "Core @prompt-template module",
+  "author": "Aaron Casanova <aaronccasanova@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/commonjs/index.js",
+  "types": "./dist/commonjs/index.d.ts",
+  "module": "./dist/esm/index.js",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/index.d.ts",
+        "default": "./dist/commonjs/index.js"
+      }
+    }
+  },
+  "tshy": {
+    "exports": {
+      "./package.json": "./package.json",
+      ".": "./src/index.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "TSHY_VERBOSE=1 tshy",
+    "dev": "TSHY_VERBOSE=1 tshy --watch",
+    "lint": "TIMING=1 eslint . --ext .js,.jsx,.ts,.tsx,.cjs,.mjs --cache",
+    "test": "vitest --run --typecheck --dir src",
+    "clean": "rm -rf .tshy* && rm -rf .turbo && rm -f .eslintcache && rm -rf dist && rm -rf node_modules",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "dedent": "^1.5.1",
+    "type-fest": "^4.8.3"
+  },
+  "devDependencies": {
+    "@prompt-template/eslint-config": "workspace:*",
+    "@prompt-template/tsconfig": "workspace:*",
+    "dotenv": "^16.4.5",
+    "eslint": "catalog:",
+    "openai": "^4.28.4",
+    "tshy": "catalog:",
+    "tsx": "^4.7.0",
+    "typescript": "catalog:",
+    "vitest": "^2.1.5",
+    "zod": "^3.22.4"
+  },
+  "publishConfig": {
+    "access": "public",
+    "@prompt-template:registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prompt-template/prompt-template.git",
+    "directory": "packages/utils"
+  },
+  "bugs": {
+    "url": "https://github.com/prompt-template/prompt-template/issues"
+  },
+  "homepage": "https://github.com/prompt-template/prompt-template/blob/main/packages/utils"
+}

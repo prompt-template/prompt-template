@@ -5,6 +5,7 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
+    "test": "turbo test",
     "clean": "turbo clean && rm -rf node_modules",
     "format": "prettier --write '**/*.{ts,tsx,md}'",
     "changeset": "changeset",

@@ -45,13 +45,13 @@ jobs:
           restore-keys: ${{ runner.os }}-node${{ matrix.node_version }}-ci-v0-
 
       - name: Build
-        run: pnpm run build
+        run: pnpm build
 
       - name: Lint
-        run: pnpm run lint
+        run: pnpm lint
 
       # - name: Type check
-      #   run: pnpm run type-check
+      #   run: pnpm type-check
 
-      # - name: Test
-      #   run: pnpm run test
+      - name: Test
+        run: pnpm test
