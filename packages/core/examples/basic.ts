@@ -1,20 +1,20 @@
 /**
 npx tsx examples/basic.ts
 */
-import { promptTemplate } from '@prompt-template/core'
+import { PromptTemplate } from '@prompt-template/core'
 import { OpenAI } from 'openai'
 
 import './env.js'
 
-const brainstormPromptTemplate = promptTemplate`
+const promptTemplate = PromptTemplate.create`
   Brainstorm 3 names for a superhero ${'animal'}.
 `
 
-const brainstormPrompt = brainstormPromptTemplate.format({
+const prompt = promptTemplate.format({
   animal: 'cat',
 })
 
-console.log(brainstormPrompt)
+console.log(prompt)
 // 'Brainstorm 3 names for a superhero cat.'
 
 const openai = new OpenAI()
@@ -24,7 +24,7 @@ const completion = await openai.chat.completions.create({
   messages: [
     {
       role: 'user',
-      content: brainstormPrompt,
+      content: prompt,
     },
   ],
 })

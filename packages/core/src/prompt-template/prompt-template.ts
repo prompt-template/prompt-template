@@ -2,59 +2,64 @@
 import dedent from 'dedent'
 
 import type {
-  CreateTaggedPromptTemplate,
+  CreatePromptTemplate,
+  ExtractCreatePromptTemplateResult,
   ExtractInputVariableName,
   ExtractInputVariableNameOptional,
   ExtractInputVariableNameRequired,
-  ExtractTaggedPromptTemplateResult,
+  GetCreatePromptTemplate,
   PromptTemplateBase,
   PromptTemplateFormatInputValues,
   PromptTemplateFormatInputValuesBase,
   PromptTemplateFormatOptions,
+  PromptTemplateFromString,
   PromptTemplateInputVariable,
   PromptTemplateInputVariableConfig,
   PromptTemplateInputVariableName,
   PromptTemplateOptions,
-  TaggedPromptTemplate,
+  PromptTemplateStrings,
   ValidateInputVariables,
 } from './types.js'
 
-const createTaggedPromptTemplate: CreateTaggedPromptTemplate = (options) => {
-  const taggedPromptTemplate: TaggedPromptTemplate = <
-    T extends TemplateStringsArray | PromptTemplateOptions,
+const getCreatePromptTemplate: GetCreatePromptTemplate = (options) => {
+  const createPromptTemplate: CreatePromptTemplate = <
+    T extends PromptTemplateStrings | PromptTemplateOptions,
     InputVariables extends PromptTemplateInputVariable[],
   >(
     templateStringsOrOptions: T,
     ...inputVariables: ValidateInputVariables<InputVariables>
-  ): ExtractTaggedPromptTemplateResult<T, InputVariables> => {
+  ): ExtractCreatePromptTemplateResult<T, InputVariables> => {
     if (isPromptTemplateOptions(templateStringsOrOptions)) {
-      return createTaggedPromptTemplate({
+      return getCreatePromptTemplate({
         ...options,
         ...templateStringsOrOptions,
-      }) as ExtractTaggedPromptTemplateResult<T, InputVariables>
+      }) as ExtractCreatePromptTemplateResult<T, InputVariables>
     }
 
     return new PromptTemplate(
       templateStringsOrOptions,
       inputVariables,
       options,
-    ) as ExtractTaggedPromptTemplateResult<T, InputVariables>
+    ) as ExtractCreatePromptTemplateResult<T, InputVariables>
   }
 
-  return taggedPromptTemplate
+  return createPromptTemplate
 }
 
-export const promptTemplate: TaggedPromptTemplate = createTaggedPromptTemplate(
-  {},
-)
+const createPromptTemplate: CreatePromptTemplate = getCreatePromptTemplate({})
+
+const promptTemplateFromString: PromptTemplateFromString = (string) =>
+  new PromptTemplate([string], [], { dedent: false })
 
 export class PromptTemplate<
   InputVariables extends PromptTemplateInputVariable[],
 > implements PromptTemplateBase
 {
-  static create = promptTemplate
+  static create: CreatePromptTemplate = createPromptTemplate
 
-  templateStrings: TemplateStringsArray
+  static from: PromptTemplateFromString = promptTemplateFromString
+
+  templateStrings: PromptTemplateStrings
 
   inputVariables: ValidateInputVariables<InputVariables>
 
@@ -65,7 +70,7 @@ export class PromptTemplate<
   #dedent: boolean
 
   constructor(
-    templateStrings: TemplateStringsArray,
+    templateStrings: PromptTemplateStrings,
     inputVariables: ValidateInputVariables<InputVariables>,
     options: PromptTemplateOptions = {},
   ) {
@@ -319,14 +324,14 @@ function isInputVariableConfigOptional(
   return isInputVariableConfig(inputVariable) && 'default' in inputVariable
 }
 
-function isTemplateStringsArray(
-  templateStringsOrOptions: TemplateStringsArray | PromptTemplateOptions,
-): templateStringsOrOptions is TemplateStringsArray {
+function isPromptTemplateStrings(
+  templateStringsOrOptions: PromptTemplateStrings | PromptTemplateOptions,
+): templateStringsOrOptions is PromptTemplateStrings {
   return Array.isArray(templateStringsOrOptions)
 }
 
 export function isPromptTemplateOptions(
-  templateStringsOrOptions: TemplateStringsArray | PromptTemplateOptions,
+  templateStringsOrOptions: PromptTemplateStrings | PromptTemplateOptions,
 ): templateStringsOrOptions is PromptTemplateOptions {
-  return !isTemplateStringsArray(templateStringsOrOptions)
+  return !isPromptTemplateStrings(templateStringsOrOptions)
 }
