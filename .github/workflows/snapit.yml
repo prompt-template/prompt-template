@@ -11,6 +11,9 @@ jobs:
       github.event.issue.pull_request &&
       github.event.comment.body == '/snapit'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
     steps:
       - name: Add initial reaction
         uses: peter-evans/create-or-update-comment@v4
@@ -67,7 +70,13 @@ jobs:
       # regenerate the package version bumps with the snapshot releases
       - name: Reset changeset entries on changeset-release/main branch
         run: |
-          if [[ $(git branch --show-current) == 'changeset-release/main' ]]; then
+          current_branch=$(git branch --show-current)
+          echo "$current_branch"
+          if [[ -z "$current_branch" ]]; then
+            echo "Current branch is empty. Exiting."
+            exit 1
+          fi
+          if [[ "$current_branch" == 'changeset-release/main' ]]; then
             git checkout origin/main -- .changeset
           fi
 
@@ -99,7 +108,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           script: |
-            import {execa} from 'execa'
+            const {execa} = await import(`${{ github.workspace }}/node_modules/execa/index.js`)
 
             await execa({stdio: 'inherit'})`npm run version-packages -- --snapshot snapshot-release`
 
