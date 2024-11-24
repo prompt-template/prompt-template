@@ -1,16 +1,16 @@
 # @prompt-template/core
 
-`@prompt-template/core` contains the core `promptTemplate` module and types for
+`@prompt-template/core` contains the core `PromptTemplate` module and types for
 creating and formatting prompts with input variables. Key features include:
 
-- **Type Safety:** Ensures `promptTemplate` input variables are defined and
+- **Type Safety:** Ensures `PromptTemplate` input variables are defined and
   formatted correctly at compile time.
-- **Modular Design:** Supports nested `promptTemplate`s to promote organization
+- **Modular Design:** Supports nested `PromptTemplate`s to promote organization
   and reusability.
 - **Intuitive Authoring:** Simplifies prompt creation by solely defining input
-  variables in `promptTemplate`s.
+  variables in `PromptTemplate`s.
 - **Community Prompts:** Designed with the vision of creating and sharing
-  `promptTemplate`s with the community (as NPM packages for example).
+  `PromptTemplate`s with the community (as NPM packages for example).
 
 ## Installation
 
@@ -20,103 +20,103 @@ npm i @prompt-template/core
 
 ## Usage
 
-### [`promptTemplate`](#prompttemplate) with [`InputVariableName`](#inputvariablename)
+### [`PromptTemplate.create`](#prompttemplatecreate) with [`InputVariableName`](#inputvariablename)
 
 ```ts
-import { promptTemplate } from '@prompt-template/core'
+import { PromptTemplate } from '@prompt-template/core'
 
-const brainstormPromptTemplate = promptTemplate`
+const promptTemplate = PromptTemplate.create`
   Brainstorm 3 names for a superhero ${'animal'}.
 `
 
-const brainstormPrompt = brainstormPromptTemplate.format({
+const prompt = promptTemplate.format({
   animal: 'cat',
 })
 //=> 'Brainstorm 3 names for a superhero cat.'
 ```
 
-### [`promptTemplate`](#prompttemplate) with [`InputVariableConfig.onFormat`](#inputvariableconfigonformat)
+### [`PromptTemplate.create`](#prompttemplatecreate) with [`InputVariableConfig.onFormat`](#inputvariableconfigonformat)
 
 ```ts
-import { promptTemplate } from '@prompt-template/core'
+import { PromptTemplate } from '@prompt-template/core'
 
-const brainstormPromptTemplate = promptTemplate`
+const promptTemplate = PromptTemplate.create`
   Brainstorm 3 names for a superhero ${{
     name: 'animal' as const,
     onFormat: (inputValue) => inputValue.toUpperCase(),
   }}.
 `
 
-const brainstormPrompt = brainstormPromptTemplate.format({
+const prompt = promptTemplate.format({
   animal: 'cat',
 })
 //=> 'Brainstorm 3 names for a superhero CAT.'
 ```
 
-### [`promptTemplate`](#prompttemplate) with [`InputVariableConfig.schema`](#inputvariableconfigschema)
+### [`PromptTemplate.create`](#prompttemplatecreate) with [`InputVariableConfig.schema`](#inputvariableconfigschema)
 
 ```ts
-import { promptTemplate } from '@prompt-template/core'
+import { PromptTemplate } from '@prompt-template/core'
 import { z } from 'zod'
 
-const brainstormPromptTemplate = promptTemplate`
+const promptTemplate = PromptTemplate.create`
   Brainstorm 3 names for a superhero ${{
     name: 'animal' as const,
     schema: z.string().nonempty(),
   }}.
 `
 
-const brainstormPrompt = brainstormPromptTemplate.format({
+const prompt = promptTemplate.format({
   animal: 'cat',
 })
 //=> 'Brainstorm 3 names for a superhero cat.'
 ```
 
-### [`promptTemplate`](#prompttemplate) with [`InputVariableConfig.default`](#inputvariableconfigdefault)
+### [`PromptTemplate.create`](#prompttemplatecreate) with [`InputVariableConfig.default`](#inputvariableconfigdefault)
 
 ```ts
-import { promptTemplate } from '@prompt-template/core'
+import { PromptTemplate } from '@prompt-template/core'
 
-const brainstormPromptTemplate = promptTemplate`
+const promptTemplate = PromptTemplate.create`
   Brainstorm 3 names for a superhero ${{
     name: 'animal' as const,
     default: 'cat',
   }}.
 `
 
-const catBrainstormPrompt = brainstormPromptTemplate.format({})
+const catPrompt = promptTemplate.format({})
 //=> 'Brainstorm 3 names for a superhero cat.'
 
-const dogBrainstormPrompt = brainstormPromptTemplate.format({
+const dogPrompt = promptTemplate.format({
   animal: 'dog',
 })
 //=> 'Brainstorm 3 names for a superhero dog.'
 ```
 
-### [`promptTemplate`](#prompttemplate) with nested [`promptTemplate`](#prompttemplate)
+### [`PromptTemplate.create`](#prompttemplatecreate) with nested [`PromptTemplate.create`](#prompttemplatecreate)
 
 ```ts
-import { promptTemplate } from '@prompt-template/core'
+import { PromptTemplate } from '@prompt-template/core'
 
-const outputFormatPromptTemplate = promptTemplate`
+const outputFormatPromptTemplate = PromptTemplate.create`
   Format the output as ${{
     name: 'format' as const,
     default: 'bullet points',
   }}.
 `
 
-const brainstormPromptTemplate = promptTemplate`
+const promptTemplate = PromptTemplate.create`
   Brainstorm 3 names for a superhero ${'animal'}.
   ${outputFormatPromptTemplate}
 `
 
-const bulletPointsPrompt = brainstormPromptTemplate.format({
+const bulletPointsPrompt = promptTemplate.format({
   animal: 'cat',
 })
 //=> 'Brainstorm 3 names for a superhero cat.
 //    Format the output as bullet points.'
 
-const numberedListPrompt = brainstormPromptTemplate.format({
+const numberedListPrompt = promptTemplate.format({
   animal: 'cat',
   format: 'a numbered list',
 })
@@ -124,16 +124,16 @@ const numberedListPrompt = brainstormPromptTemplate.format({
 //    Format the output as a numbered list.'
 ```
 
-### [`promptTemplate`](#prompttemplate) with [`PromptTemplateOptions`](#prompttemplateoptions)
+### [`PromptTemplate.create`](#prompttemplatecreate) with [`PromptTemplateOptions`](#prompttemplateoptions)
 
 ```ts
-import { promptTemplate } from '@prompt-template/core'
+import { PromptTemplate } from '@prompt-template/core'
 
-const userPromptTemplate = promptTemplate({ prefix: 'user: ' })`
+const promptTemplate = PromptTemplate.create({ prefix: 'user: ' })`
   Brainstorm 3 names for a superhero ${'animal'}.
 `
 
-const userPrompt = userPromptTemplate.format({
+const prompt = promptTemplate.format({
   animal: 'cat',
 })
 //=> 'user: Brainstorm 3 names for a superhero cat.'
@@ -145,19 +145,19 @@ const userPrompt = userPromptTemplate.format({
 
 ## API
 
-### `promptTemplate`
+### `PromptTemplate.create`
 
 A tagged template literal function that returns a
-[`PromptTemplate`](#prompttemplate-class) instance or a new `promptTemplate`
+[`PromptTemplate`](#prompttemplate-class) instance or a new `PromptTemplate`
 bound to the provided [`PromptTemplateOptions`](#prompttemplateoptions)
 overrides.
 
 ```ts
-const myPromptTemplate = promptTemplate`
+const promptTemplate = PromptTemplate.create`
   My prompt template with ${'inputVariableName'}.
 `
 
-const myPrompt = myPromptTemplate.format({
+const prompt = promptTemplate.format({
   inputVariableName: 'inputVariableValue' as const,
 })
 //=> 'My prompt template with inputVariableValue.'
@@ -166,53 +166,49 @@ const myPrompt = myPromptTemplate.format({
 or
 
 ```ts
-const userPromptTemplate = promptTemplate({ prefix: 'user: ' })
-
-const myUserPromptTemplate = userPromptTemplate`
+const promptTemplate = PromptTemplate.create({ prefix: 'user: ' })`
   My prompt template with ${'inputVariableName'}.
 `
 
-const myUserPrompt = myUserPromptTemplate.format({
+const prompt = promptTemplate.format({
   inputVariableName: 'inputVariableValue' as const,
 })
 //=> 'user: My prompt template with inputVariableValue.'
 ```
 
-> Note: The above is conventionally inlined:
+### `PromptTemplate.from(string)`
+
+A static method that returns a [`PromptTemplate`](#prompttemplate-class) instance.
 
 ```ts
-const userPromptTemplate = promptTemplate({ prefix: 'user: ' })`
-  My prompt template with ${'inputVariableName'}.
-`
+const promptTemplate = PromptTemplate.from('My prompt template.')
 
-const userPrompt = userPromptTemplate.format({
-  inputVariableName: 'inputVariableValue' as const,
-})
-//=> 'user: My prompt template with inputVariableValue.'
+const prompt = promptTemplate.format()
+//=> 'My prompt template.'
 ```
 
 ### `PromptTemplate` Class
 
 A `PromptTemplate` instance is returned from a
-[`promptTemplate`](#prompttemplate) call. It contains a
+[`PromptTemplate.create`](#prompttemplatecreate) call. It contains a
 [`format`](#formatinputvalues) method for creating the final prompt and
 additional properties/methods for advanced use cases.
 
 ```ts
-const myPromptTemplate = promptTemplate`
+const promptTemplate = PromptTemplate.create`
   My prompt template with ${'inputVariableName'} and default ${{
     name: 'inputVariableConfigName' as const,
     default: 'inputVariableConfigDefault',
   }}.
 `
 
-myPromptTemplate.templateStrings
+promptTemplate.templateStrings
 //=> ['My prompt template with ', ' and default ', '.']
 
-myPromptTemplate.inputVariables
+promptTemplate.inputVariables
 //=> ['inputVariableName', { name: 'inputVariableConfigName' as const, default: 'inputVariableConfigDefault' }]
 
-const myPrompt = myPromptTemplate.format({
+const prompt = promptTemplate.format({
   inputVariableName: 'inputVariableValue',
 })
 //=> 'My prompt template with inputVariableValue and default inputVariableConfigDefault.'
@@ -227,17 +223,17 @@ the [`InputVariableName`](#inputvariablename),
 `PromptTemplate` instance input variable names.
 
 ```ts
-const myNestedPromptTemplate = promptTemplate`
+const nestedPromptTemplate = PromptTemplate.create`
   My nested prompt template with ${'nestedInputVariableName'}.
 `
 
-const myPromptTemplate = promptTemplate`
-  - My prompt template with ${'inputVariableName'}
+const promptTemplate = PromptTemplate.create`
+  - My prompt template with ${'inputVariableName'}.
   - My prompt template with ${{
     name: 'inputVariableConfigName' as const,
     default: 'inputVariableConfigDefault',
-  }}
-  - ${myNestedPromptTemplate}
+  }}.
+  - ${nestedPromptTemplate}
 `
 
 const inputValues = {
@@ -246,7 +242,7 @@ const inputValues = {
   nestedInputVariableName: 'nestedInputVariableValue' as const,
 }
 
-const myPrompt = myPromptTemplate.format(inputValues)
+const prompt = promptTemplate.format(inputValues)
 //=> '- My prompt template with inputVariableValue
 //    - My prompt template with inputVariableConfigDefault
 //    - My nested prompt template with nestedInputVariableValue.'
@@ -258,20 +254,20 @@ A [`PromptTemplate`](#prompttemplate-class) instance method that recursively
 extracts and deduplicates all input variable names.
 
 ```ts
-const myNestedPromptTemplate = promptTemplate`
+const nestedPromptTemplate = PromptTemplate.create`
   My nested prompt template with ${'nestedInputVariableName'}.
 `
 
-const myPromptTemplate = promptTemplate`
+const promptTemplate = PromptTemplate.create`
   - My prompt template with ${'inputVariableName'}.
   - My prompt template with ${{
     name: 'inputVariableConfigName' as const,
     default: 'inputVariableConfigDefault',
   }}.
-  - ${myNestedPromptTemplate}
+  - ${nestedPromptTemplate}
 `
 
-myPromptTemplate.getInputVariableNames()
+promptTemplate.getInputVariableNames()
 //=> ['inputVariableName', 'inputVariableConfigName', 'nestedInputVariableName']
 ```
 
@@ -281,20 +277,20 @@ A [`PromptTemplate`](#prompttemplate-class) instance method that recursively
 extracts and deduplicates all required input variable names.
 
 ```ts
-const myNestedPromptTemplate = promptTemplate`
+const nestedPromptTemplate = PromptTemplate.create`
   My nested prompt template with ${'nestedInputVariableName'}.
 `
 
-const myPromptTemplate = promptTemplate`
+const promptTemplate = PromptTemplate.create`
   - My prompt template with ${'inputVariableName'}.
   - My prompt template with ${{
     name: 'inputVariableConfigName' as const,
     default: 'inputVariableConfigDefault',
   }}.
-  - ${myNestedPromptTemplate}
+  - ${nestedPromptTemplate}
 `
 
-myPromptTemplate.getInputVariableNamesRequired()
+promptTemplate.getInputVariableNamesRequired()
 //=> ['inputVariableName', 'nestedInputVariableName']
 ```
 
@@ -304,20 +300,20 @@ A [`PromptTemplate`](#prompttemplate-class) instance method that recursively
 extracts and deduplicates all optional input variable names.
 
 ```ts
-const myNestedPromptTemplate = promptTemplate`
+const nestedPromptTemplate = PromptTemplate.create`
   My nested prompt template with ${'nestedInputVariableName'}.
 `
 
-const myPromptTemplate = promptTemplate`
+const promptTemplate = PromptTemplate.create`
   - My prompt template with ${'inputVariableName'}.
   - My prompt template with ${{
     name: 'inputVariableConfigName' as const,
     default: 'inputVariableConfigDefault',
   }}.
-  - ${myNestedPromptTemplate}
+  - ${nestedPromptTemplate}
 `
 
-myPromptTemplate.getInputVariableNamesOptional()
+promptTemplate.getInputVariableNamesOptional()
 //=> ['inputVariableConfigName']
 ```
 
@@ -325,24 +321,24 @@ myPromptTemplate.getInputVariableNamesOptional()
 > other is optional, the input variable name is considered required.
 
 ```ts
-const myPromptTemplate = promptTemplate`
+const promptTemplate = PromptTemplate.create`
   My duplicate prompt template with ${'duplicateInputVariableName'} and ${{
     name: 'duplicateInputVariableName' as const,
     default: 'duplicateInputVariableNameDefault',
   }}.
 `
 
-myPromptTemplate.getInputVariableNamesRequired()
+promptTemplate.getInputVariableNamesRequired()
 //=> ['duplicateInputVariableName']
 
-myPromptTemplate.getInputVariableNamesOptional()
+promptTemplate.getInputVariableNamesOptional()
 //=> []
 ```
 
 ### `PromptTemplateOptions`
 
 A `PromptTemplateOptions` object is passed to a
-[`promptTemplate`](#prompttemplate) call to override the default behavior of a
+[`PromptTemplate.create`](#prompttemplatecreate) call to override the default behavior of a
 [`PromptTemplate`](#prompttemplate-class) instance.
 
 ```ts
@@ -352,28 +348,28 @@ const promptTemplateOptions = {
   dedent: true, // Default
 }
 
-const myPromptTemplate = promptTemplate(promptTemplateOptions)`
-  My prompt template with ${'inputVariableName'}
+const promptTemplate = PromptTemplate.create(promptTemplateOptions)`
+  My prompt template with ${'inputVariableName'}.
 `
 
-const myPrompt = myPromptTemplate.format({
+const prompt = promptTemplate.format({
   inputVariableName: 'inputVariableValue' as const,
 })
-//=> 'prefix - My prompt template with inputVariableValue - suffix'
+//=> 'prefix - My prompt template with inputVariableValue. - suffix'
 ```
 
 ### `InputVariableName`
 
 An `InputVariableName` is a string used to identify input variables in a
-[`promptTemplate`](#prompttemplate) and establish a corresponding property in
+[`PromptTemplate.create`](#prompttemplatecreate) and establish a corresponding property in
 the [`format`](#formatinputvalues) `inputValues`.
 
 ```ts
-const myPromptTemplate = promptTemplate`
-  My prompt template with ${'inputVariableName'}
+const promptTemplate = PromptTemplate.create`
+  My prompt template with ${'inputVariableName'}.
 `
 
-const myPrompt = myPromptTemplate.format({
+const prompt = promptTemplate.format({
   inputVariableName: 'inputVariableValue' as const,
 })
 //=> 'My prompt template with inputVariableValue.'
@@ -382,21 +378,21 @@ const myPrompt = myPromptTemplate.format({
 ### `InputVariableConfig`
 
 An `InputVariableConfig` is an object used to identify input variables in a
-[`promptTemplate`](#prompttemplate) and establish a corresponding property in
+[`PromptTemplate.create`](#prompttemplatecreate) and establish a corresponding property in
 the [`format`](#formatinputvalues) `inputValues`. It also allows for additional
 configuration of the input variable.
 
 ```ts
-const myPromptTemplate = promptTemplate`
+const promptTemplate = PromptTemplate.create`
   My prompt template with ${{
     name: 'inputVariableConfigName' as const,
     default: 'inputVariableConfigDefault',
     onFormat: (inputValue) => inputValue.toUpperCase(),
     schema: z.string().nonempty(),
-  }}
+  }}.
 `
 
-const myPrompt = myPromptTemplate.format({
+const prompt = promptTemplate.format({
   inputVariableConfigName: 'inputVariableConfigValue' as const,
 })
 //=> 'My prompt template with INPUTVARIABLECONFIGVALUE.'
@@ -405,15 +401,15 @@ const myPrompt = myPromptTemplate.format({
 ### `InputVariableConfig.name`
 
 An `InputVariableConfig.name` is a string used to identify input variables in a
-[`promptTemplate`](#prompttemplate) and establish a corresponding property in
+[`PromptTemplate.create`](#prompttemplatecreate) and establish a corresponding property in
 the [`format`](#formatinputvalues) input values.
 
 ```ts
-const myPromptTemplate = promptTemplate`
+const promptTemplate = PromptTemplate.create`
   My prompt template with ${{ name: 'inputVariableConfigName' as const }}.
 `
 
-const myPrompt = myPromptTemplate.format({
+const prompt = promptTemplate.format({
   inputVariableConfigName: 'inputVariableConfigValue' as const,
 })
 //=> 'My prompt template with inputVariableConfigValue.'
@@ -422,18 +418,18 @@ const myPrompt = myPromptTemplate.format({
 ### `InputVariableConfig.default`
 
 An `InputVariableConfig.default` is a default value for an input variable in a
-[`promptTemplate`](#prompttemplate) and allows the corresponding property in the
+[`PromptTemplate.create`](#prompttemplatecreate) and allows the corresponding property in the
 [`format`](#formatinputvalues) `inputValues` to be omitted.
 
 ```ts
-const myPromptTemplate = promptTemplate`
+const promptTemplate = PromptTemplate.create`
   My prompt template with ${{
     name: 'inputVariableConfigName' as const,
     default: 'inputVariableConfigDefault',
-  }}
+  }}.
 `
 
-const myPrompt = myPromptTemplate.format({})
+const prompt = promptTemplate.format({})
 //=> 'My prompt template with inputVariableConfigDefault.'
 ```
 
@@ -444,14 +440,14 @@ formatting for `inputValues` and is called when the
 [`format`](#formatinputvalues) method is called.
 
 ```ts
-const myPromptTemplate = promptTemplate`
+const promptTemplate = PromptTemplate.create`
   My prompt template with ${{
     name: 'inputVariableConfigName' as const,
     onFormat: (inputValue) => inputValue.toUpperCase(),
-  }}
+  }}.
 `
 
-const myPrompt = myPromptTemplate.format({
+const prompt = promptTemplate.format({
   inputVariableConfigName: 'inputVariableConfigValue' as const,
 })
 //=> 'My prompt template with INPUTVARIABLECONFIGVALUE.'
@@ -463,14 +459,14 @@ The `InputVariableConfig.schema` property accepts a Zod-like schema and is used
 to validate [`format`](#formatinputvalues) `inputValues`.
 
 ```ts
-const myPromptTemplate = promptTemplate`
+const promptTemplate = PromptTemplate.create`
   My prompt template with ${{
     name: 'inputVariableConfigName' as const,
     schema: z.string().nonempty(),
   }}.
 `
 
-const myPrompt = myPromptTemplate.format({
+const prompt = promptTemplate.format({
   inputVariableConfigName: 'inputVariableConfigValue' as const,
 })
 //=> 'My prompt template with inputVariableConfigValue.'

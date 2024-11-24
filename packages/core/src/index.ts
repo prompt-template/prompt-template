@@ -5,9 +5,7 @@ export type {
   PromptTemplateInputVariableConfig,
   PromptTemplateInputVariableName,
   PromptTemplateOptions,
+  PromptTemplateStrings,
 } from './prompt-template/types.js'
 
-export {
-  PromptTemplate,
-  promptTemplate,
-} from './prompt-template/prompt-template.js'
+export { PromptTemplate } from './prompt-template/prompt-template.js'

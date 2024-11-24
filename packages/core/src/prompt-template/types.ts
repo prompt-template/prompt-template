@@ -8,7 +8,7 @@ import { PromptTemplate } from './prompt-template.js'
 // ##################
 
 export interface PromptTemplateBase {
-  templateStrings: TemplateStringsArray
+  templateStrings: PromptTemplateStrings
 
   inputVariables: PromptTemplateInputVariable[]
 
@@ -43,6 +43,8 @@ export interface PromptTemplateInputVariableConfig {
   schema?: { parse: (inputValue: string) => string }
   onFormat?: (inputValue: string) => string
 }
+
+export type PromptTemplateStrings = readonly string[]
 
 export type PromptTemplateInputVariable =
   | PromptTemplateInputVariableName
@@ -187,27 +189,33 @@ export interface PromptTemplateOptions {
 }
 
 // ####################
-// TaggedPromptTemplate
+// CreatePromptTemplate
 // ####################
 
-export type CreateTaggedPromptTemplate = (
+export type GetCreatePromptTemplate = (
   options: PromptTemplateOptions,
-) => TaggedPromptTemplate
+) => CreatePromptTemplate
 
-export type TaggedPromptTemplate = <
-  T extends TemplateStringsArray | PromptTemplateOptions,
+export type CreatePromptTemplate = <
+  T extends PromptTemplateStrings | PromptTemplateOptions,
   InputVariables extends PromptTemplateInputVariable[],
 >(
   templateStringsOrOptions: T,
   ...inputVariables: ValidateInputVariables<InputVariables>
-) => ExtractTaggedPromptTemplateResult<T, InputVariables>
+) => ExtractCreatePromptTemplateResult<T, InputVariables>
 
-export type ExtractTaggedPromptTemplateResult<
-  T extends TemplateStringsArray | PromptTemplateOptions,
+export type ExtractCreatePromptTemplateResult<
+  T extends PromptTemplateStrings | PromptTemplateOptions,
   InputVariables extends PromptTemplateInputVariable[],
-> = T extends TemplateStringsArray
+> = T extends PromptTemplateStrings
   ? PromptTemplate<InputVariables>
-  : TaggedPromptTemplate
+  : CreatePromptTemplate
+
+// ########################
+// PromptTemplateFromString
+// ########################
+
+export type PromptTemplateFromString = (string: string) => PromptTemplate<[]>
 
 // #############
 // Utility Types

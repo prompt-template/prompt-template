@@ -6,7 +6,7 @@ on:
 
 jobs:
   snapshot:
-    name: Snapshot release
+    name: Snapit
     if: |
       github.event.issue.pull_request &&
       github.event.comment.body == '/snapit'
@@ -99,11 +99,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           script: |
-            const execa = require('execa')
+            import {execa} from 'execa'
 
-            await execa.command('npm run version-packages -- --snapshot snapshot-release', { stdio: 'inherit' })
+            await execa({stdio: 'inherit'})`npm run version-packages -- --snapshot snapshot-release`
 
-            const releaseProcess = execa.command('npm run release -- --no-git-tags --snapshot --tag snapshot-release')
+            const releaseProcess = execa`npm run release -- --no-git-tags --snapshot --tag snapshot-release`
             releaseProcess.stdout.pipe(process.stdout)
 
             const {stdout} = await releaseProcess
