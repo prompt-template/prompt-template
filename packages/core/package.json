@@ -1,6 +1,6 @@
 {
   "name": "@prompt-template/core",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Core @prompt-template module",
   "author": "Aaron Casanova <aaronccasanova@gmail.com>",
   "license": "MIT",
@@ -66,5 +66,5 @@
   "bugs": {
     "url": "https://github.com/prompt-template/prompt-template/issues"
   },
-  "homepage": "https://github.com/prompt-template/prompt-template/blob/main/packages/utils"
+  "homepage": "https://github.com/prompt-template/prompt-template/blob/main/packages/core"
 }
