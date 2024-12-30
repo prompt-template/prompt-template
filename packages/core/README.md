@@ -439,11 +439,16 @@ The `InputVariableConfig.onFormat` function is a callback used to provide custom
 formatting for `inputValues` and is called when the
 [`format`](#formatinputvalues) method is called.
 
+Arguments:
+
+- `inputValue`: The input variable value passed to the `format` method.
+- `accumulatedPrompt`: The accumulated prompt string up to the current position.
+
 ```ts
 const promptTemplate = PromptTemplate.create`
   My prompt template with ${{
     name: 'inputVariableConfigName' as const,
-    onFormat: (inputValue) => inputValue.toUpperCase(),
+    onFormat: (inputValue, accumulatedPrompt) => inputValue.toUpperCase(),
   }}.
 `
 
