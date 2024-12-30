@@ -41,7 +41,7 @@ export interface PromptTemplateInputVariableConfig {
   name: PromptTemplateInputVariableName
   default?: string
   schema?: { parse: (inputValue: string) => string }
-  onFormat?: (inputValue: string) => string
+  onFormat?: (inputValue: string, accumulatedPrompt: string) => string
 }
 
 export type PromptTemplateStrings = readonly string[]

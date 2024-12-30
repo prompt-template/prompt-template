@@ -105,7 +105,7 @@ export class PromptTemplate<
       onInputVariableName: (inputVariableName) =>
         normalizedInputValues[inputVariableName] ?? '',
       //
-      onInputVariableConfig: (inputVariableConfig) => {
+      onInputVariableConfig: (inputVariableConfig, accumulatedPrompt) => {
         let inputValue =
           normalizedInputValues[inputVariableConfig.name] ??
           inputVariableConfig.default ??
@@ -116,7 +116,10 @@ export class PromptTemplate<
         }
 
         if (inputVariableConfig?.onFormat) {
-          inputValue = inputVariableConfig.onFormat(inputValue)
+          inputValue = inputVariableConfig.onFormat(
+            inputValue,
+            accumulatedPrompt,
+          )
         }
 
         return inputValue
@@ -240,30 +243,34 @@ export class PromptTemplate<
     ) => string
     onInputVariableConfig: (
       inputVariableConfig: PromptTemplateInputVariableConfig,
+      accumulatedPrompt: string,
     ) => string
     onPromptTemplate: (promptTemplate: PromptTemplateBase) => string
   }): string {
-    let interleaved = ''
+    let accumulatedPrompt = ''
 
     for (let i = 0; i < this.templateStrings.length; i += 1) {
-      interleaved += this.templateStrings[i]
+      accumulatedPrompt += this.templateStrings[i]
 
       if (i < this.inputVariables.length) {
         const inputVariable = this.inputVariables[i]!
 
         if (isInputVariableName(inputVariable)) {
-          interleaved += callbacks.onInputVariableName(inputVariable)
+          accumulatedPrompt += callbacks.onInputVariableName(inputVariable)
           //
         } else if (isInputVariableConfig(inputVariable)) {
-          interleaved += callbacks.onInputVariableConfig(inputVariable)
+          accumulatedPrompt += callbacks.onInputVariableConfig(
+            inputVariable,
+            accumulatedPrompt,
+          )
           //
         } else {
-          interleaved += callbacks.onPromptTemplate(inputVariable)
+          accumulatedPrompt += callbacks.onPromptTemplate(inputVariable)
         }
       }
     }
 
-    return interleaved
+    return accumulatedPrompt
   }
 
   #validateInputVariables() {
