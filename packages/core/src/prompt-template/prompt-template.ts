@@ -312,7 +312,7 @@ export class PromptTemplate<
 function isInputVariableName(
   inputVariable: PromptTemplateInputVariable,
 ): inputVariable is PromptTemplateInputVariableName {
-  return typeof inputVariable === 'string'
+  return typeof inputVariable === 'string' && inputVariable.length > 0
 }
 
 function isInputVariableConfig(
@@ -321,7 +321,8 @@ function isInputVariableConfig(
   return (
     inputVariable !== null &&
     typeof inputVariable === 'object' &&
-    'name' in inputVariable
+    'name' in inputVariable &&
+    isInputVariableName(inputVariable.name)
   )
 }
 

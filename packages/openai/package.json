@@ -1,7 +1,7 @@
 {
-  "name": "@prompt-template/core",
-  "version": "0.1.0",
-  "description": "Core @prompt-template module",
+  "name": "@prompt-template/openai",
+  "version": "0.0.0",
+  "description": "The @prompt-template OpenAI adapter",
   "author": "Aaron Casanova <aaronccasanova@gmail.com>",
   "license": "MIT",
   "type": "module",
@@ -39,20 +39,16 @@
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {
-    "dedent": "^1.5.1",
-    "type-fest": "^4.8.3"
+    "@prompt-template/core": "workspace:*",
+    "openai": "^4.79.1"
   },
   "devDependencies": {
     "@prompt-template/eslint-config": "workspace:*",
     "@prompt-template/tsconfig": "workspace:*",
-    "dotenv": "^16.4.5",
     "eslint": "catalog:",
-    "openai": "^4.28.4",
     "tshy": "catalog:",
     "tsx": "^4.7.0",
-    "typescript": "catalog:",
-    "vitest": "^2.1.5",
-    "zod": "^3.22.4"
+    "typescript": "catalog:"
   },
   "publishConfig": {
     "access": "public",
@@ -61,10 +57,10 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/prompt-template/prompt-template.git",
-    "directory": "packages/core"
+    "directory": "packages/openai"
   },
   "bugs": {
     "url": "https://github.com/prompt-template/prompt-template/issues"
   },
-  "homepage": "https://github.com/prompt-template/prompt-template/blob/main/packages/core"
+  "homepage": "https://github.com/prompt-template/prompt-template/blob/main/packages/openai"
 }

@@ -1,6 +1,11 @@
 export type {
+  ExtractInputVariableName as ExtractPromptTemplateInputVariableName,
+  ExtractInputVariableNameOptional as ExtractPromptTemplateInputVariableNameOptional,
+  ExtractInputVariableNameRequired as ExtractPromptTemplateInputVariableNameRequired,
   PromptTemplateFormat,
   PromptTemplateFormatInputValues,
+  PromptTemplateFormatInputValuesBase,
+  PromptTemplateFormatOptions,
   PromptTemplateInputVariable,
   PromptTemplateInputVariableConfig,
   PromptTemplateInputVariableName,
