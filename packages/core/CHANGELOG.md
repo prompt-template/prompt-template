@@ -1,5 +1,11 @@
 # @prompt-template/core
 
+## 0.2.0
+
+### Minor Changes
+
+- ac3db41: Exposed utility types to support `@prompt-template` adapters and improved input variable validation
+
 ## 0.1.0
 
 ### Minor Changes
