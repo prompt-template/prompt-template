@@ -1,7 +1,7 @@
 {
   "name": "@prompt-template/openai",
   "version": "0.0.0",
-  "description": "The @prompt-template OpenAI adapter",
+  "description": "OpenAI @prompt-template adapter",
   "author": "Aaron Casanova <aaronccasanova@gmail.com>",
   "license": "MIT",
   "type": "module",
@@ -38,19 +38,21 @@
     "clean": "rm -rf .tshy* && rm -rf .turbo && rm -f .eslintcache && rm -rf dist && rm -rf node_modules",
     "prepublishOnly": "pnpm build"
   },
-  "dependencies": {
-    "@prompt-template/core": "workspace:*",
-    "openai": "^4.79.1"
-  },
   "devDependencies": {
+    "@prompt-template/core": "workspace:*",
     "@prompt-template/eslint-config": "workspace:*",
     "@prompt-template/tsconfig": "workspace:*",
     "eslint": "catalog:",
+    "openai": "^4.28.4",
     "tshy": "catalog:",
     "tsx": "^4.7.0",
     "typescript": "catalog:",
     "vitest": "^2.1.5",
     "zod": "^3.22.4"
+  },
+  "peerDependencies": {
+    "@prompt-template/core": "^0.1.0",
+    "openai": "^4.0.0"
   },
   "publishConfig": {
     "access": "public",
