@@ -121,9 +121,9 @@ describe('chatPromptTemplate', () => {
       },
     ])
 
-    const promptWithDefault = chatPromptTemplate.format({})
+    const messagesWithDefault = chatPromptTemplate.format({})
 
-    expect(promptWithDefault).toEqual([
+    expect(messagesWithDefault).toEqual([
       {
         role: 'system',
         content: 'default',
@@ -195,11 +195,11 @@ describe('chatPromptTemplate', () => {
       },
     ])
 
-    const promptWithDefault = chatPromptTemplate.format({
+    const messagesWithDefault = chatPromptTemplate.format({
       a: 'a',
     })
 
-    expect(promptWithDefault).toEqual([
+    expect(messagesWithDefault).toEqual([
       {
         role: 'system',
         content: 'a default',
@@ -269,12 +269,12 @@ describe('chatPromptTemplate', () => {
       },
     ])
 
-    const promptWithDefault = chatPromptTemplate.format({
+    const messagesWithDefault = chatPromptTemplate.format({
       a: 'a',
       c: 'c',
     })
 
-    expect(promptWithDefault).toEqual([
+    expect(messagesWithDefault).toEqual([
       {
         role: 'system',
         content: 'a default c',
@@ -565,9 +565,9 @@ describe('chatPromptTemplate nested', () => {
       },
     ])
 
-    const promptWithDefault = chatPromptTemplate.format({})
+    const messagesWithDefault = chatPromptTemplate.format({})
 
-    expect(promptWithDefault).toEqual([
+    expect(messagesWithDefault).toEqual([
       {
         role: 'system',
         content: 'default',
@@ -639,11 +639,11 @@ describe('chatPromptTemplate nested', () => {
       },
     ])
 
-    const promptWithDefault = chatPromptTemplate.format({
+    const messagesWithDefault = chatPromptTemplate.format({
       a: 'a',
     })
 
-    expect(promptWithDefault).toEqual([
+    expect(messagesWithDefault).toEqual([
       {
         role: 'system',
         content: 'a default',
@@ -717,12 +717,12 @@ describe('chatPromptTemplate nested', () => {
       },
     ])
 
-    const promptWithDefault = chatPromptTemplate.format({
+    const messagesWithDefault = chatPromptTemplate.format({
       a: 'a',
       c: 'c',
     })
 
-    expect(promptWithDefault).toEqual([
+    expect(messagesWithDefault).toEqual([
       {
         role: 'system',
         content: 'a default c',
@@ -918,9 +918,9 @@ describe('chatPromptTemplate deeply nested', () => {
       },
     ])
 
-    const promptWithDefault = chatPromptTemplate.format({})
+    const messagesWithDefault = chatPromptTemplate.format({})
 
-    expect(promptWithDefault).toEqual([
+    expect(messagesWithDefault).toEqual([
       {
         role: 'system',
         content: 'default',
@@ -996,11 +996,11 @@ describe('chatPromptTemplate deeply nested', () => {
       },
     ])
 
-    const promptWithDefault = chatPromptTemplate.format({
+    const messagesWithDefault = chatPromptTemplate.format({
       a: 'a',
     })
 
-    expect(promptWithDefault).toEqual([
+    expect(messagesWithDefault).toEqual([
       {
         role: 'system',
         content: 'a default',
@@ -1078,12 +1078,12 @@ describe('chatPromptTemplate deeply nested', () => {
       },
     ])
 
-    const promptWithDefault = chatPromptTemplate.format({
+    const messagesWithDefault = chatPromptTemplate.format({
       a: 'a',
       c: 'c',
     })
 
-    expect(promptWithDefault).toEqual([
+    expect(messagesWithDefault).toEqual([
       {
         role: 'system',
         content: 'a default c',
@@ -1441,6 +1441,295 @@ describe('chatPromptTemplate `PromptTemplateOptions`', () => {
         content: 'prefix20suffix2',
       },
     ])
+  })
+})
+
+describe('chatPromptTemplate messages', () => {
+  it('handles multiple messages', () => {
+    const chatPromptTemplate = ChatPromptTemplate.from([
+      {
+        role: 'system',
+        promptTemplate: PromptTemplate.create`0`,
+      },
+      {
+        role: 'user',
+        promptTemplate: PromptTemplate.create`1`,
+      },
+    ])
+
+    const messages = chatPromptTemplate.format()
+
+    expect(messages).toEqual([
+      {
+        role: 'system',
+        content: '0',
+      },
+      {
+        role: 'user',
+        content: '1',
+      },
+    ])
+
+    testInputVariables(chatPromptTemplate, {
+      inputVariables: [],
+      inputVariableNames: [],
+      inputVariableNamesOptional: [],
+      inputVariableNamesRequired: [],
+    })
+  })
+
+  it('handles multiple messages with `InputVariableName`', () => {
+    const chatPromptTemplate = ChatPromptTemplate.from([
+      {
+        role: 'system',
+        promptTemplate: PromptTemplate.create`a`,
+      },
+      {
+        role: 'user',
+        promptTemplate: PromptTemplate.create`${'b'}`,
+      },
+    ])
+
+    const messages = chatPromptTemplate.format({
+      b: 'b',
+    })
+
+    expect(messages).toEqual([
+      {
+        role: 'system',
+        content: 'a',
+      },
+      {
+        role: 'user',
+        content: 'b',
+      },
+    ])
+
+    testInputVariables(chatPromptTemplate, {
+      inputVariables: ['b'],
+      inputVariableNames: ['b'],
+      inputVariableNamesOptional: [],
+      inputVariableNamesRequired: ['b'],
+    })
+  })
+
+  it('handles multiple messages with `InputVariableConfig`', () => {
+    const chatPromptTemplate = ChatPromptTemplate.from([
+      {
+        role: 'system',
+        promptTemplate: PromptTemplate.create`a`,
+      },
+      {
+        role: 'user',
+        promptTemplate: PromptTemplate.create`${{
+          name: 'b' as const,
+        }}`,
+      },
+    ])
+
+    const messages = chatPromptTemplate.format({
+      b: 'b',
+    })
+
+    expect(messages).toEqual([
+      {
+        role: 'system',
+        content: 'a',
+      },
+      {
+        role: 'user',
+        content: 'b',
+      },
+    ])
+
+    testInputVariables(chatPromptTemplate, {
+      inputVariables: [{ name: 'b' as const }],
+      inputVariableNames: ['b'],
+      inputVariableNamesOptional: [],
+      inputVariableNamesRequired: ['b'],
+    })
+  })
+
+  it('handles multiple messages with `InputVariableConfig` with `default`', () => {
+    const chatPromptTemplate = ChatPromptTemplate.from([
+      {
+        role: 'system',
+        promptTemplate: PromptTemplate.create`a`,
+      },
+      {
+        role: 'user',
+        promptTemplate: PromptTemplate.create`${{
+          name: 'b' as const,
+          default: 'default',
+        }}`,
+      },
+    ])
+
+    const messages = chatPromptTemplate.format({
+      b: 'b',
+    })
+
+    expect(messages).toEqual([
+      {
+        role: 'system',
+        content: 'a',
+      },
+      {
+        role: 'user',
+        content: 'b',
+      },
+    ])
+
+    const messagesWithDefault = chatPromptTemplate.format({})
+
+    expect(messagesWithDefault).toEqual([
+      {
+        role: 'system',
+        content: 'a',
+      },
+      {
+        role: 'user',
+        content: 'default',
+      },
+    ])
+
+    testInputVariables(chatPromptTemplate, {
+      inputVariables: [{ name: 'b' as const, default: 'default' }],
+      inputVariableNames: ['b'],
+      inputVariableNamesOptional: ['b'],
+      inputVariableNamesRequired: [],
+    })
+  })
+
+  it('handles multiple messages with `InputVariableName` and `InputVariableConfig`', () => {
+    const chatPromptTemplate = ChatPromptTemplate.from([
+      {
+        role: 'system',
+        promptTemplate: PromptTemplate.create`a`,
+      },
+      {
+        role: 'user',
+        promptTemplate: PromptTemplate.create`${'b'} ${{
+          name: 'c' as const,
+        }}`,
+      },
+    ])
+
+    const messages = chatPromptTemplate.format({
+      b: 'b',
+      c: 'c',
+    })
+
+    expect(messages).toEqual([
+      {
+        role: 'system',
+        content: 'a',
+      },
+      {
+        role: 'user',
+        content: 'b c',
+      },
+    ])
+
+    testInputVariables(chatPromptTemplate, {
+      inputVariables: ['b', { name: 'c' as const }],
+      inputVariableNames: ['b', 'c'],
+      inputVariableNamesOptional: [],
+      inputVariableNamesRequired: ['b', 'c'],
+    })
+  })
+
+  it('handles multiple messages with `InputVariableName` and `InputVariableConfig` with `default`', () => {
+    const chatPromptTemplate = ChatPromptTemplate.from([
+      {
+        role: 'system',
+        promptTemplate: PromptTemplate.create`a`,
+      },
+      {
+        role: 'user',
+        promptTemplate: PromptTemplate.create`${'b'} ${{
+          name: 'c' as const,
+          default: 'default',
+        }}`,
+      },
+    ])
+
+    const messages = chatPromptTemplate.format({
+      b: 'b',
+      c: 'c',
+    })
+
+    expect(messages).toEqual([
+      {
+        role: 'system',
+        content: 'a',
+      },
+      {
+        role: 'user',
+        content: 'b c',
+      },
+    ])
+
+    const messagesWithDefault = chatPromptTemplate.format({
+      b: 'b',
+    })
+
+    expect(messagesWithDefault).toEqual([
+      {
+        role: 'system',
+        content: 'a',
+      },
+      {
+        role: 'user',
+        content: 'b default',
+      },
+    ])
+
+    testInputVariables(chatPromptTemplate, {
+      inputVariables: ['b', { name: 'c' as const, default: 'default' }],
+      inputVariableNames: ['b', 'c'],
+      inputVariableNamesOptional: ['c'],
+      inputVariableNamesRequired: ['b'],
+    })
+  })
+
+  it('handles multiple messages with `InputVariableName`, `InputVariableConfig`, and `InputVariableName`', () => {
+    const chatPromptTemplate = ChatPromptTemplate.from([
+      {
+        role: 'system',
+        promptTemplate: PromptTemplate.create`${'a'}`,
+      },
+      {
+        role: 'user',
+        promptTemplate: PromptTemplate.create`${{
+          name: 'b' as const,
+        }} ${'c'}`,
+      },
+    ])
+
+    const messages = chatPromptTemplate.format({
+      a: 'a',
+      b: 'b',
+      c: 'c',
+    })
+
+    expect(messages).toEqual([
+      {
+        role: 'system',
+        content: 'a',
+      },
+      {
+        role: 'user',
+        content: 'b c',
+      },
+    ])
+
+    testInputVariables(chatPromptTemplate, {
+      inputVariables: ['a', { name: 'b' as const }, 'c'],
+      inputVariableNames: ['a', 'b', 'c'],
+      inputVariableNamesOptional: [],
+      inputVariableNamesRequired: ['a', 'b', 'c'],
+    })
   })
 })
 
