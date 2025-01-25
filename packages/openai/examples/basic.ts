@@ -9,6 +9,10 @@ import './env.js'
 
 const chatPromptTemplate = ChatPromptTemplate.from([
   {
+    role: 'system',
+    content: 'You are a friendly assistant.',
+  },
+  {
     role: 'user',
     promptTemplate: PromptTemplate.create`
       Brainstorm 3 names for a superhero ${'animal'}.
