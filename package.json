@@ -23,5 +23,10 @@
   "packageManager": "pnpm@9.5.0",
   "engines": {
     "node": ">=18.20.5"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "all"
   }
 }

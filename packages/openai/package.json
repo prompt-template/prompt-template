@@ -1,7 +1,7 @@
 {
-  "name": "@prompt-template/core",
-  "version": "0.1.0",
-  "description": "Core @prompt-template module",
+  "name": "@prompt-template/openai",
+  "version": "0.0.0",
+  "description": "OpenAI @prompt-template adapter",
   "author": "Aaron Casanova <aaronccasanova@gmail.com>",
   "license": "MIT",
   "type": "module",
@@ -38,14 +38,10 @@
     "clean": "rm -rf .tshy* && rm -rf .turbo && rm -f .eslintcache && rm -rf dist && rm -rf node_modules",
     "prepublishOnly": "pnpm build"
   },
-  "dependencies": {
-    "dedent": "^1.5.1",
-    "type-fest": "^4.8.3"
-  },
   "devDependencies": {
+    "@prompt-template/core": "workspace:*",
     "@prompt-template/eslint-config": "workspace:*",
     "@prompt-template/tsconfig": "workspace:*",
-    "dotenv": "^16.4.5",
     "eslint": "catalog:",
     "openai": "^4.28.4",
     "tshy": "catalog:",
@@ -54,6 +50,10 @@
     "vitest": "^2.1.5",
     "zod": "^3.22.4"
   },
+  "peerDependencies": {
+    "@prompt-template/core": "^0.1.0",
+    "openai": "^4.0.0"
+  },
   "publishConfig": {
     "access": "public",
     "@prompt-template:registry": "https://registry.npmjs.org"
@@ -61,10 +61,10 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/prompt-template/prompt-template.git",
-    "directory": "packages/core"
+    "directory": "packages/openai"
   },
   "bugs": {
     "url": "https://github.com/prompt-template/prompt-template/issues"
   },
-  "homepage": "https://github.com/prompt-template/prompt-template/blob/main/packages/core"
+  "homepage": "https://github.com/prompt-template/prompt-template/blob/main/packages/openai"
 }
