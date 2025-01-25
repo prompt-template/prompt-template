@@ -29,7 +29,7 @@ export class ChatPromptTemplate<
 
   messages: Messages
 
-  constructor(messages: Messages) {
+  constructor(messages: [...Messages]) {
     this.messages = messages
   }
 

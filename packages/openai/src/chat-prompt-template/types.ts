@@ -54,17 +54,17 @@ export type ChatPromptTemplateFromMessages = <
   Messages extends ChatPromptTemplateMessage<InputVariables>[],
 >(
   // eslint-disable-next-line no-unused-vars
-  messages: Messages,
+  messages: [...Messages],
 ) => ChatPromptTemplate<InputVariables, Messages>
 
 // ############################
 // PromptTemplateInputVariables
 // ############################
 
-type FlattenInputVariables<T> = T extends (infer U)[] ? U : never
-
 export type ExtractInputVariables<
   Messages extends ChatPromptTemplateMessage<PromptTemplateInputVariable[]>[],
-> = FlattenInputVariables<
-  Messages extends ChatPromptTemplateMessage<infer U>[] ? U : never
->[]
+> = Messages[number] extends infer Message
+  ? Message extends { promptTemplate: PromptTemplate<infer InputVariable> }
+    ? InputVariable
+    : never
+  : never
