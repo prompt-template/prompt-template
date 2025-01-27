@@ -55,9 +55,11 @@ export type ChatPromptTemplateMessage<
 
 export type ExtractInputVariables<
   Messages extends readonly ChatPromptTemplateMessage<any>[],
-> = Messages[number] extends { promptTemplate: infer P }
-  ? P extends PromptTemplate<infer InputVariables>
-    ? InputVariables
+> = Messages[number] extends infer M
+  ? M extends { promptTemplate: PromptTemplate<any> }
+    ? M extends { promptTemplate: PromptTemplate<infer InputVariables> }
+      ? InputVariables
+      : never
     : never
   : never
 
