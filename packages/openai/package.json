@@ -42,6 +42,7 @@
     "@prompt-template/core": "workspace:*",
     "@prompt-template/eslint-config": "workspace:*",
     "@prompt-template/tsconfig": "workspace:*",
+    "dotenv": "^16.4.5",
     "eslint": "catalog:",
     "openai": "^4.28.4",
     "tshy": "catalog:",

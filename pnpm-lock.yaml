@@ -126,6 +126,9 @@ importers:
       '@prompt-template/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
       eslint:
         specifier: 'catalog:'
         version: 8.57.1
