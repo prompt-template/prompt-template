@@ -169,10 +169,6 @@ describe('chatPromptTemplate', () => {
   })
 
   it('handles `InputVariableName` and `InputVariableConfig` with `default`', () => {
-    // const chatPromptTemplate = ChatPromptTemplate.from`${'a'} ${{
-    //   name: 'b' as const,
-    //   default: 'default',
-    // }}`
     const chatPromptTemplate = ChatPromptTemplate.from([
       {
         role: 'system',
