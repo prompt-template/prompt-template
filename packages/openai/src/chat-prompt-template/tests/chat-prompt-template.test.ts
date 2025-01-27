@@ -78,7 +78,7 @@ describe('chatPromptTemplate', () => {
     const chatPromptTemplate = ChatPromptTemplate.from([
       {
         role: 'system',
-        promptTemplate: PromptTemplate.create`${{ name: 'b' as const }}`,
+        promptTemplate: PromptTemplate.create`${{ name: 'b' }}`,
       },
     ])
 
@@ -106,7 +106,7 @@ describe('chatPromptTemplate', () => {
       {
         role: 'system',
         promptTemplate: PromptTemplate.create`${{
-          name: 'b' as const,
+          name: 'b',
           default: 'default',
         }}`,
       },
@@ -131,7 +131,7 @@ describe('chatPromptTemplate', () => {
     ])
 
     testInputVariables(chatPromptTemplate, {
-      inputVariables: [{ name: 'b' as const, default: 'default' }],
+      inputVariables: [{ name: 'b', default: 'default' }],
       inputVariableNames: ['b'],
       inputVariableNamesOptional: ['b'],
       inputVariableNamesRequired: [],
@@ -142,9 +142,7 @@ describe('chatPromptTemplate', () => {
     const chatPromptTemplate = ChatPromptTemplate.from([
       {
         role: 'system',
-        promptTemplate: PromptTemplate.create`${'a'} ${{
-          name: 'b' as const,
-        }}`,
+        promptTemplate: PromptTemplate.create`${'a'} ${{ name: 'b' }}`,
       },
     ])
 
@@ -169,15 +167,11 @@ describe('chatPromptTemplate', () => {
   })
 
   it('handles `InputVariableName` and `InputVariableConfig` with `default`', () => {
-    // const chatPromptTemplate = ChatPromptTemplate.from`${'a'} ${{
-    //   name: 'b' as const,
-    //   default: 'default',
-    // }}`
     const chatPromptTemplate = ChatPromptTemplate.from([
       {
         role: 'system',
         promptTemplate: PromptTemplate.create`${'a'} ${{
-          name: 'b' as const,
+          name: 'b',
           default: 'default',
         }}`,
       },
@@ -207,7 +201,7 @@ describe('chatPromptTemplate', () => {
     ])
 
     testInputVariables(chatPromptTemplate, {
-      inputVariables: ['a', { name: 'b' as const, default: 'default' }],
+      inputVariables: ['a', { name: 'b', default: 'default' }],
       inputVariableNames: ['a', 'b'],
       inputVariableNamesOptional: ['b'],
       inputVariableNamesRequired: ['a'],
@@ -218,9 +212,7 @@ describe('chatPromptTemplate', () => {
     const chatPromptTemplate = ChatPromptTemplate.from([
       {
         role: 'system',
-        promptTemplate: PromptTemplate.create`${'a'} ${{
-          name: 'b' as const,
-        }} ${'c'}`,
+        promptTemplate: PromptTemplate.create`${'a'} ${{ name: 'b' }} ${'c'}`,
       },
     ])
 
@@ -250,7 +242,7 @@ describe('chatPromptTemplate', () => {
       {
         role: 'system',
         promptTemplate: PromptTemplate.create`${'a'} ${{
-          name: 'b' as const,
+          name: 'b',
           default: 'default',
         }} ${'c'}`,
       },
@@ -282,7 +274,7 @@ describe('chatPromptTemplate', () => {
     ])
 
     testInputVariables(chatPromptTemplate, {
-      inputVariables: ['a', { name: 'b' as const, default: 'default' }, 'c'],
+      inputVariables: ['a', { name: 'b', default: 'default' }, 'c'],
       inputVariableNames: ['a', 'b', 'c'],
       inputVariableNamesOptional: ['b'],
       inputVariableNamesRequired: ['a', 'c'],
@@ -294,7 +286,7 @@ describe('chatPromptTemplate', () => {
       {
         role: 'system',
         promptTemplate: PromptTemplate.create`${'a'} ${'b'} ${{
-          name: 'b' as const,
+          name: 'b',
           default: 'default',
         }}`,
       },
@@ -313,7 +305,7 @@ describe('chatPromptTemplate', () => {
     ])
 
     testInputVariables(chatPromptTemplate, {
-      inputVariables: ['a', 'b', { name: 'b' as const, default: 'default' }],
+      inputVariables: ['a', 'b', { name: 'b', default: 'default' }],
       inputVariableNames: ['a', 'b'],
       inputVariableNamesOptional: [],
       inputVariableNamesRequired: ['a', 'b'],
@@ -390,9 +382,7 @@ describe('chatPromptTemplate', () => {
     const chatPromptTemplate = ChatPromptTemplate.from([
       {
         role: 'system',
-        promptTemplate: PromptTemplate.create`${'a'} ${{
-          name: 'b' as const,
-        }}`,
+        promptTemplate: PromptTemplate.create`${'a'} ${{ name: 'b' }}`,
       },
     ])
 
@@ -411,9 +401,7 @@ describe('chatPromptTemplate', () => {
     const chatPromptTemplate = ChatPromptTemplate.from([
       {
         role: 'system',
-        promptTemplate: PromptTemplate.create`${'a'} ${{
-          name: 'b' as const,
-        }} ${nestedPromptTemplate}`,
+        promptTemplate: PromptTemplate.create`${'a'} ${{ name: 'b' }} ${nestedPromptTemplate}`,
       },
     ])
 
@@ -513,9 +501,7 @@ describe('chatPromptTemplate nested', () => {
   })
 
   it('handles `InputVariableConfig`', () => {
-    const promptTemplateNested = PromptTemplate.create`${{
-      name: 'b' as const,
-    }}`
+    const promptTemplateNested = PromptTemplate.create`${{ name: 'b' }}`
 
     const chatPromptTemplate = ChatPromptTemplate.from([
       {
@@ -545,7 +531,7 @@ describe('chatPromptTemplate nested', () => {
 
   it('handles `InputVariableConfig` with `default`', () => {
     const promptTemplateNested = PromptTemplate.create`${{
-      name: 'b' as const,
+      name: 'b',
       default: 'default',
     }}`
 
@@ -583,9 +569,7 @@ describe('chatPromptTemplate nested', () => {
   })
 
   it('handles `InputVariableName` and `InputVariableConfig`', () => {
-    const promptTemplateNested = PromptTemplate.create`${'a'} ${{
-      name: 'b' as const,
-    }}`
+    const promptTemplateNested = PromptTemplate.create`${'a'} ${{ name: 'b' }}`
 
     const chatPromptTemplate = ChatPromptTemplate.from([
       {
@@ -616,7 +600,7 @@ describe('chatPromptTemplate nested', () => {
 
   it('handles `InputVariableName` and `InputVariableConfig` with `default`', () => {
     const promptTemplateNested = PromptTemplate.create`${'a'} ${{
-      name: 'b' as const,
+      name: 'b',
       default: 'default',
     }}`
 
@@ -659,9 +643,7 @@ describe('chatPromptTemplate nested', () => {
   })
 
   it('handles `InputVariableName`, `InputVariableConfig`, and `InputVariableName`', () => {
-    const promptTemplateNested = PromptTemplate.create`${'a'} ${{
-      name: 'b' as const,
-    }} ${'c'}`
+    const promptTemplateNested = PromptTemplate.create`${'a'} ${{ name: 'b' }} ${'c'}`
 
     const chatPromptTemplate = ChatPromptTemplate.from([
       {
@@ -693,7 +675,7 @@ describe('chatPromptTemplate nested', () => {
 
   it('handles `InputVariableName`, `InputVariableConfig` with `default`, and `InputVariableName`', () => {
     const promptTemplateNested = PromptTemplate.create`${'a'} ${{
-      name: 'b' as const,
+      name: 'b',
       default: 'default',
     }} ${'c'}`
 
@@ -739,7 +721,7 @@ describe('chatPromptTemplate nested', () => {
 
   it('handles duplicate inputVariables', () => {
     const promptTemplateNested = PromptTemplate.create`${{
-      name: 'b' as const,
+      name: 'b',
       default: 'default',
     }}`
 
@@ -862,9 +844,7 @@ describe('chatPromptTemplate deeply nested', () => {
   })
 
   it('handles `InputVariableConfig`', () => {
-    const promptTemplatedNestedDeep = PromptTemplate.create`${{
-      name: 'b' as const,
-    }}`
+    const promptTemplatedNestedDeep = PromptTemplate.create`${{ name: 'b' }}`
 
     const promptTemplateNested = PromptTemplate.create`${promptTemplatedNestedDeep}`
 
@@ -896,7 +876,7 @@ describe('chatPromptTemplate deeply nested', () => {
 
   it('handles `InputVariableConfig` with `default`', () => {
     const promptTemplatedNestedDeep = PromptTemplate.create`${{
-      name: 'b' as const,
+      name: 'b',
       default: 'default',
     }}`
 
@@ -936,9 +916,7 @@ describe('chatPromptTemplate deeply nested', () => {
   })
 
   it('handles `InputVariableName` and `InputVariableConfig`', () => {
-    const promptTemplatedNestedDeep = PromptTemplate.create`${'a'} ${{
-      name: 'b' as const,
-    }}`
+    const promptTemplatedNestedDeep = PromptTemplate.create`${'a'} ${{ name: 'b' }}`
 
     const promptTemplateNested = PromptTemplate.create`${promptTemplatedNestedDeep}`
 
@@ -971,7 +949,7 @@ describe('chatPromptTemplate deeply nested', () => {
 
   it('handles `InputVariableName` and `InputVariableConfig` with `default`', () => {
     const promptTemplatedNestedDeep = PromptTemplate.create`${'a'} ${{
-      name: 'b' as const,
+      name: 'b',
       default: 'default',
     }}`
 
@@ -1016,9 +994,7 @@ describe('chatPromptTemplate deeply nested', () => {
   })
 
   it('handles `InputVariableName`, `InputVariableConfig`, and `InputVariableName`', () => {
-    const promptTemplatedNestedDeep = PromptTemplate.create`${'a'} ${{
-      name: 'b' as const,
-    }} ${'c'}`
+    const promptTemplatedNestedDeep = PromptTemplate.create`${'a'} ${{ name: 'b' }} ${'c'}`
 
     const promptTemplateNested = PromptTemplate.create`${promptTemplatedNestedDeep}`
 
@@ -1052,7 +1028,7 @@ describe('chatPromptTemplate deeply nested', () => {
 
   it('handles `InputVariableName`, `InputVariableConfig` with `default`, and `InputVariableName`', () => {
     const promptTemplatedNestedDeep = PromptTemplate.create`${'a'} ${{
-      name: 'b' as const,
+      name: 'b',
       default: 'default',
     }} ${'c'}`
 
@@ -1133,7 +1109,7 @@ describe('chatPromptTemplate deeply nested', () => {
 
   it('handles duplicate inputVariables', () => {
     const promptTemplatedNestedDeep = PromptTemplate.create`${{
-      name: 'b' as const,
+      name: 'b',
       default: 'default',
     }}`
 
@@ -1173,7 +1149,7 @@ describe('chatPromptTemplate `InputVariableConfig`', () => {
       {
         role: 'system',
         promptTemplate: PromptTemplate.create`${{
-          name: 'a' as const,
+          name: 'a',
           schema: z.string(),
         }}`,
       },
@@ -1196,7 +1172,7 @@ describe('chatPromptTemplate `InputVariableConfig`', () => {
       {
         role: 'system',
         promptTemplate: PromptTemplate.create`${{
-          name: 'a' as const,
+          name: 'a',
           schema: z.string().min(2),
         }}`,
       },
@@ -1226,7 +1202,7 @@ describe('chatPromptTemplate `InputVariableConfig`', () => {
       {
         role: 'system',
         promptTemplate: PromptTemplate.create`${{
-          name: 'a' as const,
+          name: 'a',
           onFormat: (inputValue) => inputValue.toUpperCase(),
         }}`,
       },
@@ -1249,7 +1225,7 @@ describe('chatPromptTemplate `InputVariableConfig`', () => {
       {
         role: 'system',
         promptTemplate: PromptTemplate.create`${{
-          name: 'a' as const,
+          name: 'a',
           schema: z.string().min(2),
           onFormat: (inputValue) => inputValue.toUpperCase(),
         }}`,
@@ -1521,9 +1497,7 @@ describe('chatPromptTemplate messages', () => {
       },
       {
         role: 'user',
-        promptTemplate: PromptTemplate.create`${{
-          name: 'b' as const,
-        }}`,
+        promptTemplate: PromptTemplate.create`${{ name: 'b' }}`,
       },
     ])
 
@@ -1543,7 +1517,7 @@ describe('chatPromptTemplate messages', () => {
     ])
 
     testInputVariables(chatPromptTemplate, {
-      inputVariables: [{ name: 'b' as const }],
+      inputVariables: [{ name: 'b' }],
       inputVariableNames: ['b'],
       inputVariableNamesOptional: [],
       inputVariableNamesRequired: ['b'],
@@ -1559,7 +1533,7 @@ describe('chatPromptTemplate messages', () => {
       {
         role: 'user',
         promptTemplate: PromptTemplate.create`${{
-          name: 'b' as const,
+          name: 'b',
           default: 'default',
         }}`,
       },
@@ -1594,7 +1568,7 @@ describe('chatPromptTemplate messages', () => {
     ])
 
     testInputVariables(chatPromptTemplate, {
-      inputVariables: [{ name: 'b' as const, default: 'default' }],
+      inputVariables: [{ name: 'b', default: 'default' }],
       inputVariableNames: ['b'],
       inputVariableNamesOptional: ['b'],
       inputVariableNamesRequired: [],
@@ -1609,9 +1583,7 @@ describe('chatPromptTemplate messages', () => {
       },
       {
         role: 'user',
-        promptTemplate: PromptTemplate.create`${'b'} ${{
-          name: 'c' as const,
-        }}`,
+        promptTemplate: PromptTemplate.create`${'b'} ${{ name: 'c' }}`,
       },
     ])
 
@@ -1632,7 +1604,7 @@ describe('chatPromptTemplate messages', () => {
     ])
 
     testInputVariables(chatPromptTemplate, {
-      inputVariables: ['b', { name: 'c' as const }],
+      inputVariables: ['b', { name: 'c' }],
       inputVariableNames: ['b', 'c'],
       inputVariableNamesOptional: [],
       inputVariableNamesRequired: ['b', 'c'],
@@ -1648,7 +1620,7 @@ describe('chatPromptTemplate messages', () => {
       {
         role: 'user',
         promptTemplate: PromptTemplate.create`${'b'} ${{
-          name: 'c' as const,
+          name: 'c',
           default: 'default',
         }}`,
       },
@@ -1686,7 +1658,7 @@ describe('chatPromptTemplate messages', () => {
     ])
 
     testInputVariables(chatPromptTemplate, {
-      inputVariables: ['b', { name: 'c' as const, default: 'default' }],
+      inputVariables: ['b', { name: 'c', default: 'default' }],
       inputVariableNames: ['b', 'c'],
       inputVariableNamesOptional: ['c'],
       inputVariableNamesRequired: ['b'],
@@ -1701,9 +1673,7 @@ describe('chatPromptTemplate messages', () => {
       },
       {
         role: 'user',
-        promptTemplate: PromptTemplate.create`${{
-          name: 'b' as const,
-        }} ${'c'}`,
+        promptTemplate: PromptTemplate.create`${{ name: 'b' }} ${'c'}`,
       },
     ])
 
@@ -1725,7 +1695,7 @@ describe('chatPromptTemplate messages', () => {
     ])
 
     testInputVariables(chatPromptTemplate, {
-      inputVariables: ['a', { name: 'b' as const }, 'c'],
+      inputVariables: ['a', { name: 'b' }, 'c'],
       inputVariableNames: ['a', 'b', 'c'],
       inputVariableNamesOptional: [],
       inputVariableNamesRequired: ['a', 'b', 'c'],

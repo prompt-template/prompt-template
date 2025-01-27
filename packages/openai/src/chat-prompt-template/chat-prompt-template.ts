@@ -1,33 +1,33 @@
 import {
+  ExtractPromptTemplateInputVariableName,
+  ExtractPromptTemplateInputVariableNameOptional,
+  ExtractPromptTemplateInputVariableNameRequired,
   PromptTemplateFormatInputValues,
   PromptTemplateFormatOptions,
   PromptTemplateInputVariable,
   PromptTemplateInputVariableName,
-  ExtractPromptTemplateInputVariableName,
-  ExtractPromptTemplateInputVariableNameRequired,
-  ExtractPromptTemplateInputVariableNameOptional,
 } from '@prompt-template/core'
 import type { ChatCompletionMessageParam } from 'openai/resources/index.js'
 
 import {
   ChatPromptTemplateBase,
-  ChatPromptTemplateFromMessages,
   ChatPromptTemplateMessage,
   ExtractInputVariables,
 } from './types.js'
 
-const chatPromptTemplateFromMessages: ChatPromptTemplateFromMessages = (
-  messages,
-) => new ChatPromptTemplate(messages)
+function chatPromptTemplateFromMessages<
+  Messages extends readonly ChatPromptTemplateMessage<any>[],
+>(messages: Messages) {
+  return new ChatPromptTemplate(messages)
+}
 
 export class ChatPromptTemplate<
-  InputVariables extends PromptTemplateInputVariable[],
-  Messages extends ChatPromptTemplateMessage<InputVariables>[],
+  Messages extends readonly ChatPromptTemplateMessage<any>[],
 > implements ChatPromptTemplateBase
 {
   static from = chatPromptTemplateFromMessages
 
-  messages: Messages
+  readonly messages: Messages
 
   constructor(messages: Messages) {
     this.messages = messages
@@ -47,7 +47,7 @@ export class ChatPromptTemplate<
 
         return {
           ...restMessage,
-          content: promptTemplate.format(inputValues, options),
+          content: promptTemplate.format(inputValues as any, options),
         }
       }
       return message

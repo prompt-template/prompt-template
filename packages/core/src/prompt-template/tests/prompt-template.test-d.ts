@@ -51,11 +51,9 @@ test('`promptTemplate` with literal `InputVariableName`', () => {
 })
 
 test('`promptTemplate` with literal `InputVariableConfig`', () => {
-  const promptTemplate = PromptTemplate.create`${{
-    name: 'b' as const,
-  }}`
+  const promptTemplate = PromptTemplate.create`${{ name: 'b' }}`
 
-  type InputVariables = [{ name: 'b' }]
+  type InputVariables = [{ readonly name: 'b' }]
 
   type InputValues = { b: string }
 
@@ -70,11 +68,11 @@ test('`promptTemplate` with literal `InputVariableConfig`', () => {
 
 test('`promptTemplate` with literal `InputVariableConfig` with default', () => {
   const promptTemplate = PromptTemplate.create`${{
-    name: 'b' as const,
+    name: 'b',
     default: 'value',
   }}`
 
-  type InputVariables = [{ name: 'b'; default: string }]
+  type InputVariables = [{ readonly name: 'b'; readonly default: 'value' }]
 
   type InputValues = { b?: string }
 
@@ -88,11 +86,9 @@ test('`promptTemplate` with literal `InputVariableConfig` with default', () => {
 })
 
 test('`promptTemplate` with literal `InputVariableName` and literal `InputVariableConfig`', () => {
-  const promptTemplate = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
-  }}`
+  const promptTemplate = PromptTemplate.create`${'a'}${{ name: 'b' }}`
 
-  type InputVariables = ['a', { name: 'b' }]
+  type InputVariables = ['a', { readonly name: 'b' }]
 
   type InputValues = { a: string; b: string }
 
@@ -107,11 +103,11 @@ test('`promptTemplate` with literal `InputVariableName` and literal `InputVariab
 
 test('`promptTemplate` with literal `InputVariableName` and literal `InputVariableConfig` with default', () => {
   const promptTemplate = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
+    name: 'b',
     default: 'value',
   }}`
 
-  type InputVariables = ['a', { name: 'b'; default: string }]
+  type InputVariables = ['a', { readonly name: 'b'; readonly default: 'value' }]
 
   type InputValues = { a: string; b?: string }
 
@@ -125,11 +121,9 @@ test('`promptTemplate` with literal `InputVariableName` and literal `InputVariab
 })
 
 test('`promptTemplate` with literal `InputVariableName`, literal `InputVariableConfig`, and literal `InputVariableName`', () => {
-  const promptTemplate = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
-  }}${'c'}`
+  const promptTemplate = PromptTemplate.create`${'a'}${{ name: 'b' }}${'c'}`
 
-  type InputVariables = ['a', { name: 'b' }, 'c']
+  type InputVariables = ['a', { readonly name: 'b' }, 'c']
 
   type InputValues = { a: string; b: string; c: string }
 
@@ -144,11 +138,15 @@ test('`promptTemplate` with literal `InputVariableName`, literal `InputVariableC
 
 test('`promptTemplate` with literal `InputVariableName`, literal `InputVariableConfig` with default, and literal `InputVariableName`', () => {
   const promptTemplate = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
+    name: 'b',
     default: 'value',
   }}${'c'}`
 
-  type InputVariables = ['a', { name: 'b'; default: string }, 'c']
+  type InputVariables = [
+    'a',
+    { readonly name: 'b'; readonly default: 'value' },
+    'c',
+  ]
 
   type InputValues = { a: string; b?: string; c: string }
 
@@ -216,13 +214,11 @@ test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableN
 })
 
 test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableConfig`', () => {
-  const promptTemplateNested = PromptTemplate.create`${{
-    name: 'b' as const,
-  }}`
+  const promptTemplateNested = PromptTemplate.create`${{ name: 'b' }}`
 
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
-  type InputVariables = [PromptTemplate<[{ name: 'b' }]>]
+  type InputVariables = [PromptTemplate<[{ readonly name: 'b' }]>]
 
   type InputValues = { b: string }
 
@@ -237,13 +233,15 @@ test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableC
 
 test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableConfig` with default', () => {
   const promptTemplateNested = PromptTemplate.create`${{
-    name: 'b' as const,
+    name: 'b',
     default: 'value',
   }}`
 
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
-  type InputVariables = [PromptTemplate<[{ name: 'b'; default: string }]>]
+  type InputVariables = [
+    PromptTemplate<[{ readonly name: 'b'; readonly default: 'value' }]>,
+  ]
 
   type InputValues = { b?: string }
 
@@ -257,13 +255,11 @@ test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableC
 })
 
 test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableName` and literal `InputVariableConfig`', () => {
-  const promptTemplateNested = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
-  }}`
+  const promptTemplateNested = PromptTemplate.create`${'a'}${{ name: 'b' }}`
 
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
-  type InputVariables = [PromptTemplate<['a', { name: 'b' }]>]
+  type InputVariables = [PromptTemplate<['a', { readonly name: 'b' }]>]
 
   type InputValues = { a: string; b: string }
 
@@ -278,13 +274,15 @@ test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableN
 
 test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableName` and literal `InputVariableConfig` with default', () => {
   const promptTemplateNested = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
+    name: 'b',
     default: 'value',
   }}`
 
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
-  type InputVariables = [PromptTemplate<['a', { name: 'b'; default: string }]>]
+  type InputVariables = [
+    PromptTemplate<['a', { readonly name: 'b'; readonly default: 'value' }]>,
+  ]
 
   type InputValues = { a: string; b?: string }
 
@@ -298,13 +296,11 @@ test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableN
 })
 
 test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableName`, literal `InputVariableConfig`, and literal `InputVariableName`', () => {
-  const promptTemplateNested = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
-  }}${'c'}`
+  const promptTemplateNested = PromptTemplate.create`${'a'}${{ name: 'b' }}${'c'}`
 
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
-  type InputVariables = [PromptTemplate<['a', { name: 'b' }, 'c']>]
+  type InputVariables = [PromptTemplate<['a', { readonly name: 'b' }, 'c']>]
 
   type InputValues = { a: string; b: string; c: string }
 
@@ -319,14 +315,16 @@ test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableN
 
 test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableName`, literal `InputVariableConfig` with default, and literal `InputVariableName`', () => {
   const promptTemplateNested = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
+    name: 'b',
     default: 'value',
   }}${'c'}`
 
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
   type InputVariables = [
-    PromptTemplate<['a', { name: 'b'; default: string }, 'c']>,
+    PromptTemplate<
+      ['a', { readonly name: 'b'; readonly default: 'value' }, 'c']
+    >,
   ]
 
   type InputValues = { a: string; b?: string; c: string }
@@ -401,15 +399,15 @@ test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVa
 })
 
 test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVariableConfig`', () => {
-  const promptTemplateNestedDeep = PromptTemplate.create`${{
-    name: 'b' as const,
-  }}`
+  const promptTemplateNestedDeep = PromptTemplate.create`${{ name: 'b' }}`
 
   const promptTemplateNested = PromptTemplate.create`${promptTemplateNestedDeep}`
 
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
-  type InputVariables = [PromptTemplate<[PromptTemplate<[{ name: 'b' }]>]>]
+  type InputVariables = [
+    PromptTemplate<[PromptTemplate<[{ readonly name: 'b' }]>]>,
+  ]
 
   type InputValues = { b: string }
 
@@ -424,7 +422,7 @@ test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVa
 
 test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVariableConfig` with default', () => {
   const promptTemplateNestedDeep = PromptTemplate.create`${{
-    name: 'b' as const,
+    name: 'b',
     default: 'value',
   }}`
 
@@ -433,7 +431,9 @@ test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVa
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
   type InputVariables = [
-    PromptTemplate<[PromptTemplate<[{ name: 'b'; default: string }]>]>,
+    PromptTemplate<
+      [PromptTemplate<[{ readonly name: 'b'; readonly default: 'value' }]>]
+    >,
   ]
 
   type InputValues = { b?: string }
@@ -448,15 +448,15 @@ test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVa
 })
 
 test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVariableName` and literal `InputVariableConfig`', () => {
-  const promptTemplateNestedDeep = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
-  }}`
+  const promptTemplateNestedDeep = PromptTemplate.create`${'a'}${{ name: 'b' }}`
 
   const promptTemplateNested = PromptTemplate.create`${promptTemplateNestedDeep}`
 
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
-  type InputVariables = [PromptTemplate<[PromptTemplate<['a', { name: 'b' }]>]>]
+  type InputVariables = [
+    PromptTemplate<[PromptTemplate<['a', { readonly name: 'b' }]>]>,
+  ]
 
   type InputValues = { a: string; b: string }
 
@@ -471,7 +471,7 @@ test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVa
 
 test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVariableName` and literal `InputVariableConfig` with default', () => {
   const promptTemplateNestedDeep = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
+    name: 'b',
     default: 'value',
   }}`
 
@@ -480,7 +480,9 @@ test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVa
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
   type InputVariables = [
-    PromptTemplate<[PromptTemplate<['a', { name: 'b'; default: string }]>]>,
+    PromptTemplate<
+      [PromptTemplate<['a', { readonly name: 'b'; readonly default: 'value' }]>]
+    >,
   ]
 
   type InputValues = { a: string; b?: string }
@@ -495,16 +497,14 @@ test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVa
 })
 
 test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVariableName`, literal `InputVariableConfig`, and literal `InputVariableName`', () => {
-  const promptTemplateNestedDeep = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
-  }}`
+  const promptTemplateNestedDeep = PromptTemplate.create`${'a'}${{ name: 'b' }}`
 
   const promptTemplateNested = PromptTemplate.create`${promptTemplateNestedDeep}${'c'}`
 
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
   type InputVariables = [
-    PromptTemplate<[PromptTemplate<['a', { name: 'b' }]>, 'c']>,
+    PromptTemplate<[PromptTemplate<['a', { readonly name: 'b' }]>, 'c']>,
   ]
 
   type InputValues = { a: string; b: string; c: string }
@@ -520,7 +520,7 @@ test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVa
 
 test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVariableName`, literal `InputVariableConfig` with default, and literal `InputVariableName`', () => {
   const promptTemplateNestedDeep = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
+    name: 'b',
     default: 'value',
   }}`
 
@@ -530,7 +530,12 @@ test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVa
 
   type InputVariables = [
     PromptTemplate<
-      [PromptTemplate<['a', { name: 'b'; default: string }]>, 'c']
+      [
+        PromptTemplate<
+          ['a', { readonly name: 'b'; readonly default: 'value' }]
+        >,
+        'c',
+      ]
     >,
   ]
 
