@@ -8,9 +8,9 @@ import { PromptTemplate } from './prompt-template.js'
 // ##################
 
 export interface PromptTemplateBase {
-  templateStrings: PromptTemplateStrings
+  readonly templateStrings: PromptTemplateStrings
 
-  inputVariables: PromptTemplateInputVariable[]
+  readonly inputVariables: readonly PromptTemplateInputVariable[]
 
   prefix: string
 
@@ -58,7 +58,7 @@ export type PromptTemplateInputVariable =
  * as `PromptTemplateInputVariable`s in nested `PromptTemplate`s should already be validated.
  */
 export type ValidateInputVariables<
-  InputVariables extends PromptTemplateInputVariable[],
+  InputVariables extends readonly PromptTemplateInputVariable[],
 > = {
   [Index in keyof InputVariables]: InputVariables[Index] extends PromptTemplateInputVariableName
     ? IfStringLiteral<
@@ -79,7 +79,7 @@ export type ValidateInputVariables<
  * Recursively extracts all input variable names.
  */
 export type ExtractInputVariableName<
-  InputVariables extends PromptTemplateInputVariable[],
+  InputVariables extends readonly PromptTemplateInputVariable[],
 > = InputVariables[number] extends infer InputVariable
   ? InputVariable extends PromptTemplateInputVariableName
     ? IfStringLiteral<InputVariable, InputVariable, never>
@@ -94,7 +94,7 @@ export type ExtractInputVariableName<
  * Recursively extracts required input variable names (without a default value).
  */
 export type ExtractInputVariableNameRequired<
-  InputVariables extends PromptTemplateInputVariable[],
+  InputVariables extends readonly PromptTemplateInputVariable[],
 > = InputVariables[number] extends infer InputVariable
   ? InputVariable extends PromptTemplateInputVariableName
     ? IfStringLiteral<InputVariable, InputVariable, never>
@@ -112,7 +112,7 @@ export type ExtractInputVariableNameRequired<
  * Recursively extracts all optional input variable names (with a default value).
  */
 type ExtractInputVariableNameOptionalAll<
-  InputVariables extends PromptTemplateInputVariable[],
+  InputVariables extends readonly PromptTemplateInputVariable[],
 > = InputVariables[number] extends infer InputVariable
   ? InputVariable extends { name: infer InputVariableName; default: string }
     ? IfStringLiteral<InputVariableName, InputVariableName, never>
@@ -125,7 +125,7 @@ type ExtractInputVariableNameOptionalAll<
  * Recursively extracts optional input variable names (filtering out required input variable names)
  */
 export type ExtractInputVariableNameOptional<
-  InputVariables extends PromptTemplateInputVariable[],
+  InputVariables extends readonly PromptTemplateInputVariable[],
   InputVariableNameRequired extends
     PromptTemplateInputVariableName = ExtractInputVariableNameRequired<InputVariables>,
 > =
@@ -146,7 +146,7 @@ export interface PromptTemplateFormatInputValuesBase {
 }
 
 export type PromptTemplateFormatInputValues<
-  InputVariables extends PromptTemplateInputVariable[],
+  InputVariables extends readonly PromptTemplateInputVariable[],
   InputVariableNameRequired extends
     PromptTemplateInputVariableName = ExtractInputVariableNameRequired<InputVariables>,
   InputVariableNameOptional extends
@@ -192,13 +192,9 @@ export interface PromptTemplateOptions {
 // CreatePromptTemplate
 // ####################
 
-export type GetCreatePromptTemplate = (
-  options: PromptTemplateOptions,
-) => CreatePromptTemplate
-
 export type CreatePromptTemplate = <
   T extends PromptTemplateStrings | PromptTemplateOptions,
-  InputVariables extends PromptTemplateInputVariable[],
+  InputVariables extends readonly PromptTemplateInputVariable[],
 >(
   templateStringsOrOptions: T,
   ...inputVariables: ValidateInputVariables<InputVariables>
@@ -206,16 +202,10 @@ export type CreatePromptTemplate = <
 
 export type ExtractCreatePromptTemplateResult<
   T extends PromptTemplateStrings | PromptTemplateOptions,
-  InputVariables extends PromptTemplateInputVariable[],
+  InputVariables extends readonly PromptTemplateInputVariable[],
 > = T extends PromptTemplateStrings
   ? PromptTemplate<InputVariables>
   : CreatePromptTemplate
-
-// ########################
-// PromptTemplateFromString
-// ########################
-
-export type PromptTemplateFromString = (string: string) => PromptTemplate<[]>
 
 // #############
 // Utility Types

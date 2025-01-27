@@ -8,14 +8,12 @@ import type {
 } from '@prompt-template/core'
 import type { ChatCompletionMessageParam } from 'openai/resources/index.js'
 
-import { ChatPromptTemplate } from './chat-prompt-template.js'
-
 // ##################
 // ChatPromptTemplate
 // ##################
 
 export interface ChatPromptTemplateBase {
-  messages: ChatPromptTemplateMessage<PromptTemplateInputVariable[]>[]
+  readonly messages: readonly ChatPromptTemplateMessage<any>[]
 
   format(
     inputValues?: PromptTemplateFormatInputValuesBase | void,
@@ -32,39 +30,39 @@ export interface ChatPromptTemplateBase {
 }
 
 export type ChatPromptTemplateMessage<
-  InputVariables extends PromptTemplateInputVariable[],
-> = ChatCompletionMessageParam extends infer ChatCompletionMessage
-  ? ChatCompletionMessage extends { content: infer Content }
-    ? Omit<ChatCompletionMessage, 'content'> &
-        (
-          | {
-              content: Content
-              promptTemplate?: never
-            }
-          | {
-              content?: never
-              promptTemplate: PromptTemplate<InputVariables>
-            }
-        )
-    : ChatCompletionMessage
-  : never
-
-export type ChatPromptTemplateFromMessages = <
-  InputVariables extends PromptTemplateInputVariable[],
-  Messages extends ChatPromptTemplateMessage<InputVariables>[],
->(
-  // eslint-disable-next-line no-unused-vars
-  messages: [...Messages],
-) => ChatPromptTemplate<InputVariables, Messages>
+  InputVariables extends readonly PromptTemplateInputVariable[],
+> = Prettify<
+  ChatCompletionMessageParam extends infer ChatCompletionMessage
+    ? ChatCompletionMessage extends { content: infer Content }
+      ? Omit<ChatCompletionMessage, 'content'> &
+          (
+            | {
+                content: Content
+                promptTemplate?: never
+              }
+            | {
+                content?: never
+                promptTemplate: PromptTemplate<InputVariables>
+              }
+          )
+      : ChatCompletionMessage
+    : never
+>
 
 // ############################
 // PromptTemplateInputVariables
 // ############################
 
 export type ExtractInputVariables<
-  Messages extends ChatPromptTemplateMessage<PromptTemplateInputVariable[]>[],
-> = Messages[number] extends infer Message
-  ? Message extends { promptTemplate: PromptTemplate<infer InputVariable> }
-    ? InputVariable
+  Messages extends readonly ChatPromptTemplateMessage<any>[],
+> =
+  Extract<Messages[number], { promptTemplate: PromptTemplate<any> }> extends {
+    promptTemplate: PromptTemplate<infer InputVariables>
+  }
+    ? InputVariables
     : never
-  : never
+
+// https://www.totaltypescript.com/concepts/the-prettify-helper
+export type Prettify<T> = {
+  [K in keyof T]: T[K]
+} & {}

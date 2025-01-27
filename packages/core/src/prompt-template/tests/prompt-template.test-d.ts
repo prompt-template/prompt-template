@@ -55,7 +55,7 @@ test('`promptTemplate` with literal `InputVariableConfig`', () => {
     name: 'b' as const,
   }}`
 
-  type InputVariables = [{ name: 'b' }]
+  type InputVariables = [{ readonly name: 'b' }]
 
   type InputValues = { b: string }
 
@@ -74,7 +74,7 @@ test('`promptTemplate` with literal `InputVariableConfig` with default', () => {
     default: 'value',
   }}`
 
-  type InputVariables = [{ name: 'b'; default: string }]
+  type InputVariables = [{ readonly name: 'b'; readonly default: 'value' }]
 
   type InputValues = { b?: string }
 
@@ -92,7 +92,7 @@ test('`promptTemplate` with literal `InputVariableName` and literal `InputVariab
     name: 'b' as const,
   }}`
 
-  type InputVariables = ['a', { name: 'b' }]
+  type InputVariables = ['a', { readonly name: 'b' }]
 
   type InputValues = { a: string; b: string }
 
@@ -111,7 +111,7 @@ test('`promptTemplate` with literal `InputVariableName` and literal `InputVariab
     default: 'value',
   }}`
 
-  type InputVariables = ['a', { name: 'b'; default: string }]
+  type InputVariables = ['a', { readonly name: 'b'; readonly default: 'value' }]
 
   type InputValues = { a: string; b?: string }
 
@@ -129,7 +129,7 @@ test('`promptTemplate` with literal `InputVariableName`, literal `InputVariableC
     name: 'b' as const,
   }}${'c'}`
 
-  type InputVariables = ['a', { name: 'b' }, 'c']
+  type InputVariables = ['a', { readonly name: 'b' }, 'c']
 
   type InputValues = { a: string; b: string; c: string }
 
@@ -148,7 +148,11 @@ test('`promptTemplate` with literal `InputVariableName`, literal `InputVariableC
     default: 'value',
   }}${'c'}`
 
-  type InputVariables = ['a', { name: 'b'; default: string }, 'c']
+  type InputVariables = [
+    'a',
+    { readonly name: 'b'; readonly default: 'value' },
+    'c',
+  ]
 
   type InputValues = { a: string; b?: string; c: string }
 
@@ -222,7 +226,7 @@ test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableC
 
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
-  type InputVariables = [PromptTemplate<[{ name: 'b' }]>]
+  type InputVariables = [PromptTemplate<[{ readonly name: 'b' }]>]
 
   type InputValues = { b: string }
 
@@ -243,7 +247,9 @@ test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableC
 
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
-  type InputVariables = [PromptTemplate<[{ name: 'b'; default: string }]>]
+  type InputVariables = [
+    PromptTemplate<[{ readonly name: 'b'; readonly default: 'value' }]>,
+  ]
 
   type InputValues = { b?: string }
 
@@ -263,7 +269,7 @@ test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableN
 
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
-  type InputVariables = [PromptTemplate<['a', { name: 'b' }]>]
+  type InputVariables = [PromptTemplate<['a', { readonly name: 'b' }]>]
 
   type InputValues = { a: string; b: string }
 
@@ -284,7 +290,9 @@ test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableN
 
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
-  type InputVariables = [PromptTemplate<['a', { name: 'b'; default: string }]>]
+  type InputVariables = [
+    PromptTemplate<['a', { readonly name: 'b'; readonly default: 'value' }]>,
+  ]
 
   type InputValues = { a: string; b?: string }
 
@@ -304,7 +312,7 @@ test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableN
 
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
-  type InputVariables = [PromptTemplate<['a', { name: 'b' }, 'c']>]
+  type InputVariables = [PromptTemplate<['a', { readonly name: 'b' }, 'c']>]
 
   type InputValues = { a: string; b: string; c: string }
 
@@ -326,7 +334,9 @@ test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableN
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
   type InputVariables = [
-    PromptTemplate<['a', { name: 'b'; default: string }, 'c']>,
+    PromptTemplate<
+      ['a', { readonly name: 'b'; readonly default: 'value' }, 'c']
+    >,
   ]
 
   type InputValues = { a: string; b?: string; c: string }
@@ -409,7 +419,9 @@ test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVa
 
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
-  type InputVariables = [PromptTemplate<[PromptTemplate<[{ name: 'b' }]>]>]
+  type InputVariables = [
+    PromptTemplate<[PromptTemplate<[{ readonly name: 'b' }]>]>,
+  ]
 
   type InputValues = { b: string }
 
@@ -433,7 +445,9 @@ test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVa
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
   type InputVariables = [
-    PromptTemplate<[PromptTemplate<[{ name: 'b'; default: string }]>]>,
+    PromptTemplate<
+      [PromptTemplate<[{ readonly name: 'b'; readonly default: 'value' }]>]
+    >,
   ]
 
   type InputValues = { b?: string }
@@ -456,7 +470,9 @@ test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVa
 
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
-  type InputVariables = [PromptTemplate<[PromptTemplate<['a', { name: 'b' }]>]>]
+  type InputVariables = [
+    PromptTemplate<[PromptTemplate<['a', { readonly name: 'b' }]>]>,
+  ]
 
   type InputValues = { a: string; b: string }
 
@@ -480,7 +496,9 @@ test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVa
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
   type InputVariables = [
-    PromptTemplate<[PromptTemplate<['a', { name: 'b'; default: string }]>]>,
+    PromptTemplate<
+      [PromptTemplate<['a', { readonly name: 'b'; readonly default: 'value' }]>]
+    >,
   ]
 
   type InputValues = { a: string; b?: string }
@@ -504,7 +522,7 @@ test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVa
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
   type InputVariables = [
-    PromptTemplate<[PromptTemplate<['a', { name: 'b' }]>, 'c']>,
+    PromptTemplate<[PromptTemplate<['a', { readonly name: 'b' }]>, 'c']>,
   ]
 
   type InputValues = { a: string; b: string; c: string }
@@ -530,7 +548,12 @@ test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVa
 
   type InputVariables = [
     PromptTemplate<
-      [PromptTemplate<['a', { name: 'b'; default: string }]>, 'c']
+      [
+        PromptTemplate<
+          ['a', { readonly name: 'b'; readonly default: 'value' }]
+        >,
+        'c',
+      ]
     >,
   ]
 
