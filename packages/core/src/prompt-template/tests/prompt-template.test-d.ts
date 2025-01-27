@@ -51,9 +51,7 @@ test('`promptTemplate` with literal `InputVariableName`', () => {
 })
 
 test('`promptTemplate` with literal `InputVariableConfig`', () => {
-  const promptTemplate = PromptTemplate.create`${{
-    name: 'b' as const,
-  }}`
+  const promptTemplate = PromptTemplate.create`${{ name: 'b' }}`
 
   type InputVariables = [{ readonly name: 'b' }]
 
@@ -70,7 +68,7 @@ test('`promptTemplate` with literal `InputVariableConfig`', () => {
 
 test('`promptTemplate` with literal `InputVariableConfig` with default', () => {
   const promptTemplate = PromptTemplate.create`${{
-    name: 'b' as const,
+    name: 'b',
     default: 'value',
   }}`
 
@@ -88,9 +86,7 @@ test('`promptTemplate` with literal `InputVariableConfig` with default', () => {
 })
 
 test('`promptTemplate` with literal `InputVariableName` and literal `InputVariableConfig`', () => {
-  const promptTemplate = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
-  }}`
+  const promptTemplate = PromptTemplate.create`${'a'}${{ name: 'b' }}`
 
   type InputVariables = ['a', { readonly name: 'b' }]
 
@@ -107,7 +103,7 @@ test('`promptTemplate` with literal `InputVariableName` and literal `InputVariab
 
 test('`promptTemplate` with literal `InputVariableName` and literal `InputVariableConfig` with default', () => {
   const promptTemplate = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
+    name: 'b',
     default: 'value',
   }}`
 
@@ -125,9 +121,7 @@ test('`promptTemplate` with literal `InputVariableName` and literal `InputVariab
 })
 
 test('`promptTemplate` with literal `InputVariableName`, literal `InputVariableConfig`, and literal `InputVariableName`', () => {
-  const promptTemplate = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
-  }}${'c'}`
+  const promptTemplate = PromptTemplate.create`${'a'}${{ name: 'b' }}${'c'}`
 
   type InputVariables = ['a', { readonly name: 'b' }, 'c']
 
@@ -144,7 +138,7 @@ test('`promptTemplate` with literal `InputVariableName`, literal `InputVariableC
 
 test('`promptTemplate` with literal `InputVariableName`, literal `InputVariableConfig` with default, and literal `InputVariableName`', () => {
   const promptTemplate = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
+    name: 'b',
     default: 'value',
   }}${'c'}`
 
@@ -220,9 +214,7 @@ test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableN
 })
 
 test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableConfig`', () => {
-  const promptTemplateNested = PromptTemplate.create`${{
-    name: 'b' as const,
-  }}`
+  const promptTemplateNested = PromptTemplate.create`${{ name: 'b' }}`
 
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
@@ -241,7 +233,7 @@ test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableC
 
 test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableConfig` with default', () => {
   const promptTemplateNested = PromptTemplate.create`${{
-    name: 'b' as const,
+    name: 'b',
     default: 'value',
   }}`
 
@@ -263,9 +255,7 @@ test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableC
 })
 
 test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableName` and literal `InputVariableConfig`', () => {
-  const promptTemplateNested = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
-  }}`
+  const promptTemplateNested = PromptTemplate.create`${'a'}${{ name: 'b' }}`
 
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
@@ -284,7 +274,7 @@ test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableN
 
 test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableName` and literal `InputVariableConfig` with default', () => {
   const promptTemplateNested = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
+    name: 'b',
     default: 'value',
   }}`
 
@@ -306,9 +296,7 @@ test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableN
 })
 
 test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableName`, literal `InputVariableConfig`, and literal `InputVariableName`', () => {
-  const promptTemplateNested = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
-  }}${'c'}`
+  const promptTemplateNested = PromptTemplate.create`${'a'}${{ name: 'b' }}${'c'}`
 
   const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
 
@@ -327,7 +315,7 @@ test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableN
 
 test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableName`, literal `InputVariableConfig` with default, and literal `InputVariableName`', () => {
   const promptTemplateNested = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
+    name: 'b',
     default: 'value',
   }}${'c'}`
 
@@ -411,9 +399,7 @@ test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVa
 })
 
 test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVariableConfig`', () => {
-  const promptTemplateNestedDeep = PromptTemplate.create`${{
-    name: 'b' as const,
-  }}`
+  const promptTemplateNestedDeep = PromptTemplate.create`${{ name: 'b' }}`
 
   const promptTemplateNested = PromptTemplate.create`${promptTemplateNestedDeep}`
 
@@ -436,7 +422,7 @@ test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVa
 
 test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVariableConfig` with default', () => {
   const promptTemplateNestedDeep = PromptTemplate.create`${{
-    name: 'b' as const,
+    name: 'b',
     default: 'value',
   }}`
 
@@ -462,9 +448,7 @@ test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVa
 })
 
 test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVariableName` and literal `InputVariableConfig`', () => {
-  const promptTemplateNestedDeep = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
-  }}`
+  const promptTemplateNestedDeep = PromptTemplate.create`${'a'}${{ name: 'b' }}`
 
   const promptTemplateNested = PromptTemplate.create`${promptTemplateNestedDeep}`
 
@@ -487,7 +471,7 @@ test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVa
 
 test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVariableName` and literal `InputVariableConfig` with default', () => {
   const promptTemplateNestedDeep = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
+    name: 'b',
     default: 'value',
   }}`
 
@@ -513,9 +497,7 @@ test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVa
 })
 
 test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVariableName`, literal `InputVariableConfig`, and literal `InputVariableName`', () => {
-  const promptTemplateNestedDeep = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
-  }}`
+  const promptTemplateNestedDeep = PromptTemplate.create`${'a'}${{ name: 'b' }}`
 
   const promptTemplateNested = PromptTemplate.create`${promptTemplateNestedDeep}${'c'}`
 
@@ -538,7 +520,7 @@ test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVa
 
 test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVariableName`, literal `InputVariableConfig` with default, and literal `InputVariableName`', () => {
   const promptTemplateNestedDeep = PromptTemplate.create`${'a'}${{
-    name: 'b' as const,
+    name: 'b',
     default: 'value',
   }}`
 
