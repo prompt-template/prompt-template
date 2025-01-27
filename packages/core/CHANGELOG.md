@@ -1,5 +1,11 @@
 # @prompt-template/core
 
+## 0.3.0
+
+### Minor Changes
+
+- 04cf1c1: Updated `PromptTemplate` and `ChatPromptTemplate` types
+
 ## 0.2.0
 
 ### Minor Changes
