@@ -1,18 +1,18 @@
-# @prompt-template/openai
+# @prompt-template/ai-sdk
 
-`@prompt-template/openai` provides an adapter for integrating [`@prompt-template/core`](https://github.com/prompt-template/prompt-template/tree/main/packages/core) with OpenAI's chat completion API. This adapter allows you to define chat prompt templates and formatting them into OpenAI-compliant chat completion messages.
+`@prompt-template/ai-sdk` provides an adapter for integrating [`@prompt-template/core`](https://github.com/prompt-template/prompt-template/tree/main/packages/core) with AI SDK APIs. This adapter allows you to define chat prompt templates and formatting them into AI SDK-compliant chat completion messages.
 
 ## Installation
 
 ```sh
-npm i @prompt-template/core @prompt-template/openai
+npm i @prompt-template/core @prompt-template/ai-sdk
 ```
 
 ## Usage
 
 ```ts
 import { PromptTemplate } from '@prompt-template/core'
-import { ChatPromptTemplate } from '@prompt-template/openai'
+import { ChatPromptTemplate } from '@prompt-template/ai-sdk'
 
 const chatPromptTemplate = ChatPromptTemplate.from([
   {
@@ -59,7 +59,7 @@ const chatPromptTemplate = ChatPromptTemplate.from([
 
 ### `ChatPromptTemplate.format`
 
-A method that formats the `ChatPromptTemplate` instances into OpenAI-compliant chat completion messages.
+A method that formats the `ChatPromptTemplate` instances into AI SDK-compliant chat completion messages.
 
 ```ts
 const messages = chatPromptTemplate.format({
