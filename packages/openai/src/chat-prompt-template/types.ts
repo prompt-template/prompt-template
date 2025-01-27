@@ -55,12 +55,11 @@ export type ChatPromptTemplateMessage<
 
 export type ExtractInputVariables<
   Messages extends readonly ChatPromptTemplateMessage<any>[],
-> =
-  Extract<Messages[number], { promptTemplate: PromptTemplate<any> }> extends {
-    promptTemplate: PromptTemplate<infer InputVariables>
-  }
+> = Messages[number] extends { promptTemplate: infer P }
+  ? P extends PromptTemplate<infer InputVariables>
     ? InputVariables
     : never
+  : never
 
 // https://www.totaltypescript.com/concepts/the-prettify-helper
 export type Prettify<T> = {
