@@ -1,5 +1,5 @@
 /**
-npx tsx examples/basic.ts
+pnpm tsx examples/basic.ts
 */
 import { PromptTemplate } from '@prompt-template/core'
 import { OpenAI } from 'openai'

@@ -2,8 +2,9 @@
 pnpm tsx examples/basic.ts
 */
 import { PromptTemplate } from '@prompt-template/core'
-import { ChatPromptTemplate } from '@prompt-template/openai'
-import { OpenAI } from 'openai'
+import { ChatPromptTemplate } from '@prompt-template/ai-sdk'
+import { openai } from '@ai-sdk/openai'
+import { generateText } from 'ai'
 
 import './env.js'
 
@@ -30,11 +31,9 @@ console.log(messages)
 //     { role: 'user', content: 'Brainstorm 3 names for a superhero cat.' }
 //   ]
 
-const openai = new OpenAI()
-
-const completion = await openai.chat.completions.create({
-  model: 'gpt-4o-mini',
+const completion = await generateText({
+  model: openai('gpt-4o-mini'),
   messages,
 })
 
-console.log(completion.choices[0]?.message.content)
+console.log(completion.text)

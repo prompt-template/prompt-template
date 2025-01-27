@@ -66,3 +66,44 @@ console.log(completion.choices[0]?.message.content)
 ```
 
 For detailed usage and API documentation, please refer to the [README in `packages/openai`](packages/openai/README.md).
+
+## With AI SDK
+
+```sh
+npm i @prompt-template/core @prompt-template/ai-sdk @ai-sdk/openai ai
+```
+
+```js
+import { PromptTemplate } from '@prompt-template/core'
+import { ChatPromptTemplate } from '@prompt-template/ai-sdk'
+import { openai } from '@ai-sdk/openai'
+import { generateText } from 'ai'
+
+const chatPromptTemplate = ChatPromptTemplate.from([
+  {
+    role: 'system',
+    content: 'You are a friendly assistant.',
+  },
+  {
+    role: 'user',
+    promptTemplate: PromptTemplate.create`
+      Brainstorm 3 names for a superhero ${'animal'}.
+    `,
+  },
+])
+
+const messages = chatPromptTemplate.format({
+  animal: 'cat',
+})
+//=> [
+//     { role: 'system', content: 'You are a friendly assistant.' },
+//     { role: 'user', content: 'Brainstorm 3 names for a superhero cat.' }
+//   ]
+
+const completion = await generateText(openai, {
+  model: openai('gpt-4o-mini'),
+  messages,
+})
+
+console.log(completion.text)
+```
