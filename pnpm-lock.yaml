@@ -154,6 +154,31 @@ importers:
         specifier: 'catalog:'
         version: 5.5.4
 
+  packages/formatters:
+    dependencies:
+      '@prompt-template/core':
+        specifier: ^0.3.0
+        version: 0.3.0
+    devDependencies:
+      '@prompt-template/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@prompt-template/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      eslint:
+        specifier: 'catalog:'
+        version: 8.57.1
+      tshy:
+        specifier: 'catalog:'
+        version: 3.0.2
+      typescript:
+        specifier: 'catalog:'
+        version: 5.5.4
+      vitest:
+        specifier: ^2.1.5
+        version: 2.1.5(@types/node@18.19.64)
+
   packages/openai:
     devDependencies:
       '@prompt-template/core':
@@ -652,6 +677,9 @@ packages:
   '@opentelemetry/api@1.9.0':
     resolution: {integrity: sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg==}
     engines: {node: '>=8.0.0'}
+
+  '@prompt-template/core@0.3.0':
+    resolution: {integrity: sha512-RsFq/gkUk/s8ho00r371T51JweOhhhWPc+l1SO/ucUOQpOa2Tw7q3hkzCiMDUh/ZG6QH9dv3xksLBvwzP5zYtQ==}
 
   '@rollup/rollup-android-arm-eabi@4.27.2':
     resolution: {integrity: sha512-Tj+j7Pyzd15wAdSJswvs5CJzJNV+qqSUcr/aCD+jpQSBtXvGnV0pnrjoc8zFTe9fcKCatkpFpOO7yAzpO998HA==}
@@ -2467,6 +2495,13 @@ snapshots:
       fastq: 1.17.1
 
   '@opentelemetry/api@1.9.0': {}
+
+  '@prompt-template/core@0.3.0':
+    dependencies:
+      dedent: 1.5.3
+      type-fest: 4.27.0
+    transitivePeerDependencies:
+      - babel-plugin-macros
 
   '@rollup/rollup-android-arm-eabi@4.27.2':
     optional: true
