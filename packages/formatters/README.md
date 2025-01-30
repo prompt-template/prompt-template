@@ -90,7 +90,7 @@ const promptTemplate = PromptTemplate.create`
 `
 
 const prompt = promptTemplate.format({
-  input: 'bar\nbaz',
+  input: ['bar', 'baz'].join('\n'),
 })
 //=> foo
 //     bar

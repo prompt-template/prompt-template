@@ -10,7 +10,7 @@ describe('preserveIndent formatter', () => {
     `
 
     const prompt = promptTemplate.format({
-      input: 'bar\nbaz',
+      input: ['bar', 'baz'].join('\n'),
     })
 
     expect(prompt).toBe('foo\n  bar\n  baz')
@@ -23,7 +23,7 @@ describe('preserveIndent formatter', () => {
     `
 
     const prompt = promptTemplate.format({
-      input: 'bar\nbaz',
+      input: ['bar', 'baz'].join('\n'),
     })
 
     expect(prompt).toBe('foo\n  bar\n  baz')
@@ -36,7 +36,7 @@ describe('preserveIndent formatter', () => {
     `
 
     const prompt = promptTemplate.format({
-      input: 'bar\nbaz',
+      input: ['bar', 'baz'].join('\n'),
     })
 
     expect(prompt).toBe('foo\n  bar\n  baz')
@@ -49,7 +49,7 @@ describe('preserveIndent formatter', () => {
     `
 
     const prompt = promptTemplate.format({
-      input: 'bar\nbaz',
+      input: ['bar', 'baz'].join('\n'),
     })
 
     expect(prompt).toBe('foo\n  bar\n  baz')
