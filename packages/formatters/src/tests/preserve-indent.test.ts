@@ -3,7 +3,7 @@ import { PromptTemplate } from '@prompt-template/core'
 import { preserveIndent } from '../preserve-indent.js'
 
 describe('preserveIndent formatter', () => {
-  it.only('formats with `onFormat` `inputVariableConfig`', () => {
+  it('formats with `onFormat` `inputVariableConfig`', () => {
     const promptTemplate = PromptTemplate.create`
       foo
         ${{ name: 'input', onFormat: preserveIndent }}
