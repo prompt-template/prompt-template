@@ -1,6 +1,6 @@
 {
   "name": "@prompt-template/openai",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "OpenAI @prompt-template adapter",
   "author": "Aaron Casanova <aaronccasanova@gmail.com>",
   "license": "MIT",
@@ -52,7 +52,7 @@
     "zod": "^3.22.4"
   },
   "peerDependencies": {
-    "@prompt-template/core": "^0.3.0",
+    "@prompt-template/core": "^0.4.0",
     "openai": "^4.0.0"
   },
   "publishConfig": {
