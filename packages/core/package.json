@@ -39,7 +39,7 @@
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {
-    "dedent": "^1.5.1",
+    "strip-indent": "^3.0.0",
     "type-fest": "^4.8.3"
   },
   "devDependencies": {

@@ -98,9 +98,9 @@ importers:
 
   packages/core:
     dependencies:
-      dedent:
-        specifier: ^1.5.1
-        version: 1.5.3
+      strip-indent:
+        specifier: ^3.0.0
+        version: 3.0.0
       type-fest:
         specifier: ^4.8.3
         version: 4.27.0
@@ -155,11 +155,10 @@ importers:
         version: 5.5.4
 
   packages/formatters:
-    dependencies:
-      '@prompt-template/core':
-        specifier: ^0.3.0
-        version: 0.3.0
     devDependencies:
+      '@prompt-template/core':
+        specifier: workspace:*
+        version: link:../core
       '@prompt-template/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
@@ -678,9 +677,6 @@ packages:
     resolution: {integrity: sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg==}
     engines: {node: '>=8.0.0'}
 
-  '@prompt-template/core@0.3.0':
-    resolution: {integrity: sha512-RsFq/gkUk/s8ho00r371T51JweOhhhWPc+l1SO/ucUOQpOa2Tw7q3hkzCiMDUh/ZG6QH9dv3xksLBvwzP5zYtQ==}
-
   '@rollup/rollup-android-arm-eabi@4.27.2':
     resolution: {integrity: sha512-Tj+j7Pyzd15wAdSJswvs5CJzJNV+qqSUcr/aCD+jpQSBtXvGnV0pnrjoc8zFTe9fcKCatkpFpOO7yAzpO998HA==}
     cpu: [arm]
@@ -1041,14 +1037,6 @@ packages:
       supports-color: '*'
     peerDependenciesMeta:
       supports-color:
-        optional: true
-
-  dedent@1.5.3:
-    resolution: {integrity: sha512-NHQtfOOW68WD8lgypbLA5oT+Bt0xXJhiYvoR6SmmNXZfpzOGXwdKWmcwG8N7PwVVWV3eF/68nmD9BaJSsTBhyQ==}
-    peerDependencies:
-      babel-plugin-macros: ^3.1.0
-    peerDependenciesMeta:
-      babel-plugin-macros:
         optional: true
 
   deep-eql@5.0.2:
@@ -1478,6 +1466,10 @@ packages:
     resolution: {integrity: sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==}
     engines: {node: '>= 0.6'}
 
+  min-indent@1.0.1:
+    resolution: {integrity: sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==}
+    engines: {node: '>=4'}
+
   minimatch@10.0.1:
     resolution: {integrity: sha512-ethXTt3SGGR+95gudmqJ1eNhRO7eGEGIgYA9vnPatK4/etz2MEVDno5GMCibdMTuBMyElzIlgxMna3K94XDIDQ==}
     engines: {node: 20 || >=22}
@@ -1826,6 +1818,10 @@ packages:
   strip-final-newline@4.0.0:
     resolution: {integrity: sha512-aulFJcD6YK8V1G7iRB5tigAP4TsHBZZrOV8pjV++zdUwmeV8uzbY7yn6h9MswN62adStNZFuCIx4haBnRuMDaw==}
     engines: {node: '>=18'}
+
+  strip-indent@3.0.0:
+    resolution: {integrity: sha512-laJTa3Jb+VQpaC6DseHhF7dXVqHTfJPCRDaEbid/drOhgitgYku/letMUqOXFoWV0zIIUbjpdH2t+tYj4bQMRQ==}
+    engines: {node: '>=8'}
 
   strip-json-comments@3.1.1:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
@@ -2496,13 +2492,6 @@ snapshots:
 
   '@opentelemetry/api@1.9.0': {}
 
-  '@prompt-template/core@0.3.0':
-    dependencies:
-      dedent: 1.5.3
-      type-fest: 4.27.0
-    transitivePeerDependencies:
-      - babel-plugin-macros
-
   '@rollup/rollup-android-arm-eabi@4.27.2':
     optional: true
 
@@ -2846,8 +2835,6 @@ snapshots:
   debug@4.3.7:
     dependencies:
       ms: 2.1.3
-
-  dedent@1.5.3: {}
 
   deep-eql@5.0.2: {}
 
@@ -3331,6 +3318,8 @@ snapshots:
     dependencies:
       mime-db: 1.52.0
 
+  min-indent@1.0.1: {}
+
   minimatch@10.0.1:
     dependencies:
       brace-expansion: 2.0.1
@@ -3625,6 +3614,10 @@ snapshots:
   strip-bom@3.0.0: {}
 
   strip-final-newline@4.0.0: {}
+
+  strip-indent@3.0.0:
+    dependencies:
+      min-indent: 1.0.1
 
   strip-json-comments@3.1.1: {}
 

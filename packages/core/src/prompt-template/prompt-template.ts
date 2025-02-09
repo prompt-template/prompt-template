@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import dedent from 'dedent'
+import stripIndent from 'strip-indent'
 
 import type {
   ExtractCreatePromptTemplateResult,
@@ -95,10 +95,24 @@ export class PromptTemplate<
     }
 
     let prompt = this.#interleave({
-      onPromptTemplate: (nestedPromptTemplate) =>
-        nestedPromptTemplate.format(normalizedInputValues, {
-          validateInputValues: false,
-        }),
+      onPromptTemplate: (nestedPromptTemplate, accumulatedPrompt) => {
+        const nestedPrompt = nestedPromptTemplate.format(
+          normalizedInputValues,
+          { validateInputValues: false },
+        )
+
+        const lastLine =
+          accumulatedPrompt.match(/(?:\r\n|\r|\n|^)([^\r\n]*)$/)?.[1] || ''
+
+        const lastLineIndent = lastLine.replace(/[^\s]/gu, (match) =>
+          ' '.repeat(match.length),
+        )
+
+        return nestedPrompt
+          .split(/\r?\n|\r/)
+          .map((line, i) => (i === 0 ? line : lastLineIndent + line))
+          .join('\n')
+      },
       onInputVariableName: (inputVariableName) =>
         normalizedInputValues[inputVariableName] ?? '',
       //
@@ -123,7 +137,7 @@ export class PromptTemplate<
       },
     })
 
-    prompt = this.#dedent ? dedent(prompt) : prompt
+    prompt = this.#dedent ? stripIndent(prompt).trim() : prompt
 
     prompt = `${this.prefix}${prompt}${this.suffix}`
 
@@ -242,7 +256,10 @@ export class PromptTemplate<
       inputVariableConfig: PromptTemplateInputVariableConfig,
       accumulatedPrompt: string,
     ) => string
-    onPromptTemplate: (promptTemplate: PromptTemplateBase) => string
+    onPromptTemplate: (
+      promptTemplate: PromptTemplateBase,
+      accumulatedPrompt: string,
+    ) => string
   }): string {
     let accumulatedPrompt = ''
 
@@ -262,7 +279,10 @@ export class PromptTemplate<
           )
           //
         } else {
-          accumulatedPrompt += callbacks.onPromptTemplate(inputVariable)
+          accumulatedPrompt += callbacks.onPromptTemplate(
+            inputVariable,
+            accumulatedPrompt,
+          )
         }
       }
     }
