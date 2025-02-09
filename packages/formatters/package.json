@@ -39,6 +39,7 @@
     "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
+    "@prompt-template/core": "workspace:*",
     "@prompt-template/eslint-config": "workspace:*",
     "@prompt-template/tsconfig": "workspace:*",
     "eslint": "catalog:",

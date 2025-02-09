@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { z } from 'zod'
+import stripIndent from 'strip-indent'
 
 import type {
   PromptTemplateBase,
@@ -503,6 +504,148 @@ describe('promptTemplate nested', () => {
       inputVariableNamesRequired: ['a', 'b'],
     })
   })
+
+  it('preserves indentation with basic string', () => {
+    const promptTemplateNested = PromptTemplate.create`
+      a
+        b
+    `
+
+    const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
+
+    const prompt = promptTemplate.format()
+
+    expect(prompt).toBe(
+      stripIndent(`
+        a
+          b
+      `).trim(),
+    )
+  })
+
+  it('preserves indentation with basic string inline', () => {
+    const promptTemplateNested = PromptTemplate.create`
+      b
+        c
+    `
+
+    const promptTemplate = PromptTemplate.create`a ${promptTemplateNested}`
+
+    const prompt = promptTemplate.format()
+
+    expect(prompt).toBe(
+      stripIndent(`
+        a b
+            c
+      `).trim(),
+    )
+  })
+
+  it('preserves indentation with basic string multiline', () => {
+    const promptTemplateNested = PromptTemplate.create`
+      b
+        c
+    `
+
+    const promptTemplate = PromptTemplate.create`
+      a
+        ${promptTemplateNested}
+    `
+
+    const prompt = promptTemplate.format()
+
+    expect(prompt).toBe(
+      stripIndent(`
+        a
+          b
+            c
+      `).trim(),
+    )
+  })
+
+  it('preserves indentation with tabbed string inline', () => {
+    const promptTemplateNested = PromptTemplate.create`
+      b
+      	c
+    `
+
+    const promptTemplate = PromptTemplate.create`
+      a ${promptTemplateNested}
+    `
+
+    const prompt = promptTemplate.format()
+
+    expect(prompt).toBe(
+      stripIndent(`
+        a b
+          	c
+      `).trim(),
+    )
+  })
+
+  it('preserves indentation with tabbed string multiline', () => {
+    const promptTemplateNested = PromptTemplate.create`
+      b
+      	c
+    `
+
+    const promptTemplate = PromptTemplate.create`
+      a
+      	${promptTemplateNested}
+    `
+
+    const prompt = promptTemplate.format()
+
+    expect(prompt).toBe(
+      stripIndent(`
+        a
+        	b
+        		c
+      `).trim(),
+    )
+  })
+
+  it('preserves indentation with emoji string inline', () => {
+    const promptTemplateNested = PromptTemplate.create`
+      a
+        b
+    `
+
+    const promptTemplate = PromptTemplate.create`
+      👍 ${promptTemplateNested}
+    `
+
+    const prompt = promptTemplate.format()
+
+    expect(prompt).toBe(
+      stripIndent(`
+        👍 a
+             b
+      `).trim(),
+    )
+  })
+
+  it('preserves indentation with tabbed string multiline', () => {
+    const promptTemplateNested = PromptTemplate.create`
+      a
+        b
+    `
+
+    const promptTemplate = PromptTemplate.create`
+      👍
+        ${promptTemplateNested}
+    `
+
+    const prompt = promptTemplate.format()
+
+    expect(prompt).toBe(
+      stripIndent(`
+        👍
+          a
+            b
+      `).trim(),
+    )
+  })
 })
 
 describe('promptTemplate deeply nested', () => {
@@ -767,6 +910,178 @@ describe('promptTemplate deeply nested', () => {
       inputVariableNamesOptional: [],
       inputVariableNamesRequired: ['a', 'b'],
     })
+  })
+
+  it('preserves indentation with basic string', () => {
+    const promptTemplatedNestedDeep = PromptTemplate.create`
+      a
+        b
+    `
+
+    const promptTemplateNested = PromptTemplate.create`${promptTemplatedNestedDeep}`
+
+    const promptTemplate = PromptTemplate.create`${promptTemplateNested}`
+
+    const prompt = promptTemplate.format()
+
+    expect(prompt).toBe(
+      stripIndent(`
+        a
+          b
+      `).trim(),
+    )
+  })
+
+  it('preserves indentation with basic string inline', () => {
+    const promptTemplatedNestedDeep = PromptTemplate.create`
+      c
+        d
+    `
+
+    const promptTemplateNested = PromptTemplate.create`b ${promptTemplatedNestedDeep}`
+
+    const promptTemplate = PromptTemplate.create`a ${promptTemplateNested}`
+
+    const prompt = promptTemplate.format()
+
+    expect(prompt).toBe(
+      stripIndent(`
+        a b c
+              d
+      `).trim(),
+    )
+  })
+
+  it('preserves indentation with basic string multiline', () => {
+    const promptTemplatedNestedDeep = PromptTemplate.create`
+      c
+        d
+    `
+
+    const promptTemplateNested = PromptTemplate.create`
+      b
+        ${promptTemplatedNestedDeep}
+    `
+
+    const promptTemplate = PromptTemplate.create`
+      a
+        ${promptTemplateNested}
+    `
+
+    const prompt = promptTemplate.format()
+
+    expect(prompt).toBe(
+      stripIndent(`
+        a
+          b
+            c
+              d
+      `).trim(),
+    )
+  })
+
+  it('preserves indentation with tabbed string inline', () => {
+    const promptTemplatedNestedDeep = PromptTemplate.create`
+      c
+      	d
+    `
+
+    const promptTemplateNested = PromptTemplate.create`
+      b ${promptTemplatedNestedDeep}
+    `
+
+    const promptTemplate = PromptTemplate.create`
+      a ${promptTemplateNested}
+    `
+
+    const prompt = promptTemplate.format()
+
+    expect(prompt).toBe(
+      stripIndent(`
+        a b c
+            	d
+      `).trim(),
+    )
+  })
+
+  it('preserves indentation with tabbed string multiline', () => {
+    const promptTemplatedNestedDeep = PromptTemplate.create`
+      c
+      	d
+    `
+
+    const promptTemplateNested = PromptTemplate.create`
+      b
+      	${promptTemplatedNestedDeep}
+    `
+
+    const promptTemplate = PromptTemplate.create`
+      a
+      	${promptTemplateNested}
+    `
+
+    const prompt = promptTemplate.format()
+
+    expect(prompt).toBe(
+      stripIndent(`
+        a
+        	b
+        		c
+        			d
+      `).trim(),
+    )
+  })
+
+  it('preserves indentation with emoji string inline', () => {
+    const promptTemplatedNestedDeep = PromptTemplate.create`
+      b
+        c
+    `
+
+    const promptTemplateNested = PromptTemplate.create`
+      a ${promptTemplatedNestedDeep}
+    `
+
+    const promptTemplate = PromptTemplate.create`
+      👍 ${promptTemplateNested}
+    `
+
+    const prompt = promptTemplate.format()
+
+    expect(prompt).toBe(
+      stripIndent(`
+        👍 a b
+               c
+      `).trim(),
+    )
+  })
+
+  it('preserves indentation with tabbed string multiline', () => {
+    const promptTemplatedNestedDeep = PromptTemplate.create`
+      b
+        c
+    `
+
+    const promptTemplateNested = PromptTemplate.create`
+      a
+        ${promptTemplatedNestedDeep}
+    `
+
+    const promptTemplate = PromptTemplate.create`
+      👍
+        ${promptTemplateNested}
+    `
+
+    const prompt = promptTemplate.format()
+
+    expect(prompt).toBe(
+      stripIndent(`
+        👍
+          a
+            b
+              c
+      `).trim(),
+    )
   })
 })
 

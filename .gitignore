@@ -1,6 +1,7 @@
 .turbo
 .tshy
 .tshy-build
+tsconfig.vitest-temp.json
 
 ####################################
 # GitHub Node.js .gitignore template

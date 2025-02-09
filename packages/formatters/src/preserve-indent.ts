@@ -61,10 +61,15 @@ function preserveIndentFormatter(
   inputValue: OnFormatInputValue,
   accumulatedPrompt: OnFormatAccumulatedPrompt,
 ): string {
-  const lastLineIndent = accumulatedPrompt.split(/\r?\n|\r/).pop() ?? ''
+  const lastLine =
+    accumulatedPrompt.match(/(?:\r\n|\r|\n|^)([^\r\n]*)$/)?.[1] || ''
+
+  const lastLineIndent = lastLine.replace(/[^\s]/gu, (match) =>
+    ' '.repeat(match.length),
+  )
 
   return inputValue
-    .split('\n')
+    .split(/\r?\n|\r/)
     .map((line, i) => (i === 0 ? line : lastLineIndent + line))
     .join('\n')
 }
