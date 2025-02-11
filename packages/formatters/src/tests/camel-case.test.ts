@@ -1,61 +1,70 @@
 import { describe, it, expect } from 'vitest'
 import { PromptTemplate } from '@prompt-template/core'
-import { preserveIndent } from '../preserve-indent.js'
 
-describe('preserveIndent formatter', () => {
+import { camelCase, withCamelCase } from '../camel-case.js'
+
+describe('camelCase formatter', () => {
   it('formats with `onFormat` `inputVariableConfig`', () => {
     const promptTemplate = PromptTemplate.create`
-      foo
-        ${{ name: 'input', onFormat: preserveIndent }}
+      ${{ name: 'input', onFormat: camelCase }}
     `
 
     const prompt = promptTemplate.format({
-      input: ['bar', 'baz'].join('\n'),
+      input: 'foo bar',
     })
 
-    expect(prompt).toBe('foo\n  bar\n  baz')
+    expect(prompt).toBe('fooBar')
   })
 
   it('creates named `inputVariableConfig` with `onFormat`', () => {
     const promptTemplate = PromptTemplate.create`
-      foo
-        ${preserveIndent('input')}
+      ${withCamelCase('input')}
     `
 
     const prompt = promptTemplate.format({
-      input: ['bar', 'baz'].join('\n'),
+      input: 'foo bar',
     })
 
-    expect(prompt).toBe('foo\n  bar\n  baz')
+    expect(prompt).toBe('fooBar')
   })
 
   it('creates named `inputVariableConfig` with `onFormat` and empty options', () => {
     const promptTemplate = PromptTemplate.create`
-      foo
-        ${preserveIndent('input', {})}
+      ${withCamelCase('input', {})}
     `
 
     const prompt = promptTemplate.format({
-      input: ['bar', 'baz'].join('\n'),
+      input: 'foo bar',
     })
 
-    expect(prompt).toBe('foo\n  bar\n  baz')
+    expect(prompt).toBe('fooBar')
   })
 
   it('creates named `inputVariableConfig` with `onFormat` and `default` option', () => {
     const promptTemplate = PromptTemplate.create`
-      foo
-        ${preserveIndent('input', { default: 'default' })}
+      ${withCamelCase('input', { default: 'default' })}
     `
 
     const prompt = promptTemplate.format({
-      input: ['bar', 'baz'].join('\n'),
+      input: 'foo bar',
     })
 
-    expect(prompt).toBe('foo\n  bar\n  baz')
+    expect(prompt).toBe('fooBar')
 
     const prompt2 = promptTemplate.format({})
 
-    expect(prompt2).toBe('foo\n  default')
+    expect(prompt2).toBe('default')
+  })
+
+  it('creates named `inputVariableConfig` with `onFormat` and `formatterOptions`', () => {
+    const promptTemplate = PromptTemplate.create`
+      ${withCamelCase('input', { formatterOptions: { delimiter: ' ' } })}
+    `
+
+    const prompt = promptTemplate.format({
+      input: 'foo-bar',
+    })
+
+    expect(prompt).toBe('foo Bar')
   })
 })

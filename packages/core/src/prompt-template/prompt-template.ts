@@ -10,6 +10,7 @@ import type {
   PromptTemplateFormatInputValues,
   PromptTemplateFormatInputValuesBase,
   PromptTemplateFormatOptions,
+  PromptTemplateInputValue,
   PromptTemplateInputVariable,
   PromptTemplateInputVariableConfig,
   PromptTemplateInputVariableName,
@@ -95,28 +96,14 @@ export class PromptTemplate<
     }
 
     let prompt = this.#interleave({
-      onPromptTemplate: (nestedPromptTemplate, accumulatedPrompt) => {
-        const nestedPrompt = nestedPromptTemplate.format(
-          normalizedInputValues,
-          { validateInputValues: false },
-        )
-
-        const lastLine =
-          accumulatedPrompt.match(/(?:\r\n|\r|\n|^)([^\r\n]*)$/)?.[1] || ''
-
-        const lastLineIndent = lastLine.replace(/[^\s]/gu, (match) =>
-          ' '.repeat(match.length),
-        )
-
-        return nestedPrompt
-          .split(/\r?\n|\r/)
-          .map((line, i) => (i === 0 ? line : lastLineIndent + line))
-          .join('\n')
-      },
+      onPromptTemplate: (nestedPromptTemplate) =>
+        nestedPromptTemplate.format(normalizedInputValues, {
+          validateInputValues: false,
+        }),
       onInputVariableName: (inputVariableName) =>
         normalizedInputValues[inputVariableName] ?? '',
       //
-      onInputVariableConfig: (inputVariableConfig, accumulatedPrompt) => {
+      onInputVariableConfig: (inputVariableConfig) => {
         let inputValue =
           normalizedInputValues[inputVariableConfig.name] ??
           inputVariableConfig.default ??
@@ -127,10 +114,7 @@ export class PromptTemplate<
         }
 
         if (inputVariableConfig?.onFormat) {
-          inputValue = inputVariableConfig.onFormat(
-            inputValue,
-            accumulatedPrompt,
-          )
+          inputValue = inputVariableConfig.onFormat(inputValue)
         }
 
         return inputValue
@@ -251,39 +235,37 @@ export class PromptTemplate<
   #interleave(callbacks: {
     onInputVariableName: (
       inputVariableName: PromptTemplateInputVariableName,
-    ) => string
+    ) => PromptTemplateInputValue
     onInputVariableConfig: (
       inputVariableConfig: PromptTemplateInputVariableConfig,
-      accumulatedPrompt: string,
-    ) => string
+    ) => PromptTemplateInputValue
     onPromptTemplate: (
       promptTemplate: PromptTemplateBase,
-      accumulatedPrompt: string,
-    ) => string
+    ) => PromptTemplateInputValue
   }): string {
     let accumulatedPrompt = ''
+    let inputVariable: PromptTemplateInputVariable
+    let inputValue: PromptTemplateInputValue
 
     for (let i = 0; i < this.templateStrings.length; i += 1) {
       accumulatedPrompt += this.templateStrings[i]
 
       if (i < this.inputVariables.length) {
-        const inputVariable = this.inputVariables[i]!
+        inputVariable = this.inputVariables[i]!
 
         if (isInputVariableName(inputVariable)) {
-          accumulatedPrompt += callbacks.onInputVariableName(inputVariable)
+          inputValue = callbacks.onInputVariableName(inputVariable)
           //
         } else if (isInputVariableConfig(inputVariable)) {
-          accumulatedPrompt += callbacks.onInputVariableConfig(
-            inputVariable,
-            accumulatedPrompt,
-          )
+          inputValue = callbacks.onInputVariableConfig(inputVariable)
           //
         } else {
-          accumulatedPrompt += callbacks.onPromptTemplate(
-            inputVariable,
-            accumulatedPrompt,
-          )
+          inputValue = callbacks.onPromptTemplate(inputVariable)
         }
+
+        accumulatedPrompt += newLineRegExp.test(inputValue)
+          ? preserveIndent(inputValue, accumulatedPrompt)
+          : inputValue
       }
     }
 
@@ -359,4 +341,21 @@ export function isPromptTemplateOptions(
   templateStringsOrOptions: PromptTemplateStrings | PromptTemplateOptions,
 ): templateStringsOrOptions is PromptTemplateOptions {
   return !isPromptTemplateStrings(templateStringsOrOptions)
+}
+
+const newLineRegExp = /\r?\n|\r/
+const lastLineRegExp = /(?:\r?\n|\r|^)([^\r\n]*)$/
+const nonWhitespaceRegExp = /[^\s]/gu
+
+function preserveIndent(inputValue: string, accumulatedPrompt: string) {
+  const lastLine = accumulatedPrompt.match(lastLineRegExp)?.[1] || ''
+
+  const lastLineIndent = lastLine.replace(nonWhitespaceRegExp, (match) =>
+    ' '.repeat(match.length),
+  )
+
+  return inputValue
+    .split(newLineRegExp)
+    .map((line, i) => (i === 0 ? line : lastLineIndent + line))
+    .join('\n')
 }
