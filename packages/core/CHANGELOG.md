@@ -1,5 +1,11 @@
 # @prompt-template/core
 
+## 0.5.0
+
+### Minor Changes
+
+- 2bc1e66: Updated all input values to preserve indentation
+
 ## 0.4.0
 
 ### Minor Changes
