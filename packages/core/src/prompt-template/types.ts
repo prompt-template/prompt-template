@@ -39,9 +39,11 @@ export type PromptTemplateInputVariableNameError =
 
 export interface PromptTemplateInputVariableConfig {
   name: PromptTemplateInputVariableName
-  default?: string
-  schema?: { parse: (inputValue: string) => string }
-  onFormat?: (inputValue: string, accumulatedPrompt: string) => string
+  default?: PromptTemplateInputValue
+  schema?: {
+    parse: (inputValue: PromptTemplateInputValue) => PromptTemplateInputValue
+  }
+  onFormat?: (inputValue: PromptTemplateInputValue) => PromptTemplateInputValue
 }
 
 export type PromptTemplateStrings = readonly string[]
@@ -114,7 +116,10 @@ export type ExtractInputVariableNameRequired<
 type ExtractInputVariableNameOptionalAll<
   InputVariables extends readonly PromptTemplateInputVariable[],
 > = InputVariables[number] extends infer InputVariable
-  ? InputVariable extends { name: infer InputVariableName; default: string }
+  ? InputVariable extends {
+      name: infer InputVariableName
+      default: PromptTemplateInputValue
+    }
     ? IfStringLiteral<InputVariableName, InputVariableName, never>
     : InputVariable extends PromptTemplate<infer NestedInputVariables>
       ? ExtractInputVariableNameOptionalAll<NestedInputVariables>
@@ -141,8 +146,10 @@ export type ExtractInputVariableNameOptional<
 // PromptTemplateFormat
 // ####################
 
+export type PromptTemplateInputValue = string
+
 export interface PromptTemplateFormatInputValuesBase {
-  [inputVariableName: string]: string
+  [inputVariableName: string]: PromptTemplateInputValue
 }
 
 export type PromptTemplateFormatInputValues<
@@ -155,9 +162,9 @@ export type PromptTemplateFormatInputValues<
   ? undefined | void
   : Prettify<
       {
-        [InputVariableName in InputVariableNameRequired]: string
+        [InputVariableName in InputVariableNameRequired]: PromptTemplateInputValue
       } & {
-        [InputVariableName in InputVariableNameOptional]?: string
+        [InputVariableName in InputVariableNameOptional]?: PromptTemplateInputValue
       }
     >
 
