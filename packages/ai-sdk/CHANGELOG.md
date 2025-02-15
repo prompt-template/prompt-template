@@ -1,5 +1,16 @@
 # @prompt-template/ai-sdk
 
+## 1.0.0
+
+### Minor Changes
+
+- 2da2f7b: Allow empty object format input values
+
+### Patch Changes
+
+- Updated dependencies [2da2f7b]
+  - @prompt-template/core@0.6.0
+
 ## 0.1.2
 
 ### Patch Changes
