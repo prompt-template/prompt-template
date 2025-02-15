@@ -47,6 +47,7 @@
     "openai": "^4.28.4",
     "tshy": "catalog:",
     "tsx": "^4.7.0",
+    "type-fest": "catalog:",
     "typescript": "catalog:",
     "vitest": "^2.1.5",
     "zod": "^3.22.4"

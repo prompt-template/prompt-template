@@ -1,4 +1,5 @@
 import { expectTypeOf, test } from 'vitest'
+import type { EmptyObject } from 'type-fest'
 
 import { PromptTemplate, PromptTemplateFormat } from '../../index.js'
 
@@ -7,7 +8,7 @@ test('`promptTemplate` with empty string', () => {
 
   type InputVariables = []
 
-  type InputValues = void | undefined
+  type InputValues = EmptyObject | void | undefined
 
   expectTypeOf(promptTemplate).toEqualTypeOf<PromptTemplate<InputVariables>>()
 
@@ -23,7 +24,7 @@ test('`promptTemplate` with basic string', () => {
 
   type InputVariables = []
 
-  type InputValues = void | undefined
+  type InputValues = EmptyObject | void | undefined
 
   expectTypeOf(promptTemplate).toEqualTypeOf<PromptTemplate<InputVariables>>()
 
@@ -166,7 +167,7 @@ test('`promptTemplate` with nested `promptTemplate` with empty string', () => {
 
   type InputVariables = [PromptTemplate<[]>]
 
-  type InputValues = void | undefined
+  type InputValues = EmptyObject | void | undefined
 
   expectTypeOf(promptTemplate).toEqualTypeOf<PromptTemplate<InputVariables>>()
 
@@ -184,7 +185,7 @@ test('`promptTemplate` with nested `promptTemplate` with basic string', () => {
 
   type InputVariables = [PromptTemplate<[]>]
 
-  type InputValues = void | undefined
+  type InputValues = EmptyObject | void | undefined
 
   expectTypeOf(promptTemplate).toEqualTypeOf<PromptTemplate<InputVariables>>()
 
@@ -347,7 +348,7 @@ test('`promptTemplate` with deeply nested `promptTemplate` with empty string', (
 
   type InputVariables = [PromptTemplate<[PromptTemplate<[]>]>]
 
-  type InputValues = void | undefined
+  type InputValues = EmptyObject | void | undefined
 
   expectTypeOf(promptTemplate).toEqualTypeOf<PromptTemplate<InputVariables>>()
 
@@ -367,7 +368,7 @@ test('`promptTemplate` with deeply nested `promptTemplate` with basic string', (
 
   type InputVariables = [PromptTemplate<[PromptTemplate<[]>]>]
 
-  type InputValues = void | undefined
+  type InputValues = EmptyObject | void | undefined
 
   expectTypeOf(promptTemplate).toEqualTypeOf<PromptTemplate<InputVariables>>()
 
