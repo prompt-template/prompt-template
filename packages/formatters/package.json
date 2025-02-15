@@ -1,6 +1,6 @@
 {
   "name": "@prompt-template/formatters",
-  "version": "1.0.0",
+  "version": "0.2.2",
   "description": "A collection of @prompt-template formatters",
   "author": "Aaron Casanova <aaronccasanova@gmail.com>",
   "license": "MIT",
