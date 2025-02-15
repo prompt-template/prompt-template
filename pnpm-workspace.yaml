@@ -11,4 +11,5 @@ catalog:
   prettier: ^3.2.5
   tshy: ^3.0.2
   turbo: ^2.2.3
+  type-fest: ^4.8.3
   typescript: ~5.5.4

@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "strip-indent": "^3.0.0",
-    "type-fest": "^4.8.3"
+    "type-fest": "catalog:"
   },
   "devDependencies": {
     "@prompt-template/eslint-config": "workspace:*",

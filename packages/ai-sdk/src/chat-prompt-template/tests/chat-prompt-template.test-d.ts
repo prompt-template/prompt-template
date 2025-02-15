@@ -1,5 +1,6 @@
 import { expectTypeOf, test } from 'vitest'
 import { PromptTemplate } from '@prompt-template/core'
+import type { EmptyObject } from 'type-fest'
 
 import { ChatPromptTemplate } from '../chat-prompt-template.js'
 
@@ -8,7 +9,7 @@ test('`chatPromptTemplate` with empty messages', () => {
 
   type Messages = never[]
 
-  type InputValues = void | undefined
+  type InputValues = EmptyObject | void | undefined
 
   expectTypeOf(chatPromptTemplate).toEqualTypeOf<ChatPromptTemplate<Messages>>()
 
@@ -24,7 +25,7 @@ test('`chatPromptTemplate` with basic message', () => {
 
   type Messages = { role: 'system'; content: string }[]
 
-  type InputValues = void | undefined
+  type InputValues = EmptyObject | void | undefined
 
   expectTypeOf(chatPromptTemplate).toEqualTypeOf<ChatPromptTemplate<Messages>>()
 

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { IsStringLiteral } from 'type-fest'
+import type { EmptyObject, IsStringLiteral } from 'type-fest'
 
 import { PromptTemplate } from './prompt-template.js'
 
@@ -159,7 +159,7 @@ export type PromptTemplateFormatInputValues<
   InputVariableNameOptional extends
     PromptTemplateInputVariableName = ExtractInputVariableNameOptional<InputVariables>,
 > = [ExtractInputVariableName<InputVariables>] extends [never]
-  ? undefined | void
+  ? EmptyObject | undefined | void
   : Prettify<
       {
         [InputVariableName in InputVariableNameRequired]: PromptTemplateInputValue
