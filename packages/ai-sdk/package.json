@@ -1,6 +1,6 @@
 {
   "name": "@prompt-template/ai-sdk",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "AI SDK @prompt-template adapter",
   "author": "Aaron Casanova <aaronccasanova@gmail.com>",
   "license": "MIT",
@@ -54,7 +54,7 @@
     "zod": "^3.22.4"
   },
   "peerDependencies": {
-    "@prompt-template/core": "^0.5.0",
+    "@prompt-template/core": "^0.6.0",
     "ai": "^4.0.0"
   },
   "publishConfig": {

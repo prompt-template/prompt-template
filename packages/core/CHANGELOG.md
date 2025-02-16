@@ -1,5 +1,11 @@
 # @prompt-template/core
 
+## 0.6.0
+
+### Minor Changes
+
+- 2da2f7b: Allow empty object format input values
+
 ## 0.5.0
 
 ### Minor Changes
