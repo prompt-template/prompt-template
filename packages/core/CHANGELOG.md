@@ -1,5 +1,11 @@
 # @prompt-template/core
 
+## 0.7.0
+
+### Minor Changes
+
+- c33cee9: Allow passing `undefined` and `void` to `format` when all optional input values
+
 ## 0.6.0
 
 ### Minor Changes

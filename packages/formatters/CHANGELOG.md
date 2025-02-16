@@ -1,5 +1,12 @@
 # @prompt-template/formatters
 
+## 1.0.0
+
+### Patch Changes
+
+- Updated dependencies [c33cee9]
+  - @prompt-template/core@0.7.0
+
 ## 0.2.2
 
 ### Patch Changes
