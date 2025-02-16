@@ -75,7 +75,7 @@ test('`promptTemplate` with literal `InputVariableConfig` with default', () => {
 
   type InputVariables = [{ readonly name: 'b'; readonly default: 'value' }]
 
-  type InputValues = { b?: string }
+  type InputValues = { b?: string } | undefined | void
 
   expectTypeOf(promptTemplate).toEqualTypeOf<PromptTemplate<InputVariables>>()
 
@@ -244,7 +244,7 @@ test('`promptTemplate` with nested `promptTemplate` with literal `InputVariableC
     PromptTemplate<[{ readonly name: 'b'; readonly default: 'value' }]>,
   ]
 
-  type InputValues = { b?: string }
+  type InputValues = { b?: string } | undefined | void
 
   expectTypeOf(promptTemplate).toEqualTypeOf<PromptTemplate<InputVariables>>()
 
@@ -437,7 +437,7 @@ test('`promptTemplate` with deeply nested `promptTemplate` with literal `InputVa
     >,
   ]
 
-  type InputValues = { b?: string }
+  type InputValues = { b?: string } | undefined | void
 
   expectTypeOf(promptTemplate).toEqualTypeOf<PromptTemplate<InputVariables>>()
 
