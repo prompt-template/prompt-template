@@ -17,7 +17,7 @@ export interface PromptTemplateBase {
   suffix: string
 
   format(
-    inputValues?: PromptTemplateFormatInputValuesBase | void,
+    inputValues?: PromptTemplateFormatInputValuesBase | undefined | void,
     options?: PromptTemplateFormatOptions,
   ): string
 
@@ -149,7 +149,19 @@ export type ExtractInputVariableNameOptional<
 export type PromptTemplateInputValue = string
 
 export interface PromptTemplateFormatInputValuesBase {
-  [inputVariableName: string]: PromptTemplateInputValue
+  [inputVariableName: string]: PromptTemplateInputValue | undefined
+}
+
+type CreateInputValuesRequired<
+  InputVariableNameRequired extends PromptTemplateInputVariableName,
+> = {
+  [InputVariableName in InputVariableNameRequired]: PromptTemplateInputValue
+}
+
+type CreateInputValuesOptional<
+  InputVariableNameOptional extends PromptTemplateInputVariableName,
+> = {
+  [InputVariableName in InputVariableNameOptional]?: PromptTemplateInputValue
 }
 
 export type PromptTemplateFormatInputValues<
@@ -158,15 +170,16 @@ export type PromptTemplateFormatInputValues<
     PromptTemplateInputVariableName = ExtractInputVariableNameRequired<InputVariables>,
   InputVariableNameOptional extends
     PromptTemplateInputVariableName = ExtractInputVariableNameOptional<InputVariables>,
-> = [ExtractInputVariableName<InputVariables>] extends [never]
-  ? EmptyObject | undefined | void
-  : Prettify<
-      {
-        [InputVariableName in InputVariableNameRequired]: PromptTemplateInputValue
-      } & {
-        [InputVariableName in InputVariableNameOptional]?: PromptTemplateInputValue
-      }
-    >
+> = [InputVariableNameRequired] extends [never]
+  ? [InputVariableNameOptional] extends [never]
+    ? EmptyObject | undefined | void
+    : CreateInputValuesOptional<InputVariableNameOptional> | undefined | void
+  : [InputVariableNameOptional] extends [never]
+    ? CreateInputValuesRequired<InputVariableNameRequired>
+    : Prettify<
+        CreateInputValuesRequired<InputVariableNameRequired> &
+          CreateInputValuesOptional<InputVariableNameOptional>
+      >
 
 export interface PromptTemplateFormatOptions {
   /**

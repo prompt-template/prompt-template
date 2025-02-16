@@ -95,7 +95,7 @@ test('`chatPromptTemplate` with `InputVariableConfig` and default', () => {
     >
   }[]
 
-  type InputValues = { b?: string }
+  type InputValues = { b?: string } | undefined | void
 
   expectTypeOf(chatPromptTemplate).toEqualTypeOf<ChatPromptTemplate<Messages>>()
 
