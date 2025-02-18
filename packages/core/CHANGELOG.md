@@ -1,5 +1,11 @@
 # @prompt-template/core
 
+## 0.10.0
+
+### Minor Changes
+
+- 516c74c: Exposed `walkInputVariables` method and added multiple traversal strategies
+
 ## 0.9.0
 
 ### Minor Changes

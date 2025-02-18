@@ -1,5 +1,12 @@
 # @prompt-template/ai-sdk
 
+## 1.0.0
+
+### Patch Changes
+
+- Updated dependencies [516c74c]
+  - @prompt-template/core@0.10.0
+
 ## 0.2.3
 
 ### Patch Changes
