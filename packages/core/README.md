@@ -346,6 +346,7 @@ const promptTemplateOptions = {
   prefix: 'prefix - ',
   suffix: ' - suffix',
   dedent: true, // Default
+  description: 'My prompt template description.',
 }
 
 const promptTemplate = PromptTemplate.create(promptTemplateOptions)`
@@ -431,6 +432,20 @@ const promptTemplate = PromptTemplate.create`
 
 const prompt = promptTemplate.format({})
 //=> 'My prompt template with inputVariableConfigDefault.'
+```
+
+### `InputVariableConfig.description`
+
+The `InputVariableConfig.description` property is a string used to describe the
+input variable.
+
+```ts
+const promptTemplate = PromptTemplate.create`
+  My prompt template with ${{
+    name: 'inputVariableConfigName',
+    description: 'My input variable description.',
+  }}.
+`
 ```
 
 ### `InputVariableConfig.onFormat`
