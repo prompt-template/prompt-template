@@ -1,6 +1,6 @@
 # @prompt-template/formatters
 
-## 1.0.0
+## 0.2.6
 
 ### Patch Changes
 
