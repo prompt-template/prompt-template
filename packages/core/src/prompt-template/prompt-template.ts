@@ -16,6 +16,7 @@ import type {
   PromptTemplateInputVariableName,
   PromptTemplateOptions,
   PromptTemplateStrings,
+  PromptTemplateWalkInputVariablesOptions,
   ValidateInputVariables,
 } from './types.js'
 
@@ -137,7 +138,7 @@ export class PromptTemplate<
   getInputVariableNames(): ExtractInputVariableName<InputVariables>[] {
     const inputVariableNamesSet = new Set<PromptTemplateInputVariableName>()
 
-    this.#walkInputVariables(this.inputVariables, {
+    this.walkInputVariables({
       onInputVariableName: (inputVariableName) => {
         inputVariableNamesSet.add(inputVariableName)
       },
@@ -158,7 +159,7 @@ export class PromptTemplate<
     const inputVariableNamesRequiredSet =
       new Set<PromptTemplateInputVariableName>()
 
-    this.#walkInputVariables(this.inputVariables, {
+    this.walkInputVariables({
       onInputVariableName: (inputVariableName) => {
         inputVariableNamesRequiredSet.add(inputVariableName)
       },
@@ -184,7 +185,7 @@ export class PromptTemplate<
     const inputVariableNamesRequiredSet =
       new Set<PromptTemplateInputVariableName>()
 
-    this.#walkInputVariables(this.inputVariables, {
+    this.walkInputVariables({
       onInputVariableName: (inputVariableName) => {
         inputVariableNamesRequiredSet.add(inputVariableName)
       },
@@ -208,31 +209,8 @@ export class PromptTemplate<
     return inputVariableNamesOptional as ExtractInputVariableNameOptional<InputVariables>[]
   }
 
-  #walkInputVariables(
-    inputVariables: readonly PromptTemplateInputVariable[],
-    callbacks: {
-      onInputVariableName?: (
-        inputVariableName: PromptTemplateInputVariableName,
-      ) => void
-      onInputVariableConfig?: (
-        inputVariableConfig: PromptTemplateInputVariableConfig,
-      ) => void
-      onPromptTemplate?: (promptTemplate: PromptTemplateBase) => void
-    },
-  ) {
-    for (const inputVariable of inputVariables) {
-      if (isInputVariableName(inputVariable)) {
-        callbacks.onInputVariableName?.(inputVariable)
-        //
-      } else if (isInputVariableConfig(inputVariable)) {
-        callbacks.onInputVariableConfig?.(inputVariable)
-        //
-      } else {
-        callbacks.onPromptTemplate?.(inputVariable)
-
-        this.#walkInputVariables(inputVariable.inputVariables, callbacks)
-      }
-    }
+  walkInputVariables(options: PromptTemplateWalkInputVariablesOptions): void {
+    _walkInputVariables(this.inputVariables, options)
   }
 
   #interleave(callbacks: {
@@ -361,4 +339,55 @@ function preserveIndent(inputValue: string, accumulatedPrompt: string) {
     .split(newLineRegExp)
     .map((line, i) => (i === 0 ? line : lastLineIndent + line))
     .join('\n')
+}
+
+function _walkInputVariables(
+  inputVariables: readonly PromptTemplateInputVariable[],
+  options: PromptTemplateWalkInputVariablesOptions,
+) {
+  const strategy = options.strategy ?? 'depth-first'
+
+  switch (strategy) {
+    case 'depth-first': {
+      for (const inputVariable of inputVariables) {
+        if (isInputVariableName(inputVariable)) {
+          options.onInputVariableName?.(inputVariable)
+          //
+        } else if (isInputVariableConfig(inputVariable)) {
+          options.onInputVariableConfig?.(inputVariable)
+          //
+        } else {
+          options.onPromptTemplate?.(inputVariable)
+
+          _walkInputVariables(inputVariable.inputVariables, options)
+        }
+      }
+      break
+    }
+    case 'breadth-first': {
+      const queue = [...inputVariables]
+
+      while (queue.length > 0) {
+        const inputVariable = queue.shift()!
+
+        if (isInputVariableName(inputVariable)) {
+          options.onInputVariableName?.(inputVariable)
+          //
+        } else if (isInputVariableConfig(inputVariable)) {
+          options.onInputVariableConfig?.(inputVariable)
+          //
+        } else {
+          options.onPromptTemplate?.(inputVariable)
+
+          queue.push(...inputVariable.inputVariables)
+        }
+      }
+      break
+    }
+    default: {
+      const _strategy: never = strategy
+
+      throw new Error(`Unknown strategy '${_strategy}'`)
+    }
+  }
 }
