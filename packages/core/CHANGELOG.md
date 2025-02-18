@@ -1,5 +1,11 @@
 # @prompt-template/core
 
+## 0.8.0
+
+### Minor Changes
+
+- 4480b17: Enabled `exactOptionalPropertyTypes` and updated types
+
 ## 0.7.0
 
 ### Minor Changes
