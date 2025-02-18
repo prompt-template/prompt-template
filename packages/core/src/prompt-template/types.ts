@@ -18,7 +18,7 @@ export interface PromptTemplateBase {
 
   format(
     inputValues?: PromptTemplateFormatInputValuesBase | undefined | void,
-    options?: PromptTemplateFormatOptions,
+    options?: PromptTemplateFormatOptions | undefined,
   ): string
 
   getInputVariableNames(): PromptTemplateInputVariableName[]
@@ -39,11 +39,17 @@ export type PromptTemplateInputVariableNameError =
 
 export interface PromptTemplateInputVariableConfig {
   name: PromptTemplateInputVariableName
-  default?: PromptTemplateInputValue
-  schema?: {
-    parse: (inputValue: PromptTemplateInputValue) => PromptTemplateInputValue
-  }
-  onFormat?: (inputValue: PromptTemplateInputValue) => PromptTemplateInputValue
+  default?: PromptTemplateInputValue | undefined
+  schema?:
+    | {
+        parse: (
+          inputValue: PromptTemplateInputValue,
+        ) => PromptTemplateInputValue
+      }
+    | undefined
+  onFormat?:
+    | ((inputValue: PromptTemplateInputValue) => PromptTemplateInputValue)
+    | undefined
 }
 
 export type PromptTemplateStrings = readonly string[]
@@ -161,7 +167,9 @@ type CreateInputValuesRequired<
 type CreateInputValuesOptional<
   InputVariableNameOptional extends PromptTemplateInputVariableName,
 > = {
-  [InputVariableName in InputVariableNameOptional]?: PromptTemplateInputValue
+  [InputVariableName in InputVariableNameOptional]?:
+    | PromptTemplateInputValue
+    | undefined
 }
 
 export type PromptTemplateFormatInputValues<
@@ -185,14 +193,14 @@ export interface PromptTemplateFormatOptions {
   /**
    * @default true
    */
-  validateInputValues?: boolean
+  validateInputValues?: boolean | undefined
 }
 
 export type PromptTemplateFormat<
   InputVariables extends PromptTemplateInputVariable[],
 > = (
   inputValues: PromptTemplateFormatInputValues<InputVariables>,
-  options?: PromptTemplateFormatOptions,
+  options?: PromptTemplateFormatOptions | undefined,
 ) => string
 
 // #####################
@@ -203,9 +211,9 @@ export interface PromptTemplateOptions {
   /**
    * @default true
    */
-  dedent?: boolean
-  prefix?: string
-  suffix?: string
+  dedent?: boolean | undefined
+  prefix?: string | undefined
+  suffix?: string | undefined
 }
 
 // ####################

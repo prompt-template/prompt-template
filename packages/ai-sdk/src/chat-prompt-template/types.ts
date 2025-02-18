@@ -16,8 +16,8 @@ export interface ChatPromptTemplateBase {
   readonly messages: readonly ChatPromptTemplateMessage<any>[]
 
   format(
-    inputValues?: PromptTemplateFormatInputValuesBase | void,
-    options?: PromptTemplateFormatOptions,
+    inputValues?: PromptTemplateFormatInputValuesBase | undefined | void,
+    options?: PromptTemplateFormatOptions | undefined,
   ): CoreMessage[]
 
   getInputVariables(): PromptTemplateInputVariable[]

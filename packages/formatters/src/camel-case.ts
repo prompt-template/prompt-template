@@ -27,7 +27,9 @@ export function withCamelCase<
   U extends PromptTemplateInputVariableConfigPartial | undefined = undefined,
 >(
   name: T,
-  extendedInputVariableConfig?: U & { formatterOptions?: CamelCaseOptions },
+  extendedInputVariableConfig?:
+    | (U & { formatterOptions?: CamelCaseOptions | undefined })
+    | undefined,
 ): WithCamelCaseResult<T, U> {
   const { formatterOptions, ...inputVariableConfig } =
     extendedInputVariableConfig ?? {}
