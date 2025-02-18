@@ -7,6 +7,18 @@ import { PromptTemplate } from './prompt-template.js'
 // PromptTemplateBase
 // ##################
 
+export interface PromptTemplateWalkInputVariablesOptions {
+  /** @default 'depth-first' */
+  strategy?: 'breadth-first' | 'depth-first'
+  onInputVariableName?:
+    | ((inputVariableName: PromptTemplateInputVariableName) => void)
+    | undefined
+  onInputVariableConfig?:
+    | ((inputVariableConfig: PromptTemplateInputVariableConfig) => void)
+    | undefined
+  onPromptTemplate?: ((promptTemplate: PromptTemplateBase) => void) | undefined
+}
+
 export interface PromptTemplateBase {
   readonly templateStrings: PromptTemplateStrings
 
@@ -28,6 +40,8 @@ export interface PromptTemplateBase {
   getInputVariableNamesRequired(): PromptTemplateInputVariableName[]
 
   getInputVariableNamesOptional(): PromptTemplateInputVariableName[]
+
+  walkInputVariables(options: PromptTemplateWalkInputVariablesOptions): void
 }
 
 // ###########################

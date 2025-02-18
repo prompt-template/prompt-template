@@ -335,6 +335,40 @@ promptTemplate.getInputVariableNamesOptional()
 //=> []
 ```
 
+### `walkInputVariables(options)`
+
+A [`PromptTemplate`](#prompttemplate-class) instance method that recursively
+walks all input variables.
+
+```ts
+const nestedPromptTemplate = PromptTemplate.create`
+  My nested prompt template with ${'nestedInputVariableName'}.
+`
+
+const promptTemplate = PromptTemplate.create`
+  - My prompt template with ${'inputVariableName'}.
+  - My prompt template with ${{
+    name: 'inputVariableConfigName',
+    default: 'inputVariableConfigDefault',
+  }}.
+  - ${nestedPromptTemplate}
+`
+
+promptTemplate.walkInputVariables({
+  strategy: 'depth-first', // Default
+  onInputVariableName(inputVariableName) {
+    console.log(inputVariableName)
+    //=> 'inputVariableName'
+    //=> 'nestedInputVariableName'
+  },
+  onInputVariableConfig(inputVariableConfig) {
+    console.log(inputVariableConfig.name),
+    //=> 'inputVariableConfigName'
+  },
+  onPromptTemplate(promptTemplate) {/* ... */},
+})
+```
+
 ### `PromptTemplateOptions`
 
 A `PromptTemplateOptions` object is passed to a
