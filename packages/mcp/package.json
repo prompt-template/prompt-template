@@ -1,6 +1,6 @@
 {
   "name": "@prompt-template/mcp",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "Model Context Protocol @prompt-template adapter",
   "author": "Aaron Casanova <aaronccasanova@gmail.com>",
   "license": "MIT",
