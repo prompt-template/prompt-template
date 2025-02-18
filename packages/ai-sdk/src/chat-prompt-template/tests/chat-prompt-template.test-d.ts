@@ -163,12 +163,12 @@ test('`chatPromptTemplate` multiple messages and nested PromptTemplate', () => {
     | {
         role: 'system'
         content: string
-        promptTemplate?: undefined
+        promptTemplate?: never
       }
     | {
         role: 'user'
         promptTemplate: PromptTemplate<readonly ['a']>
-        content?: undefined
+        content?: never
       }
     | {
         role: 'assistant'
@@ -181,7 +181,7 @@ test('`chatPromptTemplate` multiple messages and nested PromptTemplate', () => {
             PromptTemplate<readonly ['c']>,
           ]
         >
-        content?: undefined
+        content?: never
       }
   )[]
 
