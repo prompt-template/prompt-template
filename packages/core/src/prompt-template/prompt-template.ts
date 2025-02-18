@@ -61,11 +61,13 @@ export class PromptTemplate<
 
   readonly inputVariables: ValidateInputVariables<InputVariables>
 
+  #dedent: boolean
+
+  description?: string | undefined
+
   prefix: string
 
   suffix: string
-
-  #dedent: boolean
 
   constructor(
     templateStrings: PromptTemplateStrings,
@@ -77,9 +79,10 @@ export class PromptTemplate<
 
     this.#validateInputVariables()
 
+    this.#dedent = options.dedent ?? true
+    this.description = options.description
     this.prefix = options.prefix ?? ''
     this.suffix = options.suffix ?? ''
-    this.#dedent = options.dedent ?? true
   }
 
   format(

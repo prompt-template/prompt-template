@@ -1152,6 +1152,31 @@ describe('promptTemplate `InputVariableConfig`', () => {
 
     expect(getPrompt).toThrow()
   })
+
+  it('handles `InputVariableConfig` with `description`', () => {
+    const promptTemplate = PromptTemplate.create`${{
+      name: 'a',
+      description: 'foo',
+    }}`
+
+    expect(promptTemplate.inputVariables[0].description).toBe('foo')
+  })
+
+  it('handles `InputVariableConfig` with `description` nested', () => {
+    const promptTemplateNested = PromptTemplate.create`
+      ${{ name: 'b', description: 'bar' }}
+    `
+
+    const promptTemplate = PromptTemplate.create`
+      ${{ name: 'a', description: 'foo' }}
+      ${promptTemplateNested}
+    `
+
+    expect(promptTemplate.inputVariables[0].description).toBe('foo')
+    expect(promptTemplate.inputVariables[1].inputVariables[0].description).toBe(
+      'bar',
+    )
+  })
 })
 
 describe('promptTemplate `PromptTemplateOptions`', () => {
@@ -1195,6 +1220,18 @@ describe('promptTemplate `PromptTemplateOptions`', () => {
     const prompt = promptTemplate.format()
 
     expect(prompt).toBe('0\n  1')
+  })
+
+  it('handles `PromptTemplateOptions` with `description` default', () => {
+    const promptTemplate = PromptTemplate.create``
+
+    expect(promptTemplate.description).toBeUndefined()
+  })
+
+  it('handles `PromptTemplateOptions` with `description` explicit', () => {
+    const promptTemplate = PromptTemplate.create({ description: 'foo' })``
+
+    expect(promptTemplate.description).toBe('foo')
   })
 
   it('handles `PromptTemplateOptions` with `prefix`', () => {

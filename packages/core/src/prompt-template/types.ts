@@ -12,6 +12,8 @@ export interface PromptTemplateBase {
 
   readonly inputVariables: readonly PromptTemplateInputVariable[]
 
+  description?: string | undefined
+
   prefix: string
 
   suffix: string
@@ -40,6 +42,7 @@ export type PromptTemplateInputVariableNameError =
 export interface PromptTemplateInputVariableConfig {
   name: PromptTemplateInputVariableName
   default?: PromptTemplateInputValue | undefined
+  description?: string | undefined
   schema?:
     | {
         parse: (
@@ -208,10 +211,9 @@ export type PromptTemplateFormat<
 // #####################
 
 export interface PromptTemplateOptions {
-  /**
-   * @default true
-   */
+  /** @default true */
   dedent?: boolean | undefined
+  description?: string | undefined
   prefix?: string | undefined
   suffix?: string | undefined
 }
