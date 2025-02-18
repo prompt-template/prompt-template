@@ -1,5 +1,11 @@
 # @prompt-template/core
 
+## 0.9.0
+
+### Minor Changes
+
+- 555b5d3: Added `description` to `PromptTemplate` and `InputVariableConfig`
+
 ## 0.8.0
 
 ### Minor Changes
