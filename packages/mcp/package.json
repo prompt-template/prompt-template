@@ -38,6 +38,9 @@
     "clean": "rm -rf .tshy* && rm -rf .turbo && rm -f .eslintcache && rm -rf dist && rm -rf node_modules",
     "prepublishOnly": "pnpm build"
   },
+  "dependencies": {
+    "type-fest": "catalog:"
+  },
   "devDependencies": {
     "@modelcontextprotocol/sdk": "^1.5.0",
     "@prompt-template/core": "workspace:*",
@@ -46,7 +49,8 @@
     "eslint": "catalog:",
     "tshy": "catalog:",
     "typescript": "catalog:",
-    "vitest": "^2.1.5"
+    "vitest": "^2.1.5",
+    "zod": "^3.22.4"
   },
   "peerDependencies": {
     "@modelcontextprotocol/sdk": "^1.5.0",

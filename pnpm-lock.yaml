@@ -185,6 +185,10 @@ importers:
         version: 2.1.5(@types/node@18.19.64)
 
   packages/mcp:
+    dependencies:
+      type-fest:
+        specifier: 'catalog:'
+        version: 4.27.0
     devDependencies:
       '@modelcontextprotocol/sdk':
         specifier: ^1.5.0
@@ -210,6 +214,9 @@ importers:
       vitest:
         specifier: ^2.1.5
         version: 2.1.5(@types/node@18.19.64)
+      zod:
+        specifier: ^3.22.4
+        version: 3.23.8
 
   packages/openai:
     devDependencies:
