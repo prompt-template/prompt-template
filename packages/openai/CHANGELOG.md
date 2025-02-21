@@ -1,5 +1,11 @@
 # @prompt-template/openai
 
+## 0.3.0
+
+### Minor Changes
+
+- b1e8445: Updated `ChatPromptTemplate` to not dedupe `inputVariables`
+
 ## 0.2.4
 
 ### Patch Changes
