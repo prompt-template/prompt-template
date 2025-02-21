@@ -20,35 +20,7 @@ import type {
   ValidateInputVariables,
 } from './types.js'
 
-function getCreatePromptTemplate(options: PromptTemplateOptions) {
-  function createPromptTemplate<
-    T extends PromptTemplateStrings | PromptTemplateOptions,
-    const InputVariables extends readonly PromptTemplateInputVariable[],
-  >(
-    templateStringsOrOptions: T,
-    ...inputVariables: [...ValidateInputVariables<InputVariables>]
-  ): ExtractCreatePromptTemplateResult<T, InputVariables> {
-    if (isPromptTemplateOptions(templateStringsOrOptions)) {
-      return getCreatePromptTemplate({
-        ...options,
-        ...templateStringsOrOptions,
-      }) as ExtractCreatePromptTemplateResult<T, InputVariables>
-    }
-
-    return new PromptTemplate<InputVariables>(
-      templateStringsOrOptions,
-      inputVariables,
-      options,
-    ) as ExtractCreatePromptTemplateResult<T, InputVariables>
-  }
-
-  return createPromptTemplate
-}
-
 const createPromptTemplate = getCreatePromptTemplate({})
-
-const promptTemplateFromString = (string: string) =>
-  new PromptTemplate([string], [], { dedent: false })
 
 export class PromptTemplate<
   InputVariables extends readonly PromptTemplateInputVariable[],
@@ -57,6 +29,8 @@ export class PromptTemplate<
   static create = createPromptTemplate
 
   static from = promptTemplateFromString
+
+  static walkInputVariables = walkInputVariables
 
   readonly templateStrings: PromptTemplateStrings
 
@@ -210,7 +184,7 @@ export class PromptTemplate<
   }
 
   walkInputVariables(options: PromptTemplateWalkInputVariablesOptions): void {
-    _walkInputVariables(this.inputVariables, options)
+    PromptTemplate.walkInputVariables(this.inputVariables, options)
   }
 
   #interleave(callbacks: {
@@ -289,6 +263,94 @@ export class PromptTemplate<
   }
 }
 
+// ##############
+// Static methods
+// ##############
+
+function getCreatePromptTemplate(options: PromptTemplateOptions) {
+  function createPromptTemplate<
+    T extends PromptTemplateStrings | PromptTemplateOptions,
+    const InputVariables extends readonly PromptTemplateInputVariable[],
+  >(
+    templateStringsOrOptions: T,
+    ...inputVariables: [...ValidateInputVariables<InputVariables>]
+  ): ExtractCreatePromptTemplateResult<T, InputVariables> {
+    if (isPromptTemplateOptions(templateStringsOrOptions)) {
+      return getCreatePromptTemplate({
+        ...options,
+        ...templateStringsOrOptions,
+      }) as ExtractCreatePromptTemplateResult<T, InputVariables>
+    }
+
+    return new PromptTemplate<InputVariables>(
+      templateStringsOrOptions,
+      inputVariables,
+      options,
+    ) as ExtractCreatePromptTemplateResult<T, InputVariables>
+  }
+
+  return createPromptTemplate
+}
+
+function promptTemplateFromString(string: string) {
+  return new PromptTemplate([string], [], { dedent: false })
+}
+
+function walkInputVariables(
+  inputVariables: readonly PromptTemplateInputVariable[],
+  options: PromptTemplateWalkInputVariablesOptions,
+) {
+  const strategy = options.strategy ?? 'depth-first'
+
+  switch (strategy) {
+    case 'depth-first': {
+      for (const inputVariable of inputVariables) {
+        if (isInputVariableName(inputVariable)) {
+          options.onInputVariableName?.(inputVariable)
+          //
+        } else if (isInputVariableConfig(inputVariable)) {
+          options.onInputVariableConfig?.(inputVariable)
+          //
+        } else {
+          options.onPromptTemplate?.(inputVariable)
+
+          walkInputVariables(inputVariable.inputVariables, options)
+        }
+      }
+      break
+    }
+    case 'breadth-first': {
+      const queue = [...inputVariables]
+
+      while (queue.length > 0) {
+        const inputVariable = queue.shift()!
+
+        if (isInputVariableName(inputVariable)) {
+          options.onInputVariableName?.(inputVariable)
+          //
+        } else if (isInputVariableConfig(inputVariable)) {
+          options.onInputVariableConfig?.(inputVariable)
+          //
+        } else {
+          options.onPromptTemplate?.(inputVariable)
+
+          queue.push(...inputVariable.inputVariables)
+        }
+      }
+      break
+    }
+    default: {
+      const _strategy: never = strategy
+
+      throw new Error(`Unknown strategy '${_strategy}'`)
+    }
+  }
+}
+
+// #########
+// Utilities
+// #########
+
 function isInputVariableName(
   inputVariable: PromptTemplateInputVariable,
 ): inputVariable is PromptTemplateInputVariableName {
@@ -339,55 +401,4 @@ function preserveIndent(inputValue: string, accumulatedPrompt: string) {
     .split(newLineRegExp)
     .map((line, i) => (i === 0 ? line : lastLineIndent + line))
     .join('\n')
-}
-
-function _walkInputVariables(
-  inputVariables: readonly PromptTemplateInputVariable[],
-  options: PromptTemplateWalkInputVariablesOptions,
-) {
-  const strategy = options.strategy ?? 'depth-first'
-
-  switch (strategy) {
-    case 'depth-first': {
-      for (const inputVariable of inputVariables) {
-        if (isInputVariableName(inputVariable)) {
-          options.onInputVariableName?.(inputVariable)
-          //
-        } else if (isInputVariableConfig(inputVariable)) {
-          options.onInputVariableConfig?.(inputVariable)
-          //
-        } else {
-          options.onPromptTemplate?.(inputVariable)
-
-          _walkInputVariables(inputVariable.inputVariables, options)
-        }
-      }
-      break
-    }
-    case 'breadth-first': {
-      const queue = [...inputVariables]
-
-      while (queue.length > 0) {
-        const inputVariable = queue.shift()!
-
-        if (isInputVariableName(inputVariable)) {
-          options.onInputVariableName?.(inputVariable)
-          //
-        } else if (isInputVariableConfig(inputVariable)) {
-          options.onInputVariableConfig?.(inputVariable)
-          //
-        } else {
-          options.onPromptTemplate?.(inputVariable)
-
-          queue.push(...inputVariable.inputVariables)
-        }
-      }
-      break
-    }
-    default: {
-      const _strategy: never = strategy
-
-      throw new Error(`Unknown strategy '${_strategy}'`)
-    }
-  }
 }

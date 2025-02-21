@@ -11,6 +11,7 @@ export type {
   PromptTemplateInputVariableName,
   PromptTemplateOptions,
   PromptTemplateStrings,
+  PromptTemplateWalkInputVariablesOptions,
 } from './prompt-template/types.js'
 
 export { PromptTemplate } from './prompt-template/prompt-template.js'
