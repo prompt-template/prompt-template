@@ -1,5 +1,11 @@
 # @prompt-template/ai-sdk
 
+## 0.4.0
+
+### Minor Changes
+
+- 9bb0ea6: Added `walkInputVariables` method to `ChatPromptTemplate`
+
 ## 0.3.1
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @prompt-template/mcp
 
+## 0.3.0
+
+### Minor Changes
+
+- 9bb0ea6: Added `walkInputVariables` method to `ChatPromptTemplate`
+
 ## 0.2.1
 
 ### Patch Changes
