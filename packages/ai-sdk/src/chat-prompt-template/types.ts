@@ -16,6 +16,8 @@ import type { CoreMessage } from 'ai'
 export interface ChatPromptTemplateBase {
   readonly messages: readonly ChatPromptTemplateMessage<any>[]
 
+  description?: string | undefined
+
   format(
     inputValues?: PromptTemplateFormatInputValuesBase | undefined | void,
     options?: PromptTemplateFormatOptions | undefined,
