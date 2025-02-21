@@ -1,5 +1,11 @@
 # @prompt-template/mcp
 
+## 0.4.0
+
+### Minor Changes
+
+- 2eef4d3: Updated `ChatPromptTemplate` constructor and static `from` method arguments and added `description` field
+
 ## 0.3.0
 
 ### Minor Changes
