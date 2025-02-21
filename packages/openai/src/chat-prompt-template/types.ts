@@ -5,6 +5,7 @@ import type {
   PromptTemplateFormatOptions,
   PromptTemplateInputVariable,
   PromptTemplateInputVariableName,
+  PromptTemplateWalkInputVariablesOptions,
 } from '@prompt-template/core'
 import type { ChatCompletionMessageParam } from 'openai/resources/index.js'
 
@@ -27,6 +28,8 @@ export interface ChatPromptTemplateBase {
   getInputVariableNamesRequired(): PromptTemplateInputVariableName[]
 
   getInputVariableNamesOptional(): PromptTemplateInputVariableName[]
+
+  walkInputVariables(options: PromptTemplateWalkInputVariablesOptions): void
 }
 
 export type ChatPromptTemplateMessage<

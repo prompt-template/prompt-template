@@ -5,6 +5,7 @@ import type {
   PromptTemplateFormatOptions,
   PromptTemplateInputVariable,
   PromptTemplateInputVariableName,
+  PromptTemplateWalkInputVariablesOptions,
 } from '@prompt-template/core'
 import type {
   PromptMessage,
@@ -30,6 +31,8 @@ export interface ChatPromptTemplateBase {
   getInputVariableNamesRequired(): PromptTemplateInputVariableName[]
 
   getInputVariableNamesOptional(): PromptTemplateInputVariableName[]
+
+  walkInputVariables(options: PromptTemplateWalkInputVariablesOptions): void
 }
 
 // Adapted from https://github.com/sindresorhus/type-fest/blob/db3403a4b3d35641baacca7c1f41500a0e889528/source/omit-index-signature.d.ts#L91
