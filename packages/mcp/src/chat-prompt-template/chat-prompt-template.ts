@@ -17,10 +17,21 @@ import {
   ExtractInputVariables,
 } from './types.js'
 
+type ChatPromptTemplateOptions<
+  Messages extends readonly ChatPromptTemplateMessage<any>[],
+> = {
+  description?: string | undefined
+  messages: Messages
+}
+
 function chatPromptTemplateFromMessages<
   Messages extends readonly ChatPromptTemplateMessage<any>[],
->(messages: Messages) {
-  return new ChatPromptTemplate(messages)
+>(messagesOrOptions: Messages | ChatPromptTemplateOptions<Messages>) {
+  return new ChatPromptTemplate(
+    'messages' in messagesOrOptions
+      ? messagesOrOptions
+      : { messages: messagesOrOptions },
+  )
 }
 
 export class ChatPromptTemplate<
@@ -31,8 +42,11 @@ export class ChatPromptTemplate<
 
   readonly messages: Messages
 
-  constructor(messages: Messages) {
-    this.messages = messages
+  description?: string | undefined
+
+  constructor(options: ChatPromptTemplateOptions<Messages>) {
+    this.messages = options.messages
+    this.description = options.description
   }
 
   format(
