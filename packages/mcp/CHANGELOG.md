@@ -1,5 +1,11 @@
 # @prompt-template/mcp
 
+## 0.5.0
+
+### Minor Changes
+
+- 587dd2e: Updated `toPrompt` to support `ChatPromptTemplate`
+
 ## 0.4.0
 
 ### Minor Changes
