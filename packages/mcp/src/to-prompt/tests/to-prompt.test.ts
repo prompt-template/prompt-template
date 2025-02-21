@@ -2,6 +2,7 @@ import { PromptTemplate } from '@prompt-template/core'
 import { describe, it, expect } from 'vitest'
 
 import { toPrompt } from '../to-prompt.js'
+import { ChatPromptTemplate } from '../../chat-prompt-template/chat-prompt-template.js'
 
 describe('promptTemplate', () => {
   it('handles empty string', () => {
@@ -751,6 +752,298 @@ describe('promptTemplate `PromptTemplateOptions`', () => {
       name: 'name',
       description: 'foo',
       arguments: [],
+    })
+  })
+})
+
+describe('chatPromptTemplate', () => {
+  it('handles empty string', () => {
+    const chatPromptTemplate = ChatPromptTemplate.from([
+      {
+        role: 'user',
+        content: {
+          type: 'text',
+          promptTemplate: PromptTemplate.create``,
+        },
+      },
+    ])
+
+    expect(toPrompt('name', chatPromptTemplate)).toEqual({
+      name: 'name',
+      description: undefined,
+      arguments: [],
+    })
+  })
+
+  it('handles basic string', () => {
+    const chatPromptTemplate = ChatPromptTemplate.from([
+      {
+        role: 'user',
+        content: {
+          type: 'text',
+          promptTemplate: PromptTemplate.create`0`,
+        },
+      },
+    ])
+
+    expect(toPrompt('name', chatPromptTemplate)).toEqual({
+      name: 'name',
+      description: undefined,
+      arguments: [],
+    })
+  })
+
+  it('handles `InputVariableName`', () => {
+    const chatPromptTemplate = ChatPromptTemplate.from([
+      {
+        role: 'user',
+        content: {
+          type: 'text',
+          promptTemplate: PromptTemplate.create`${'a'}`,
+        },
+      },
+    ])
+
+    expect(toPrompt('name', chatPromptTemplate)).toEqual({
+      name: 'name',
+      description: undefined,
+      arguments: [
+        {
+          name: 'a',
+          required: true,
+        },
+      ],
+    })
+  })
+
+  it('handles `InputVariableConfig`', () => {
+    const chatPromptTemplate = ChatPromptTemplate.from([
+      {
+        role: 'user',
+        content: {
+          type: 'text',
+          promptTemplate: PromptTemplate.create`${{ name: 'b' }}`,
+        },
+      },
+    ])
+
+    expect(toPrompt('name', chatPromptTemplate)).toEqual({
+      name: 'name',
+      description: undefined,
+      arguments: [
+        {
+          name: 'b',
+          required: true,
+        },
+      ],
+    })
+  })
+
+  it('handles `InputVariableConfig` with `default`', () => {
+    const chatPromptTemplate = ChatPromptTemplate.from([
+      {
+        role: 'user',
+        content: {
+          type: 'text',
+          promptTemplate: PromptTemplate.create`${{
+            name: 'b',
+            default: 'default',
+          }}`,
+        },
+      },
+    ])
+
+    expect(toPrompt('name', chatPromptTemplate)).toEqual({
+      name: 'name',
+      description: undefined,
+      arguments: [
+        {
+          name: 'b',
+          required: false,
+        },
+      ],
+    })
+  })
+
+  it('handles `InputVariableName` and `InputVariableConfig`', () => {
+    const chatPromptTemplate = ChatPromptTemplate.from([
+      {
+        role: 'user',
+        content: {
+          type: 'text',
+          promptTemplate: PromptTemplate.create`${'a'} ${{ name: 'b' }}`,
+        },
+      },
+    ])
+
+    expect(toPrompt('name', chatPromptTemplate)).toEqual({
+      name: 'name',
+      description: undefined,
+      arguments: [
+        {
+          name: 'a',
+          required: true,
+        },
+        {
+          name: 'b',
+          required: true,
+        },
+      ],
+    })
+  })
+
+  it('handles `InputVariableName` and `InputVariableConfig` with `default`', () => {
+    const chatPromptTemplate = ChatPromptTemplate.from([
+      {
+        role: 'user',
+        content: {
+          type: 'text',
+          promptTemplate: PromptTemplate.create`${'a'} ${{
+            name: 'b',
+            default: 'default',
+          }}`,
+        },
+      },
+    ])
+
+    expect(toPrompt('name', chatPromptTemplate)).toEqual({
+      name: 'name',
+      description: undefined,
+      arguments: [
+        {
+          name: 'a',
+          required: true,
+        },
+        {
+          name: 'b',
+          required: false,
+        },
+      ],
+    })
+  })
+
+  it('handles `InputVariableName`, `InputVariableConfig`, and `InputVariableName`', () => {
+    const chatPromptTemplate = ChatPromptTemplate.from([
+      {
+        role: 'user',
+        content: {
+          type: 'text',
+          promptTemplate: PromptTemplate.create`${'a'} ${{ name: 'b' }} ${'c'}`,
+        },
+      },
+    ])
+
+    expect(toPrompt('name', chatPromptTemplate)).toEqual({
+      name: 'name',
+      description: undefined,
+      arguments: [
+        {
+          name: 'a',
+          required: true,
+        },
+        {
+          name: 'b',
+          required: true,
+        },
+        {
+          name: 'c',
+          required: true,
+        },
+      ],
+    })
+  })
+
+  it('handles `InputVariableName`, `InputVariableConfig` with `default`, and `InputVariableName`', () => {
+    const chatPromptTemplate = ChatPromptTemplate.from([
+      {
+        role: 'user',
+        content: {
+          type: 'text',
+          promptTemplate: PromptTemplate.create`${'a'} ${{
+            name: 'b',
+            default: 'default',
+          }} ${'c'}`,
+        },
+      },
+    ])
+
+    expect(toPrompt('name', chatPromptTemplate)).toEqual({
+      name: 'name',
+      description: undefined,
+      arguments: [
+        {
+          name: 'a',
+          required: true,
+        },
+        {
+          name: 'b',
+          required: false,
+        },
+        {
+          name: 'c',
+          required: true,
+        },
+      ],
+    })
+  })
+
+  it('handles duplicate inputVariables', () => {
+    const chatPromptTemplate = ChatPromptTemplate.from([
+      {
+        role: 'user',
+        content: {
+          type: 'text',
+          promptTemplate: PromptTemplate.create`${'a'} ${'b'} ${{
+            name: 'b',
+            default: 'default',
+          }}`,
+        },
+      },
+    ])
+
+    expect(toPrompt('name', chatPromptTemplate)).toEqual({
+      name: 'name',
+      description: undefined,
+      arguments: [
+        {
+          name: 'a',
+          required: true,
+        },
+        {
+          name: 'b',
+          required: false,
+        },
+      ],
+    })
+  })
+
+  it('handles duplicate inputVariables reversed', () => {
+    const chatPromptTemplate = ChatPromptTemplate.from([
+      {
+        role: 'user',
+        content: {
+          type: 'text',
+          promptTemplate: PromptTemplate.create`${'a'} ${{
+            name: 'b',
+            default: 'default',
+          }} ${'b'}`,
+        },
+      },
+    ])
+
+    expect(toPrompt('name', chatPromptTemplate)).toEqual({
+      name: 'name',
+      description: undefined,
+      arguments: [
+        {
+          name: 'a',
+          required: true,
+        },
+        {
+          name: 'b',
+          required: false,
+        },
+      ],
     })
   })
 })

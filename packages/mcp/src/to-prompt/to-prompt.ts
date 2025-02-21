@@ -1,9 +1,11 @@
 import { PromptTemplate } from '@prompt-template/core'
 import { Prompt, PromptArgument } from '@modelcontextprotocol/sdk/types.js'
 
+import { ChatPromptTemplate } from '../chat-prompt-template/chat-prompt-template.js'
+
 export function toPrompt(
   name: Prompt['name'],
-  promptTemplate: PromptTemplate<any>,
+  promptTemplate: PromptTemplate<any> | ChatPromptTemplate<any>,
 ): Prompt {
   const promptArguments: { [inputVariableName: string]: PromptArgument } = {}
 
