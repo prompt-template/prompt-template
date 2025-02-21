@@ -61,19 +61,17 @@ export class ChatPromptTemplate<
   }
 
   getInputVariables(): PromptTemplateInputVariable[] {
-    const inputVariablesSet = new Set<PromptTemplateInputVariable>()
+    const inputVariables: PromptTemplateInputVariable[] = []
 
     for (const message of this.messages) {
       const content = message.content
 
       if (!('promptTemplate' in content) || !content.promptTemplate) continue
 
-      for (const inputVariable of content.promptTemplate.inputVariables) {
-        inputVariablesSet.add(inputVariable)
-      }
+      inputVariables.push(...content.promptTemplate.inputVariables)
     }
 
-    return Array.from(inputVariablesSet)
+    return inputVariables
   }
 
   getInputVariableNames(): ExtractPromptTemplateInputVariableName<
