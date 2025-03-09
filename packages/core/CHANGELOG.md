@@ -1,5 +1,11 @@
 # @prompt-template/core
 
+## 0.11.1
+
+### Patch Changes
+
+- 3ad2e48: Fixed input variable inference when `PromptTemplateOptions` are defined
+
 ## 0.11.0
 
 ### Minor Changes
