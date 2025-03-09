@@ -238,7 +238,7 @@ export interface PromptTemplateOptions {
 
 export type CreatePromptTemplate = <
   T extends PromptTemplateStrings | PromptTemplateOptions,
-  InputVariables extends readonly PromptTemplateInputVariable[],
+  const InputVariables extends readonly PromptTemplateInputVariable[],
 >(
   templateStringsOrOptions: T,
   ...inputVariables: ValidateInputVariables<InputVariables>
