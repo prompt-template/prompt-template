@@ -1234,6 +1234,46 @@ describe('promptTemplate `PromptTemplateOptions`', () => {
     expect(promptTemplate.description).toBe('foo')
   })
 
+  it('handles `PromptTemplateOptions` with `description` and `InputVariableName`', () => {
+    const promptTemplate = PromptTemplate.create({ description: 'foo' })`${'a'}`
+
+    const prompt = promptTemplate.format({
+      a: 'a',
+    })
+
+    expect(promptTemplate.description).toBe('foo')
+
+    expect(prompt).toBe('a')
+
+    testInputVariables(promptTemplate, {
+      inputVariables: ['a'],
+      inputVariableNames: ['a'],
+      inputVariableNamesOptional: [],
+      inputVariableNamesRequired: ['a'],
+    })
+  })
+
+  it('handles `PromptTemplateOptions` with `description` and `InputVariableConfig`', () => {
+    const promptTemplate = PromptTemplate.create({
+      description: 'foo',
+    })`${{ name: 'b' }}`
+
+    const prompt = promptTemplate.format({
+      b: 'b',
+    })
+
+    expect(promptTemplate.description).toBe('foo')
+
+    expect(prompt).toBe('b')
+
+    testInputVariables(promptTemplate, {
+      inputVariables: [{ name: 'b' }],
+      inputVariableNames: ['b'],
+      inputVariableNamesOptional: [],
+      inputVariableNamesRequired: ['b'],
+    })
+  })
+
   it('handles `PromptTemplateOptions` with `prefix`', () => {
     const promptTemplate = PromptTemplate.create({ prefix: 'prefix' })`0`
 
