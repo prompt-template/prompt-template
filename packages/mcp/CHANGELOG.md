@@ -1,5 +1,12 @@
 # @prompt-template/mcp
 
+## 0.5.1
+
+### Patch Changes
+
+- Updated dependencies [3ad2e48]
+  - @prompt-template/core@0.11.1
+
 ## 0.5.0
 
 ### Minor Changes
