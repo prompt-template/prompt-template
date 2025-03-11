@@ -179,7 +179,7 @@ describe('promptTemplate', () => {
         },
         {
           name: 'b',
-          required: false,
+          required: true,
         },
       ],
     })
@@ -201,7 +201,7 @@ describe('promptTemplate', () => {
         },
         {
           name: 'b',
-          required: false,
+          required: true,
         },
       ],
     })
@@ -403,7 +403,7 @@ describe('promptTemplate nested', () => {
         },
         {
           name: 'b',
-          required: false,
+          required: true,
         },
       ],
     })
@@ -652,7 +652,7 @@ describe('promptTemplate deeply nested', () => {
         },
         {
           name: 'b',
-          required: false,
+          required: true,
         },
       ],
     })
@@ -678,7 +678,7 @@ describe('promptTemplate deeply nested', () => {
         },
         {
           name: 'b',
-          required: false,
+          required: true,
         },
       ],
     })
@@ -1011,7 +1011,7 @@ describe('chatPromptTemplate', () => {
         },
         {
           name: 'b',
-          required: false,
+          required: true,
         },
       ],
     })
@@ -1041,7 +1041,7 @@ describe('chatPromptTemplate', () => {
         },
         {
           name: 'b',
-          required: false,
+          required: true,
         },
       ],
     })

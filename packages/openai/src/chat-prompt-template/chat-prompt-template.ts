@@ -126,18 +126,31 @@ export class ChatPromptTemplate<
   getInputVariableNamesOptional(): ExtractPromptTemplateInputVariableNameOptional<
     ExtractInputVariables<Messages>
   >[] {
-    const inputVariableNamesOptionalSet =
+    const inputVariableNamesRequiredSet =
+      new Set<PromptTemplateInputVariableName>()
+
+    const inputVariableNamesOptionalAllSet =
       new Set<PromptTemplateInputVariableName>()
 
     for (const message of this.messages) {
       if (!('promptTemplate' in message) || !message.promptTemplate) continue
 
-      for (const inputVariableName of message.promptTemplate.getInputVariableNamesOptional()) {
-        inputVariableNamesOptionalSet.add(inputVariableName)
+      for (const inputVariableNameRequired of message.promptTemplate.getInputVariableNamesRequired()) {
+        inputVariableNamesRequiredSet.add(inputVariableNameRequired)
+      }
+
+      for (const inputVariableNameOptional of message.promptTemplate.getInputVariableNamesOptional()) {
+        inputVariableNamesOptionalAllSet.add(inputVariableNameOptional)
       }
     }
 
-    const inputVariableNamesOptional = Array.from(inputVariableNamesOptionalSet)
+    const inputVariableNamesOptional: PromptTemplateInputVariableName[] = []
+
+    for (const inputVariableNameOptionalAll of inputVariableNamesOptionalAllSet) {
+      if (!inputVariableNamesRequiredSet.has(inputVariableNameOptionalAll)) {
+        inputVariableNamesOptional.push(inputVariableNameOptionalAll)
+      }
+    }
 
     return inputVariableNamesOptional as ExtractPromptTemplateInputVariableName<
       ExtractInputVariables<Messages>

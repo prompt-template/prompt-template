@@ -14,7 +14,7 @@ export function toPrompt(
     onInputVariableName: (inputVariableName) => {
       promptArguments[inputVariableName] ??= { name: inputVariableName }
 
-      promptArguments[inputVariableName].required ??= true
+      promptArguments[inputVariableName].required ||= true
     },
     onInputVariableConfig: (inputVariableConfig) => {
       const inputVariableName = inputVariableConfig.name
@@ -29,10 +29,10 @@ export function toPrompt(
           inputVariableConfig.description
       }
 
-      promptArguments[inputVariableName].required ??= true
-
-      if (typeof inputVariableConfig.default !== 'undefined') {
-        promptArguments[inputVariableName].required = false
+      if (typeof inputVariableConfig.default === 'string') {
+        promptArguments[inputVariableName].required ??= false
+      } else {
+        promptArguments[inputVariableName].required = true
       }
     },
   })
