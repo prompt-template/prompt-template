@@ -1,6 +1,6 @@
 {
   "name": "@prompt-template/openai",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "OpenAI @prompt-template adapter",
   "author": "Aaron Casanova <aaronccasanova@gmail.com>",
   "license": "MIT",
