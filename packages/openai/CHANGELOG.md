@@ -4,7 +4,7 @@
 
 ### Patch Changes
 
-- 5d26582: Fixed extraction of optional input variable names
+- 5d26582: Fixed optional input variable name extraction
 
 ## 0.5.1
 
