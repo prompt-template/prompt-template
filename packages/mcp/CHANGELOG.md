@@ -1,5 +1,11 @@
 # @prompt-template/mcp
 
+## 0.5.2
+
+### Patch Changes
+
+- 5d26582: Fixed optional input variable name extraction
+
 ## 0.5.1
 
 ### Patch Changes
