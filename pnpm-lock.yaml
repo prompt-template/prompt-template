@@ -257,6 +257,33 @@ importers:
         specifier: ^3.22.4
         version: 3.23.8
 
+  packages/to-zod:
+    devDependencies:
+      '@prompt-template/core':
+        specifier: workspace:*
+        version: link:../core
+      '@prompt-template/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@prompt-template/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      eslint:
+        specifier: 'catalog:'
+        version: 8.57.1
+      tshy:
+        specifier: 'catalog:'
+        version: 3.0.2
+      typescript:
+        specifier: 'catalog:'
+        version: 5.5.4
+      vitest:
+        specifier: ^2.1.5
+        version: 2.1.5(@types/node@18.19.64)
+      zod:
+        specifier: ^3.22.4
+        version: 3.23.8
+
   packages/tsconfig: {}
 
   packages/utils:
