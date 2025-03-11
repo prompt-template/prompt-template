@@ -1,6 +1,6 @@
 {
   "name": "@prompt-template/to-zod",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Convert @prompt-template into Zod schemas",
   "author": "Aaron Casanova <aaronccasanova@gmail.com>",
   "license": "MIT",
