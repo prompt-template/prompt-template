@@ -39,6 +39,7 @@
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {
+    "@prompt-template/to-zod": "workspace:*",
     "type-fest": "catalog:"
   },
   "devDependencies": {
