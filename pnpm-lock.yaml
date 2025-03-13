@@ -186,6 +186,9 @@ importers:
 
   packages/mcp:
     dependencies:
+      '@prompt-template/to-zod':
+        specifier: workspace:*
+        version: link:../to-zod
       type-fest:
         specifier: 'catalog:'
         version: 4.27.0
