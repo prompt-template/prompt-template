@@ -1,5 +1,11 @@
 # @prompt-template/mcp
 
+## 0.6.0
+
+### Minor Changes
+
+- e2ca851: Added `addPrompt` API
+
 ## 0.5.2
 
 ### Patch Changes
