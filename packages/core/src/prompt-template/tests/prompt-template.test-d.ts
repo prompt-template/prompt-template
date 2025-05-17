@@ -4,6 +4,26 @@ import type { EmptyObject } from 'type-fest'
 import { PromptTemplate, PromptTemplateFormat } from '../../index.js'
 
 test('`promptTemplate` with empty string', () => {
+  const promptTemplate = PromptTemplate.create`
+    ${'foo'}
+    ${(inputValues) => ''}
+  `
+
+  // eslint-disable-next-line no-unused-vars
+  type InputVariables = ['foo', (inputValues: { foo: string }) => string]
+
+  type InputValues = { foo: string }
+
+  expectTypeOf(promptTemplate).toEqualTypeOf<PromptTemplate<InputVariables>>()
+
+  expectTypeOf(promptTemplate.format).toEqualTypeOf<
+    PromptTemplateFormat<InputVariables>
+  >()
+
+  expectTypeOf(promptTemplate.format).parameter(0).toEqualTypeOf<InputValues>()
+})
+
+test('`promptTemplate` with empty string', () => {
   const promptTemplate = PromptTemplate.create``
 
   type InputVariables = []

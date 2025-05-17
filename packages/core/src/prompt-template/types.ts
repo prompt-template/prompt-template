@@ -69,11 +69,16 @@ export interface PromptTemplateInputVariableConfig {
     | undefined
 }
 
+type PromptTemplateInputVariableCallbackBase = (
+  inputValues: PromptTemplateFormatInputValuesBase | undefined | void,
+) => string
+
 export type PromptTemplateStrings = readonly string[]
 
 export type PromptTemplateInputVariable =
   | PromptTemplateInputVariableName
   | PromptTemplateInputVariableConfig
+  | PromptTemplateInputVariableCallbackBase
   | PromptTemplateBase
 
 /**
@@ -84,20 +89,28 @@ export type PromptTemplateInputVariable =
  */
 export type ValidateInputVariables<
   InputVariables extends readonly PromptTemplateInputVariable[],
+  InputValues extends
+    | PromptTemplateFormatInputValuesBase
+    | undefined
+    | void = PromptTemplateFormatInputValues<InputVariables>,
 > = {
-  [Index in keyof InputVariables]: InputVariables[Index] extends PromptTemplateInputVariableName
-    ? IfStringLiteral<
-        InputVariables[Index],
-        InputVariables[Index],
-        PromptTemplateInputVariableNameError
-      >
-    : InputVariables[Index] extends { name: infer InputVariableName }
+  [Index in keyof InputVariables]: InputVariables[Index] extends PromptTemplateInputVariableCallbackBase
+    ? (inputValues: InputValues) => string
+    : InputVariables[Index] extends PromptTemplateInputVariableName
       ? IfStringLiteral<
-          InputVariableName,
           InputVariables[Index],
-          InputVariables[Index] & { name: PromptTemplateInputVariableNameError }
+          InputVariables[Index],
+          PromptTemplateInputVariableNameError
         >
-      : InputVariables[Index]
+      : InputVariables[Index] extends { name: infer InputVariableName }
+        ? IfStringLiteral<
+            InputVariableName,
+            InputVariables[Index],
+            InputVariables[Index] & {
+              name: PromptTemplateInputVariableNameError
+            }
+          >
+        : InputVariables[Index]
 }
 
 /**
@@ -241,15 +254,32 @@ export type CreatePromptTemplate = <
   const InputVariables extends readonly PromptTemplateInputVariable[],
 >(
   templateStringsOrOptions: T,
-  ...inputVariables: ValidateInputVariables<InputVariables>
-) => ExtractCreatePromptTemplateResult<T, InputVariables>
+  ...inputVariables: ValidateInputVariables<
+    TransformInputVariables<InputVariables>
+  >
+) => ExtractCreatePromptTemplateResult<
+  T,
+  TransformInputVariables<InputVariables>
+>
 
 export type ExtractCreatePromptTemplateResult<
   T extends PromptTemplateStrings | PromptTemplateOptions,
   InputVariables extends readonly PromptTemplateInputVariable[],
 > = T extends PromptTemplateStrings
-  ? PromptTemplate<InputVariables>
+  ? PromptTemplate<TransformInputVariables<InputVariables>>
   : CreatePromptTemplate
+
+export type TransformInputVariables<
+  InputVariables extends readonly PromptTemplateInputVariable[],
+  InputValues extends
+    | PromptTemplateFormatInputValuesBase
+    | undefined
+    | void = PromptTemplateFormatInputValues<InputVariables>,
+> = {
+  [Index in keyof InputVariables]: InputVariables[Index] extends PromptTemplateInputVariableCallbackBase
+    ? (inputValues: InputValues) => string
+    : InputVariables[Index]
+}
 
 // #############
 // Utility Types
