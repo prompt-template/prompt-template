@@ -1,0 +1,4 @@
+{
+  "extends": "@prompt-template/tsconfig/tshy-library.json",
+  "include": ["**/*.ts", ".eslintrc.cjs", "jest.config.js", "bin/cli.js"]
+}
