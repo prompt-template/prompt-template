@@ -21,7 +21,7 @@ ${cyan}Examples:${reset}
   npx @prompt-template/cli format <prompt-template-file> | claude
 
   ${dim}# Pipe a formatted prompt template to multiple code agents${reset}
-  for file in *.md; do
+  for file in dir/*.md; do
     npx @prompt-template/cli format <prompt-template-file> \\
       --input <input> \\
       --filePath "$PWD/$file" | claude -p
