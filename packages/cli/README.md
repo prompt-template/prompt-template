@@ -94,12 +94,23 @@ npx @prompt-template/cli format ~/prompts/summarize-file.ts \
 
 4. **Pipe the formatted prompt template to multiple code agents:**
 
+Serial:
+
 ```bash
 for file in dir/*.md; do
   npx @prompt-template/cli format ~/prompts/summarize-file.ts \
     --instructions "Write the summary to an adjacent file suffixed with -summary.md" \
     --filePath "$PWD/$file" | claude -p
 done
+```
+
+Parallel:
+
+```bash
+echo dir/*.md | xargs -n 1 -P 4 -I {} \
+  npx @prompt-template/cli format ~/prompts/summarize-file.ts \
+    --instructions "Write the summary to an adjacent file suffixed with -summary.md" \
+    --filePath "$PWD/{}" | claude -p
 ```
 
 See the [core package](https://github.com/prompt-template/prompt-template/tree/main/packages/core) for more details and API documentation.

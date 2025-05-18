@@ -20,12 +20,18 @@ ${cyan}Examples:${reset}
   ${dim}# Pipe a formatted prompt to a code agent (e.g. Claude Code or Codex)${reset}
   npx @prompt-template/cli format <prompt-template-file> | claude
 
-  ${dim}# Pipe a formatted prompt template to multiple code agents${reset}
+  ${dim}# Pipe a formatted prompt template to multiple code agents (serial)${reset}
   for file in dir/*.md; do
     npx @prompt-template/cli format <prompt-template-file> \\
       --input <input> \\
       --filePath "$PWD/$file" | claude -p
   done
+
+  ${dim}# Pipe a formatted prompt template to multiple code agents (parallel)${reset}
+  echo dir/*.md | xargs -n 1 -P 4 -I {} \
+    npx @prompt-template/cli format <prompt-template-file> \\
+      --input <input> \\
+      --filePath "$PWD/$file" | claude -p
 `
 
 console.log(helpMessage.trim())
