@@ -6,7 +6,7 @@ import { toParseArgsConfig } from '../utils/to-parse-args-config.js'
 const promptTemplateFileName = process.argv[2]
 
 if (!promptTemplateFileName) {
-  throw new Error('No prompt template file name provided')
+  throw new Error('No prompt template file provided')
 }
 
 const promptTemplateFilePath = path.resolve(promptTemplateFileName)
@@ -14,7 +14,9 @@ const promptTemplateFilePath = path.resolve(promptTemplateFileName)
 const promptTemplate = (await import(promptTemplateFilePath))?.default
 
 if (!promptTemplate) {
-  throw new Error(`No default export found in ${promptTemplateFileName}`)
+  throw new Error(
+    `No default export prompt template found in ${promptTemplateFileName}`,
+  )
 }
 
 const parseArgsConfig = toParseArgsConfig(promptTemplate)
