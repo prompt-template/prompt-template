@@ -7,13 +7,16 @@ if (!command) {
 }
 
 switch (command) {
+  case 'format':
+    await import('./commands/format.js')
+    break
   case '-h':
   case '--help':
   case 'help':
     await import('./commands/help.js')
     break
-  case 'format':
-    await import('./commands/format.js')
+  case 'inspect':
+    await import('./commands/inspect.js')
     break
   default:
     throw new Error(`Unknown command: ${command}`)

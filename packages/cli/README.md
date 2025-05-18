@@ -1,49 +1,90 @@
 # @prompt-template/cli
 
-> A CLI to inspect and format prompt templates
+A CLI to inspect and format prompt templates. Provide input variables via CLI flags and pipe formatted prompt templates into code agents, such as Claude or Codex.
+
+## Installation
+
+```sh
+npm i @prompt-template/core @prompt-template/cli
+```
 
 ## Usage
 
-### Commands
+```sh
+# Inspect a prompt template
+npx @prompt-template/cli inspect <prompt-template-file>
 
-| Command  | Description                                              |
-| -------- | -------------------------------------------------------- |
-| `help`   | Show help for the CLI or a specific prompt template file |
-| `format` | Format a prompt template file with provided variables    |
+# Format a prompt template
+npx @prompt-template/cli format <prompt-template-file> --input <input>
 
-### Format a `PromptTemplate`
+# Pipe a formatted prompt template to a code agent
+npx @prompt-template/cli format <prompt-template-file> | claude
+```
 
-Given a file `brainstorm-superhero-names.ts`:
+Need help? Run:
+
+```sh
+npx @prompt-template/cli help
+```
+
+## Example Workflow
+
+Given the following `summarize-file.ts` prompt template:
 
 ```ts
 import { PromptTemplate } from '@prompt-template/core'
 
 export default PromptTemplate.create`
-  Brainstorm 3 names for a superhero ${{
-    name: 'animal',
-    description: 'The animal the superhero is based on',
-  }}.
+  Summarize the contents of ${'filePath'} in bullet points.
+
+  Additional instructions:
+  ${{
+    name: 'instructions',
+    description: 'Additional instructions for summarization',
+    default: 'N/A',
+  }}
 `
 ```
 
-Run:
+1. **Inspect the prompt template's input variables:**
 
 ```sh
-npx @prompt-template/cli format brainstorm-superhero-names.ts --animal cat
-#=> Brainstorm 3 names for a superhero cat.
-```
-
-### Display help
-
-```sh
-npx @prompt-template/cli help
-# Usage: @prompt-template/cli <command> <prompt-template-file> [args]
-# ...
-
-npx @prompt-template/cli help brainstorm-superhero-names.ts
+npx @prompt-template/cli inspect summarize-file.ts
 #=> Input variables:
-#     --animal <animal> The animal the superhero is based on
+#     --filePath <filePath>
+#     --instructions <instructions> (optional) Additional instructions for summarization
 #
 #   Example usage:
-#     npx @prompt-template/cli brainstorm-superhero-names.ts --animal <animal>
+#   npx @prompt-template/cli format summarize-file.ts \
+#     --filePath <filePath> \
+#     --instructions <instructions>
 ```
+
+2. **Format the prompt template with input values (via CLI flags):**
+
+```sh
+npx @prompt-template/cli format summarize-file.ts --filePath /path/to/file.md
+#=> Summarize the contents of /path/to/file.md in bullet points.
+#
+#   Additional instructions:
+#   N/A
+```
+
+3. **Pipe the formatted prompt template to a code agent (e.g. Claude or Codex):**
+
+```sh
+npx @prompt-template/cli format summarize-file.ts --filePath /path/to/file.md | claude
+#=> Summary of /path/to/file.md...
+```
+
+4. **Pipe the formatted prompt template to multiple code agents:**
+
+```sh
+for file in dir/*.md; do
+  npx @prompt-template/cli format summarize-file.ts \
+    --instructions "Write the summary to an adjacent file suffixed with -summary.md" \
+    --filePath "$PWD/$file" | claude -p
+done
+```
+
+See the [core package](https://github.com/prompt-template/prompt-template/tree/main/packages/core) for more details and API documentation.

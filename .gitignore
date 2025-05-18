@@ -2,6 +2,7 @@
 .tshy
 .tshy-build
 tsconfig.vitest-temp.json
+.notes
 
 ####################################
 # GitHub Node.js .gitignore template

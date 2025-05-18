@@ -1,76 +1,31 @@
-import * as path from 'node:path'
+const cyan = '\x1b[36m'
+const dim = '\x1b[2m'
+const reset = '\x1b[0m'
 
-import type { PromptTemplate } from '@prompt-template/core'
+const helpMessage = `
+${cyan}Usage:${reset} @prompt-template/cli <command> <prompt-template-file> [args]
 
-import { parseInputVariables } from '../utils/parse-input-variables.js'
+${cyan}Commands:${reset}
+  help       Show help message
+  inspect    Inspect a prompt template and print its description and input variables
+  format     Format and print a prompt template with input variables mapped to command line arguments
 
-const promptTemplateFileName = process.argv[2]
+${cyan}Examples:${reset}
+  ${dim}# Inspect a prompt template${reset}
+  npx @prompt-template/cli inspect <prompt-template-file>
 
-if (!promptTemplateFileName) {
-  console.log(
-    'Usage: @prompt-template/cli <command> <prompt-template-file> [args]',
-  )
-  console.log()
-  console.log('Commands:')
-  console.log('  help       Show this help message')
-  console.log('  format     Format the prompt template and print the result')
+  ${dim}# Format a prompt template${reset}
+  npx @prompt-template/cli format <prompt-template-file> --input <input>
 
-  process.exit(0)
-}
+  ${dim}# Pipe a formatted prompt to a code agent (e.g. Claude Code or Codex)${reset}
+  npx @prompt-template/cli format <prompt-template-file> | claude
 
-const promptTemplateFilePath = path.resolve(promptTemplateFileName)
+  ${dim}# Pipe a formatted prompt template to multiple code agents${reset}
+  for file in *.md; do
+    npx @prompt-template/cli format <prompt-template-file> \\
+      --input <input> \\
+      --filePath "$PWD/$file" | claude -p
+  done
+`
 
-const promptTemplate: PromptTemplate<any> = (
-  await import(promptTemplateFilePath)
-)?.default
-
-if (!promptTemplate) {
-  throw new Error(`No default export found in ${promptTemplateFileName}`)
-}
-
-const parsedInputVariables = parseInputVariables(promptTemplate)
-
-if (promptTemplate.description) {
-  console.log(`Description: ${promptTemplate.description}`)
-}
-
-const inputVariableValues = Object.values(parsedInputVariables)
-
-if (inputVariableValues.length) {
-  console.log()
-  console.log('Input variables:')
-
-  inputVariableValues.forEach((inputVariableValue) => {
-    let inputVariable = `  --${inputVariableValue.name} <${inputVariableValue.name}>`
-
-    if (!inputVariableValue.required) {
-      inputVariable += ` (optional)`
-    }
-
-    if (inputVariableValue.description) {
-      inputVariable += ` ${inputVariableValue.description}`
-    }
-
-    console.log(inputVariable)
-  })
-}
-
-const inputVariableValuesRequired = inputVariableValues.filter(
-  (inputVariableValue) => inputVariableValue.required,
-)
-
-console.log()
-console.log('Example usage:')
-
-let exampleUsage = `npx @prompt-template/cli format ${promptTemplateFileName}`
-
-if (inputVariableValuesRequired.length > 1) {
-  inputVariableValuesRequired.forEach((inputVariableValueRequired) => {
-    exampleUsage += ` \\\n  --${inputVariableValueRequired.name} <${inputVariableValueRequired.name}>`
-  })
-} else if (inputVariableValuesRequired[0]) {
-  exampleUsage += ` --${inputVariableValuesRequired[0].name} <${inputVariableValuesRequired[0].name}>`
-}
-
-console.log()
-console.log(exampleUsage)
+console.log(helpMessage.trim())
