@@ -1,5 +1,11 @@
 # @prompt-template/cli
 
+## 0.1.2
+
+### Patch Changes
+
+- a7975a1: Added documentation for parallelizing code agents
+
 ## 0.1.1
 
 ### Patch Changes
