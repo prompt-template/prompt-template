@@ -12,7 +12,7 @@ npm i @prompt-template/core @prompt-template/cli
 
 ## Usage
 
-```sh
+```bash
 # Inspect a prompt template
 npx @prompt-template/cli inspect <prompt-template-file>
 
@@ -52,49 +52,49 @@ export default PromptTemplate.create`
 
 1. **Inspect the prompt template's input variables:**
 
-```sh
+```bash
 npx @prompt-template/cli inspect ~/prompts/summarize-file.ts
 ```
 
-> ```text
+```text
 > Input variables:
->   --filePath <filePath>
->   --instructions <instructions> (optional) Additional instructions for summarization
->
-> Example usage:
->   npx @prompt-template/cli format summarize-file.ts \
->   --filePath <filePath> \
->   --instructions <instructions>
-> ```
+    --filePath <filePath>
+    --instructions <instructions> (optional) Additional instructions for summarization
+
+  Example usage:
+    npx @prompt-template/cli format summarize-file.ts \
+      --filePath <filePath> \
+      --instructions <instructions>
+```
 
 2. **Format the prompt template with input values (via CLI flags):**
 
-```sh
+```bash
 npx @prompt-template/cli format ~/prompts/summarize-file.ts \
   --filePath /path/to/file.md
 ```
 
-> ```
+```text
 > Summarize the contents of /path/to/file.md in bullet points.
->
-> Additional instructions:
-> N/A
-> ```
+
+  Additional instructions:
+  N/A
+```
 
 3. **Pipe the formatted prompt template to a code agent (e.g. Claude Code or Codex):**
 
-```sh
+```bash
 npx @prompt-template/cli format ~/prompts/summarize-file.ts \
   --filePath /path/to/file.md | claude
 ```
 
-> ```
+```text
 > Summary of /path/to/file.md...
-> ```
+```
 
 4. **Pipe the formatted prompt template to multiple code agents:**
 
-```sh
+```bash
 for file in dir/*.md; do
   npx @prompt-template/cli format ~/prompts/summarize-file.ts \
     --instructions "Write the summary to an adjacent file suffixed with -summary.md" \
