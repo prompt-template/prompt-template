@@ -1,5 +1,11 @@
 # @prompt-template/cli
 
+## 0.1.3
+
+### Patch Changes
+
+- d1cf0e4: Used `tsx` for dynamic imports in `inspect` and `format` commands
+
 ## 0.1.2
 
 ### Patch Changes

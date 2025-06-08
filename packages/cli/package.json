@@ -1,6 +1,6 @@
 {
   "name": "@prompt-template/cli",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A CLI to inspect and format prompt templates",
   "author": "Aaron Casanova <aaronccasanova@gmail.com>",
   "license": "MIT",
