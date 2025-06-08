@@ -2,6 +2,7 @@ import * as util from 'node:util'
 import * as path from 'node:path'
 
 import { toParseArgsConfig } from '../utils/to-parse-args-config.js'
+import { requirePromptTemplate } from '../utils/require-prompt-template.js'
 
 const promptTemplateFileName = process.argv[2]
 
@@ -11,13 +12,10 @@ if (!promptTemplateFileName) {
 
 const promptTemplateFilePath = path.resolve(promptTemplateFileName)
 
-const promptTemplate = (await import(promptTemplateFilePath))?.default
-
-if (!promptTemplate) {
-  throw new Error(
-    `No default export prompt template found in ${promptTemplateFileName}`,
-  )
-}
+const promptTemplate = requirePromptTemplate(
+  promptTemplateFilePath,
+  import.meta,
+)
 
 const parseArgsConfig = toParseArgsConfig(promptTemplate)
 

@@ -37,7 +37,7 @@
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {
-    "tsx": "^4.7.0"
+    "tsx": "^4.19.4"
   },
   "devDependencies": {
     "@prompt-template/core": "workspace:*",

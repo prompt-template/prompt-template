@@ -1,8 +1,7 @@
 import * as path from 'node:path'
 
-import type { PromptTemplate } from '@prompt-template/core'
-
 import { parseInputVariables } from '../utils/parse-input-variables.js'
+import { requirePromptTemplate } from '../utils/require-prompt-template.js'
 
 const promptTemplateFileName = process.argv[2]
 
@@ -12,13 +11,10 @@ if (!promptTemplateFileName) {
 
 const promptTemplateFilePath = path.resolve(promptTemplateFileName)
 
-const promptTemplate: PromptTemplate<any> = (
-  await import(promptTemplateFilePath)
-)?.default
-
-if (!promptTemplate) {
-  throw new Error(`No default export found in ${promptTemplateFileName}`)
-}
+const promptTemplate = requirePromptTemplate(
+  promptTemplateFilePath,
+  import.meta,
+)
 
 const parsedInputVariables = parseInputVariables(promptTemplate)
 
