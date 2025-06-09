@@ -13,6 +13,9 @@ npm i @prompt-template/core @prompt-template/cli
 ## Usage
 
 ```bash
+# Create a new prompt template
+npx @prompt-template/cli create
+
 # Inspect a prompt template
 npx @prompt-template/cli inspect <prompt-template-file>
 
