@@ -7,6 +7,9 @@ if (!command) {
 }
 
 switch (command) {
+  case 'create':
+    await import('./commands/create.js')
+    break
   case 'format':
     await import('./commands/format.js')
     break
