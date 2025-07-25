@@ -50,16 +50,25 @@ if (fs.existsSync(filePath)) {
 }
 
 const fileContent = `/**
-Usage commands:
+Usage commands
+  # Inspect the prompt template
+  npx @prompt-template/cli inspect ${fileNameFromCWD}
 
-# Inspect prompt template
-npx @prompt-template/cli inspect ${fileNameFromCWD}
+  # Format the prompt template
+  npx @prompt-template/cli format ${fileNameFromCWD}
 
-# Format prompt template
-npx @prompt-template/cli format ${fileNameFromCWD}
+  # Pipe into your agent of choice
+  npx @prompt-template/cli format ${fileNameFromCWD} | example-agent
 
-# Pipe into your agent of choice
-npx @prompt-template/cli format ${fileNameFromCWD} | example-agent
+@prompt-template/core cheatsheet
+  - Declare input variables inline with tagged-template syntax:
+    - \${'animal'} // simple named
+    - \${{ name: 'animal', schema: z.string(), onFormat: (inputValue) => inputValue, default }} // with name and configs
+    - \${promptTemplate} // nested PromptTemplate instance
+    - All (nested) input variables are collected, deduplicated, and transformed to:
+      - Strongly-typed params for promptTemplate.format(inputValues), and
+      - CLI flags when used with @prompt-template/cli (e.g. \${'animal'} becomes --animal <input-value>).
+  - TypeScript infers the shape of \`.format(inputValues)\`, while the raw input variables \`expressions[]\` array from the tag enables runtime validation and transforms (schema, onFormat, default, etc.).
 */
 import { PromptTemplate } from '@prompt-template/core';
 
@@ -74,9 +83,9 @@ export default PromptTemplate.create/* md */\`
 
 ## Output Format
 
-(Specify the desired format for the agent's response. For example, JSON, markdown, a list, etc.)
+(Specify the desired format for the agent's response, e.g. JSON, Markdown, List, etc.)
 
-(You can add other sections like 'Context', 'Examples', or 'Constraints' if needed)
+(Add sections like Context, Examples, or Constraints as needed)
 \`
 `
 
