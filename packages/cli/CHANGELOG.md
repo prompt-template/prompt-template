@@ -1,5 +1,11 @@
 # @prompt-template/cli
 
+## 0.3.0
+
+### Minor Changes
+
+- 211aa81: Added `@prompt-template/core` cheatsheet to `create` prompt template file
+
 ## 0.2.0
 
 ### Minor Changes
